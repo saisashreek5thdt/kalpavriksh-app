@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { LockClosedIcon } from "@heroicons/react/solid";
+
+import DATA from "../DATA.json";
 
 const Login = () => {
+  const [values, setValues] = useState({ email: "", password: "" });
+  const [emailerr, setEmailerr] = useState(false);
+  const [passerr, setPasserr] = useState(false);
   const history = useHistory();
-
   const loginHandler = (event) => {
     event.preventDefault();
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email))
+      return setEmailerr(true);
+    if (
+      !values.password ||
+      values.password === "" ||
+      values.password === undefined
+    )
+      return setPasserr(true);
+    const user = DATA.find((data) => data.email === values.email);
+    if (!user) return setEmailerr(true);
+    if (user.password !== values.password) return setPasserr(true);
+    localStorage.setItem("kalpavriksh", JSON.stringify(user));
     history.push("/userrole");
   };
 
@@ -23,7 +39,7 @@ const Login = () => {
                 alt="Workflow"
               />
               <p className="mt-6 text-center text-3xl font-nunito font-semibold text-gray-900">
-                Welcome To Kalpavriksh 
+                Welcome To Kalpavriksh
               </p>
               <p className="mt-6 text-center text-2xl font-nunito font-semibold text-gray-900">
                 Sign in to your account
@@ -48,8 +64,17 @@ const Login = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  className="appearance-none rounded-none relative block w-96 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className={`appearance-none rounded-none relative block w-96 px-3 py-2 border placeholder-gray-500 rounded-t-md focus:outline-none focus:z-10 sm:text-sm ${
+                    emailerr
+                      ? "border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
+                  }`}
                   placeholder="Email address"
+                  value={values.email}
+                  onChange={(e) => {
+                    setEmailerr(false);
+                    setValues({ ...values, email: e.target.value });
+                  }}
                 />
               </div>
               <div>
@@ -63,6 +88,11 @@ const Login = () => {
                   autoComplete="current-password"
                   className="appearance-none font-nunito rounded-none relative block w-96 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  value={values.password}
+                  onChange={(e) => {
+                    setPasserr(false);
+                    setValues({ ...values, password: e.target.value });
+                  }}
                 />
               </div>
             </div>
@@ -82,7 +112,7 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-                
+
               {/* <div className="text-sm">
                 <a
                   href="#"
@@ -99,11 +129,28 @@ const Login = () => {
                 className="group font-nunito relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
                 </span>
                 Sign in
               </button>
             </div>
+            {emailerr ? (
+              <p className="font-medium text-center text-red-600 font-nunito">
+                You're not authorized to signin here.
+              </p>
+            ) : (
+              <p></p>
+            )}
+            {passerr ? (
+              <p className="font-medium text-center text-red-600 font-nunito">
+                Invalid Password.
+              </p>
+            ) : (
+              <p></p>
+            )}
           </form>
         </div>
       </div>
