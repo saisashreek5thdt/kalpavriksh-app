@@ -1,14 +1,29 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
-function App() {
+import Login from "./user/Login";
+import UserDashboard from "./user/UserDashboard";
+
+
+const App = () => {
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <Login />
+          </Route>
+          <Route path="/userrole/" exact>
+            <UserDashboard />
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+      </Router>
     </>
   );
 }
