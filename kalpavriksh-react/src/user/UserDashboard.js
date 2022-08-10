@@ -6,9 +6,13 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import CreatePatient from "./CreatePatient";
 
+import CreateForm from "./CreateForm";
+
+import UploadDietchart from "./UploadDietchart";
+
 const role = JSON.parse(localStorage.getItem("kalpavriksh")).username;
 
-const email = JSON.parse(localStorage.getItem("kalpavriksh")).email;
+const email = JSON.parse(localStorage.getItem("kalpavriksh")).email; 
 
 const user = {
   name: `${role}`,
@@ -17,10 +21,10 @@ const user = {
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Enrol Patient", href: "#", current: false },
-  { name: "Create Form", href: "#", current: false },
-  { name: "Upload Diet Chart", href: "#", current: false },
+  { name: "Dashboard", href: "#", onclick: "", current: true },
+  { name: "Enrol Patient", href: "#", onclick: "enrolPatientHandler()", current: true },
+  { name: "Create Form", href: "#", onclick: "", current: false },
+  { name: "Upload Diet Chart", href: "#", onclick: "", current: false },
 ];
 const userNavigation = [
   { name: `${role}`, href: "#" },
@@ -32,11 +36,18 @@ function classNames(...classes) {
 }
 
 const UserDashboard = () => {
+  
   const history = useHistory();
 
   const logoutHandler = (event) => {
     event.preventDefault();
     history.push("/");
+  };
+  
+  const enrolPatientHandler = () => {
+    email.preventDefault();
+    history.current(true);
+    history.push("/userrole/createPatient");
   };
 
   return (
@@ -64,6 +75,7 @@ const UserDashboard = () => {
                             <a
                               key={item.name}
                               href={item.href}
+                              onClick={item.onclick}
                               className={classNames(
                                 item.current
                                   ? "bg-gray-900 text-white"
@@ -217,7 +229,9 @@ const UserDashboard = () => {
           <main>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
               {/* Replace with your content */}
-              <CreatePatient />
+              {/* <CreatePatient /> */}
+              {/* <CreateForm /> */}
+              <UploadDietchart />
               {/* /End replace */}
             </div>
           </main>

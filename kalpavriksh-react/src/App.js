@@ -8,6 +8,7 @@ import {
 
 import Login from "./user/Login";
 import UserDashboard from "./user/UserDashboard";
+import CreatePatient from "./user/CreatePatient";
 import PatientDashboard from "./user/patient/PatientDashboard";
 
 import { DoctorDashboard } from "./pages";
@@ -37,6 +38,10 @@ const App = () => {
         </Route>
         <Route path="/userrole/" exact>
           <Login />
+          {/* <UserDashboard /> */}
+        </Route>
+        <Route path="/userrole/createPatient" exact>
+          <CreatePatient />
           {/* <UserDashboard /> */}
         </Route>
         <Route path="/userrole/patient" exact>
