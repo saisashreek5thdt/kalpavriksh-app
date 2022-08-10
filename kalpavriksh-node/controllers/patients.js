@@ -32,3 +32,32 @@ exports.PatientDataForms = (req, res, next) => {
     const [_id, DATA_FORM_ID, PATIENT_ENROLMENT_ID, ATTACHED_BY] = [uuidv4(), uuidv4(), uuidv4(), uuidv4()];
     res.json({ _id, DATA_FORM_ID, PATIENT_ENROLMENT_ID, ATTACHED_BY })
 };
+
+exports.PatientDataFormsQuestions = (req, res, next) => {
+    const [_id, DATA_FORM_ID, DATA_FORM_QUESTION_ID, QUESTION_CHOICE_ID, PATIENT_DATA_FORM_ATTACHMENT_ID] = [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()];
+    const response_text = req.body
+    res.json({ _id, DATA_FORM_ID, DATA_FORM_QUESTION_ID, QUESTION_CHOICE_ID, PATIENT_DATA_FORM_ATTACHMENT_ID, response_text })
+};
+
+exports.PatientFileAssignments = (req, res, next) => {
+    const [_id, FILE_UPLOAD_ID, PATIENT_ENROLMENT_ID, ATTACHED_BY] = [uuidv4(), uuidv4(), uuidv4(), uuidv4()];
+    res.json({ _id, FILE_UPLOAD_ID, PATIENT_ENROLMENT_ID, ATTACHED_BY })
+};
+
+exports.PatientDoctorAppointments = (req, res, next) => {
+    const [_id, PATIENT_ID, DOCTOR_ID, PATIENT_ENROLMENT_ID] = [uuidv4(), uuidv4(), uuidv4(), uuidv4()];
+    const { date } = req.body
+    res.json({ _id, PATIENT_ID, DOCTOR_ID, PATIENT_ENROLMENT_ID, date })
+};
+
+exports.PatientMedicines = (req, res, next) => {
+    const [_id, PATIENT_DOCTOR_APPOINTMENT_ID, MEDICINE_ID] = [uuidv4(), uuidv4(), uuidv4()];
+    const { morning_dose, afternoon_dose, evening_dose, comments } = req.body
+    res.json({ _id, PATIENT_DOCTOR_APPOINTMENT_ID, MEDICINE_ID, morning_dose, afternoon_dose, evening_dose, comments })
+};
+
+exports.PatientNotes = (req, res, next) => {
+    const [_id, PATIENT_ID, DOCTOR_ID, PATIENT_ENROLMENT_ID] = [uuidv4(), uuidv4(), uuidv4(), uuidv4()];
+    const { notes } = req.body
+    res.json({ _id, PATIENT_ID, DOCTOR_ID, PATIENT_ENROLMENT_ID, notes })
+};

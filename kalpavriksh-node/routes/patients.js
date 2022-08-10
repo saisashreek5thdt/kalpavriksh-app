@@ -2,7 +2,7 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { PatientRegistration, PatientTeamsRegistration, PatientPayments, PatientDataForms } = require(path.join(
+const { PatientRegistration, PatientTeamsRegistration, PatientPayments, PatientDataForms, PatientDataFormsQuestions, PatientFileAssignments, PatientDoctorAppointments,PatientMedicines, PatientNotes } = require(path.join(
   __dirname,
   "..",
   "controllers",
@@ -10,7 +10,7 @@ const { PatientRegistration, PatientTeamsRegistration, PatientPayments, PatientD
 ));
 
 // Middlewares
-const { PatientRegisterValidation, PatientPaymentsValidation } = require(path.join(
+const { PatientRegisterValidation, PatientPaymentsValidation, PatientDataFormsQuestionsValidation, PatientDoctorAppointmentsValidation, PatientmedicinesValidation, PatientNotesValidation } = require(path.join(
   __dirname,
   "..",
   "middlewares",
@@ -21,8 +21,18 @@ router.post("/register", PatientRegisterValidation, PatientRegistration);
 
 router.post("/patientteamsregister", PatientTeamsRegistration);
 
-router.post("/patientpayments",PatientPaymentsValidation, PatientPayments);
+router.post("/patientpayments", PatientPaymentsValidation, PatientPayments);
 
 router.post("/patientdataforms", PatientDataForms);
+
+router.post("/patientdataformsquestions", PatientDataFormsQuestionsValidation, PatientDataFormsQuestions);
+
+router.post("/patientfileassignment", PatientDataFormsQuestions, PatientFileAssignments);
+
+router.post("/patientdoctorappointments", PatientDoctorAppointmentsValidation, PatientDoctorAppointments);
+
+router.post("/patientmedicines", PatientmedicinesValidation, PatientMedicines);
+
+router.post("/patientnotes", PatientNotesValidation, PatientNotes);
 
 module.exports = router;

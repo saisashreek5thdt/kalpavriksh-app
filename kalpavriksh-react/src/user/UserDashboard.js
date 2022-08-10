@@ -10,9 +10,13 @@ import CreateForm from "./CreateForm";
 
 import UploadDietchart from "./UploadDietchart";
 
-const role = JSON.parse(localStorage.getItem("kalpavriksh")).username;
+const authenticateduser = JSON.parse(localStorage.getItem('kalpavriksh'))
 
-const email = JSON.parse(localStorage.getItem("kalpavriksh")).email; 
+// const role = typeof (JSON.parse(localStorage.getItem("kalpavriksh"))) === 'object' ? JSON.parse(localStorage.getItem("kalpavriksh")).username : undefined
+const role = authenticateduser ? authenticateduser.username : null
+
+// const email = JSON.parse(localStorage.getItem("kalpavriksh")).email;
+const email = authenticateduser ? authenticateduser.email : null
 
 const user = {
   name: `${role}`,
@@ -28,7 +32,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: `${role}`, href: "#" },
-  { name: "Sign out", href: "#", onClick:"logoutHandler()" },
+  { name: "Sign out", href: "#", onClick: "logoutHandler()" },
 ];
 
 function classNames(...classes) {
@@ -36,14 +40,14 @@ function classNames(...classes) {
 }
 
 const UserDashboard = () => {
-  
+
   const history = useHistory();
 
   const logoutHandler = (event) => {
     event.preventDefault();
     history.push("/");
   };
-  
+
   const enrolPatientHandler = () => {
     email.preventDefault();
     history.current(true);
@@ -223,7 +227,7 @@ const UserDashboard = () => {
 
           <header className="bg-white shadow">
             <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>              
+              <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
             </div>
           </header>
           <main>
