@@ -51,6 +51,7 @@ const v1 = (route) => `/api/v1/${route}/`;
 
 // Routes
 app.use(v1('users'), require(path.join(__dirname, 'routes', 'users')))
+app.use(v1('patients'), require(path.join(__dirname, 'routes', 'patients')))
 
 // app.use((req, res, next) => {
 //   console.log("Welcome To Nodejs World");

@@ -28,3 +28,30 @@ exports.UserRolesValidation = (req, res, next) => {
     return res.status(400).json({ response: false, error: error.message });
   next();
 };
+
+exports.PatientRegisterValidation = (req, res, next) => {
+  const { start_date, end_date, bill_amount, bill_paid } = req.body;
+  const Schema = Joi.object({
+    start_date: Joi.string().required(),
+    end_date: Joi.string().required(),
+    bill_amount: Joi.number().required(),
+    bill_paid: Joi.boolean().required(),
+  });
+  const { error } = Schema.validate({ start_date, end_date, bill_amount, bill_paid });
+  if (error)
+    return res.status(400).json({ response: false, error: error.message });
+  next();
+};
+
+exports.PatientPaymentsValidation = (req, res, next) => {
+  const { amount, payment_mode, external_transaction_no } = req.body;
+  const Schema = Joi.object({
+    amount: Joi.number().required(),
+    payment_mode: Joi.string().required(),
+    external_transaction_no: Joi.string().required()
+  });
+  const { error } = Schema.validate({ amount, payment_mode, external_transaction_no });
+  if (error)
+    return res.status(400).json({ response: false, error: error.message });
+  next();
+};
