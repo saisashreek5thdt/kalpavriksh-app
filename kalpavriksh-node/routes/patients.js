@@ -2,7 +2,7 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { PatientRegistration, PatientTeamsRegistration, PatientPayments } = require(path.join(
+const { PatientRegistration, PatientTeamsRegistration, PatientPayments, PatientDataForms } = require(path.join(
   __dirname,
   "..",
   "controllers",
@@ -23,6 +23,6 @@ router.post("/patientteamsregister", PatientTeamsRegistration);
 
 router.post("/patientpayments",PatientPaymentsValidation, PatientPayments);
 
-router.post("/patientdataforms", PatientPayments);
+router.post("/patientdataforms", PatientDataForms);
 
 module.exports = router;
