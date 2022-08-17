@@ -6,6 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import 'tw-elements';
+
 import Login from "./user/Login";
 import UserDashboard from "./user/UserDashboard";
 import CreatePatient from "./user/CreatePatient";
@@ -14,6 +16,8 @@ import PatientDashboard from "./user/patient/PatientDashboard";
 import { DoctorDashboard } from "./pages";
 
 import { AuthContext } from "./context/auth-context";
+import CreateForm from "./user/CreateForm";
+import UploadDietchart from "./user/UploadDietchart";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +33,7 @@ const App = () => {
 
   let routes;
 
-  if (isLoggedIn) {
+  if (!isLoggedIn) {
     routes = (
       <Switch>
         <Route path="/" exact>
@@ -42,6 +46,14 @@ const App = () => {
         </Route>
         <Route path="/userrole/createPatient" exact>
           <CreatePatient />
+          {/* <UserDashboard /> */}
+        </Route>
+        <Route path="/userrole/createForm" exact>
+          <CreateForm />
+          {/* <UserDashboard /> */}
+        </Route>
+        <Route path="/userrole/uploadDietChart" exact>
+          <UploadDietchart />
           {/* <UserDashboard /> */}
         </Route>
         <Route path="/userrole/patient" exact>

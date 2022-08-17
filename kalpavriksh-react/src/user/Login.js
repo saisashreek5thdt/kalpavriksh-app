@@ -24,7 +24,7 @@ const Login = () => {
     if (!user) return setEmailerr(true);
     if (user.password !== values.password) return setPasserr(true);
     localStorage.setItem("kalpavriksh", JSON.stringify(user));
-    history.push("/userrole");
+    history.push("/");
   };
 
   return (
@@ -61,7 +61,7 @@ const Login = () => {
             <div className="w-full md:w-full px-3 mb-6">
               <label
                 className="block uppercase tracking-wide text-indigo-600 text-xs font-bold mb-2"
-                htmlfor="Password"
+                htmlFor="Password"
               >
                 Email address
               </label>
@@ -85,7 +85,7 @@ const Login = () => {
             <div className="w-full md:w-full px-3 mb-6">
               <label
                 className="block uppercase tracking-wide font-nunito text-indigo-600 text-gray-700 text-xs font-bold mb-2"
-                htmlfor="Password"
+                htmlFor="Password"
               >
                 Password
               </label>
@@ -104,7 +104,7 @@ const Login = () => {
               />
             </div>
             <div className="w-full flex items-center justify-between px-3 mb-3 ">
-              <label for="remember" className="flex items-center w-1/2">
+              <label htmlFor="remember" className="flex items-center w-1/2">
                 <input
                   type="checkbox"
                   name=""
