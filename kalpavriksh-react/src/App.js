@@ -37,12 +37,12 @@ const App = () => {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <UserDashboard />
-          {/* <Login /> */}
+          {/* <UserDashboard /> */}
+          <Login />
         </Route>
         <Route path="/userrole/" exact>
-          <Login />
-          {/* <UserDashboard /> */}
+          {/* <Login /> */}
+          <UserDashboard />
         </Route>
         <Route path="/userrole/createPatient" exact>
           <CreatePatient />
@@ -69,8 +69,8 @@ const App = () => {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <UserDashboard />
-          {/* <Login /> */}
+          {/* <UserDashboard /> */}
+          <Login />
         </Route>
         <Redirect to="/" />
       </Switch>

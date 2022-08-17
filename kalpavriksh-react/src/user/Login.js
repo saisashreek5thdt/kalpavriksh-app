@@ -24,7 +24,7 @@ const Login = () => {
     if (!user) return setEmailerr(true);
     if (user.password !== values.password) return setPasserr(true);
     localStorage.setItem("kalpavriksh", JSON.stringify(user));
-    history.push("/");
+    history.push("/userrole/");
   };
 
   return (

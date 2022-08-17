@@ -63,10 +63,10 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))} */}
-                        <Link to='/' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <Link to='/userrole/' className="text-gray-300 hover:bg-gray-700 hover:text-white">
                             Dashboard
                         </Link>
-                        <Link to='userrole/createPatient' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <Link to='/userrole/createPatient' className="text-gray-300 hover:bg-gray-700 hover:text-white">
                             Enroll Patient
                         </Link>
                         <Link to='/userrole/createForm' className="text-gray-300 hover:bg-gray-700 hover:text-white">
