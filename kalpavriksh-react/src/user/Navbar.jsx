@@ -18,15 +18,9 @@ const user = {
     imageUrl:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
-    { name: "Dashboard", href: "#", onclick: "", current: true },
-    // { name: "Enroll Patient", href: "#", onclick: `${enrolPatientHandler}`, current: true },
-    { name: "Create Form", href: "#", onclick: "", current: false },
-    { name: "Upload Diet Chart", href: "#", onclick: "", current: false },
-];
 const userNavigation = [
     { name: `${role}`, href: "#" },
-    { name: "Sign out", href: "#", onClick: "logoutHandler()" },
+    { name: "Sign out", href: "/", onClick: "logoutHandler()" },
 ];
 
 function classNames(...classes) {
@@ -46,23 +40,7 @@ const Navbar = () => {
                     />
                 </div>
                 <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
-                        {/* {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={item.onclick}
-                className={classNames(
-                  item.current
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                  "px-3 py-2 rounded-md text-sm font-medium"
-                )}
-                aria-current={item.current ? "page" : undefined}
-              >
-                {item.name}
-              </a>
-            ))} */}
+                    <div className="ml-10 flex items-baseline space-x-4">\
                         <Link to='/userrole/' className="text-gray-300 hover:bg-gray-700 hover:text-white">
                             Dashboard
                         </Link>
@@ -109,23 +87,23 @@ const Navbar = () => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            {/* <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {userNavigation.map((item) => (
-                  <Menu.Item key={item.name}>
-                    {({ active }) => (
-                      <a
-                        href={item.href}
-                        className={classNames(
-                          active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm text-gray-700"
-                        )}
-                      >
-                        {item.name}
-                      </a>
-                    )}
-                  </Menu.Item>
-                ))}
-              </Menu.Items> */}
+                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                {userNavigation.map((item) => (
+                                    <Menu.Item key={item.name}>
+                                        {({ active }) => (
+                                            <NavLink
+                                                to={item.href}
+                                                className={classNames(
+                                                    active ? "bg-gray-100" : "",
+                                                    "block px-4 py-2 text-sm text-gray-700"
+                                                )}
+                                            >
+                                                {item.name}
+                                            </NavLink>
+                                        )}
+                                    </Menu.Item>
+                                ))}
+                            </Menu.Items>
                         </Transition>
                     </Menu>
                 </div>

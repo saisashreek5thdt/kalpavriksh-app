@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import { useHistory, NavLink, Link } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
+import { BellIcon } from "@heroicons/react/outline";
 
 import "tw-elements";
 import Navbar from "./Navbar";
