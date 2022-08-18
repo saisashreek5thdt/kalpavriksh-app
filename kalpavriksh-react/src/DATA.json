@@ -8,6 +8,14 @@
     "role" : "doctor"
   },
   {
+    "_id": "62dd5fdc9ba3e3b98dee8b89",
+    "username": "Sai Sashreek D",
+    "email": "sai@5thdt.com",
+    "password": "sashreek1992",
+    "mobile": "9966780269",
+    "role" : "doctor"
+  },
+  {
     "_id": "62dd603d9ba3e3b98dee8b5e",
     "username": "Manikanta",
     "email": "manikantakolla999@gmail.com",
