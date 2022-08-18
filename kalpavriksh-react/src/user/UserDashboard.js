@@ -579,22 +579,22 @@ const UserDashboard = () => {
         </Disclosure>
 
 
-        <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-          id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+          id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"
           aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog relative w-full pointer-events-none">
+          <div className="modal-dialog relative w-full pointer-events-none">
             <div
-              class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+              className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
               <div
-                class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+                className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                <h5 className="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
                   Create Patient
                 </h5>
                 <button type="button"
-                  class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                  className="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
                   data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body relative p-4">
+              <div className="modal-body relative p-4">
                 {/* <PatientPersonalInfo /> */}
                 <div className="mx-auto rounded-2xl bg-white pb-2 shadow-xl">
                   {/* Stepper */}
@@ -620,22 +620,22 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-          id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+          id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"
           aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog relative w-full pointer-events-none">
+          <div className="modal-dialog relative w-full pointer-events-none">
             <div
-              class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+              className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
               <div
-                class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+                className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                <h5 className="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
                   Create Form
                 </h5>
                 <button type="button"
-                  class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                  className="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
                   data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body relative p-4">
+              <div className="modal-body relative p-4">
                 {/* <PatientPersonalInfo /> */}
                 {CreateForm()}
               </div>
@@ -643,22 +643,22 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-          id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+          id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"
           aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog relative w-full pointer-events-none">
+          <div className="modal-dialog relative w-full pointer-events-none">
             <div
-              class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+              className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
               <div
-                class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+                className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                <h5 className="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
                   Create Form
                 </h5>
                 <button type="button"
-                  class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                  className="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
                   data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body relative p-4">
+              <div className="modal-body relative p-4">
                 {/* <PatientPersonalInfo /> */}
                 {UploadDietChart()}
               </div>
@@ -674,9 +674,9 @@ const UserDashboard = () => {
           </div>
         </header>
         <main>
-          <div class="grid place-items-end mr-24 mt-96">
+          <div className="grid place-items-end mr-24 mt-96">
             <div>
-              <div class="dropup relative">
+              <div className="dropup relative">
                 <button type="button" className="dropdown-toggle inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9" type="button"
                   id="dropdownMenuButton1u"
                   data-bs-toggle="dropdown"
@@ -684,17 +684,17 @@ const UserDashboard = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 mx-auto bi bi-plus" viewBox="0 0 16 16"> <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" /> </svg>
                 </button>
                 <ul
-                  class="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" aria-labelledby="dropdownMenuButton1u">
+                  className="dropdown-menu min-w-max absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none" aria-labelledby="dropdownMenuButton1u">
                   <li>
-                    <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Upload DietChart</a>
+                    <a className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Upload DietChart</a>
                   </li>
                   <li>
-                    <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">Create Form</a>
+                    <a className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">Create Form</a>
                   </li>
 
 
                   <li>
-                    <a class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create Patient</a>
+                    <a className="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create Patient</a>
                   </li>
 
 
