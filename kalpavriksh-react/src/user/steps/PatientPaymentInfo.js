@@ -8,7 +8,7 @@ const PatientPaymentInfo = () => {
   return (
     <>
       <div className="px-4 py-5 bg-white sm:p-6">
-        <div className="px-4 py-5 grid grid-cols-6 gap-6">
+        <div className="px-4 py-5 grid grid-cols gap-6">
           <Formik
             initialValues={{ Amount: "", Date: "", RefID: "" }}
             validate={values => {
@@ -41,7 +41,7 @@ const PatientPaymentInfo = () => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="max-w-4xl md:max-w-2xl sm:max-w-xl">
                 <Input label="Amount" input="number" name="Amount" id="amount" onChange={handleChange} onBlur={handleBlur} value={values.Amount} />
                 <span className="text-red-500 text-sm">{errors.Amount && touched.Amount && errors.Amount}</span>
                 <div className="col-span-6 sm:col-span-3">

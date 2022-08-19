@@ -4,9 +4,9 @@ import { Input } from '../Components'
 
 const CreateFormComponent = () => {
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto w-full max-w-4xl md:max-w-2xl sm:max-w-xl">
             <div className="mt-10 sm:mt-0">
-                <div className="md:grid md:grid-cols-3 md:gap-6">
+                <div className="grid grid-flow-col grid-cols-6 lg:grid lg:grid-flow-cols-6 lg:gap-3 md:grid md:grid-cols-3 md:gap-6">
                     <div className="mt-5 md:mt-0 md:col-span-2">
                         <Formik
                             initialValues={{ FormTitle: "", QuestionTitle: "", QuestionNum1: "", QuestionNum2: "", QuestionNum3: "", QuestionNum4: "", QuestionNum5: "", QuestionNum6: "" }}
@@ -56,10 +56,10 @@ const CreateFormComponent = () => {
                                 /* and other goodies */
                             }) => (
                                 <form onSubmit={handleSubmit}>
-                                    <div className="shadow overflow-hidden sm:rounded-md">
+                                    <div className="shadow overflow-hidden w-full max-w-4xl md:max-w-2xl sm:max-w-xl sm:rounded-md">
                                         <div className="px-4 py-5 bg-white sm:p-6">
-                                            <div className="px-4 py-5 grid grid-rows-10 gap-8">
-                                                <Input label="Form Title" input="number" name="FormTitle" id="form-title" onChange={handleChange} onBlur={handleBlur} value={values.FormTitle} />
+                                            <div className="px-4 py-5 w-full max-w-xl grid grid-rows-10 gap-8">
+                                                <Input label="Form Title" input="text" name="FormTitle" id="form-title" onChange={handleChange} onBlur={handleBlur} value={values.FormTitle} />
                                                 <span className="text-red-500 text-sm">{errors.FormTitle && touched.FormTitle && errors.FormTitle}</span>
                                             </div>
 

@@ -44,7 +44,7 @@ const PatientPersonalInfo = () => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl">
             <InputPhoto />
             <div className="px-4 py-5 grid grid-cols-6 gap-6">
               <Input label="Phone Number" input="number" name="phoneNumber" id="phone-number" onChange={handleChange} onBlur={handleBlur} value={values.phoneNumber} />

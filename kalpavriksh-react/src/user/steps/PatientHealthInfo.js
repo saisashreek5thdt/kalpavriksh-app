@@ -8,7 +8,7 @@ const PatientHealthInfo = () => {
   return (
     <>
       <div className="px-4 py-5 bg-white sm:p-6">
-        <div className="px-4 py-5 grid grid-cols-6 gap-6">
+        <div className="px-4 py-5 grid grid-cols gap-6">
           <Formik
             initialValues={{ height: "", weight: "", caretakerName: "", caretakerNumber: "", preferredTime: "", startEndDate: "" }}
             validate={values => {
@@ -51,13 +51,13 @@ const PatientHealthInfo = () => {
               /* and other goodies */
             }) => (
               <form onSubmit={handleSubmit}>
-                <Input label="Height" input="number" name="height" id="height" onChange={handleChange} onBlur={handleBlur} value={values.height} />
+                <Input className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl" label="Height" input="number" name="height" id="height" onChange={handleChange} onBlur={handleBlur} value={values.height} />
                 <span className="text-red-500 text-sm">{errors.height && touched.height && errors.height}</span>
-                <Input label="Weight" input="number" name="weight" id="weight" onChange={handleChange} onBlur={handleBlur} value={values.weight} />
+                <Input className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl" label="Weight" input="number" name="weight" id="weight" onChange={handleChange} onBlur={handleBlur} value={values.weight} />
                 <span className="text-red-500 text-sm">{errors.weight && touched.weight && errors.weight}</span>
-                <Input label="Caretaker's Name" input="text" name="caretakerName" id="caretaker-name" onChange={handleChange} onBlur={handleBlur} value={values.caretakerName} />
+                <Input className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl" label="Caretaker's Name" input="text" name="caretakerName" id="caretaker-name" onChange={handleChange} onBlur={handleBlur} value={values.caretakerName} />
                 <span className="text-red-500 text-sm">{errors.caretakerName && touched.caretakerName && errors.caretakerName}</span>
-                <div className="col-span-6 sm:col-span-3">
+                <div className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl col-span-6 sm:col-span-3">
                   <label
                     htmlFor="caretaker-relation"
                     className="block text-sm font-medium text-gray-700"
@@ -68,7 +68,7 @@ const PatientHealthInfo = () => {
                     id="caretaker-relation"
                     name="caretaker-relation"
                     autoComplete="caretaker-relation"
-                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full max-w-4xl md:max-w-2xl sm:max-w-xl py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option>Select Caretaker Relation</option>
                     <option>Father</option>
