@@ -31,20 +31,20 @@ const Login = () => {
     <div className="bg-gray-100 h-screen">
       <div className="grid w-full">
         {" "}
-        <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="login">
           {" "}
-          <div className="max-w-md w-full space-y-8">
+          <div className="login__Container">
             {" "}
             <div>
               <img
-                className="mx-auto h-12 w-auto"
+                className="login__Image"
                 src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                 alt="Workflow"
               />
-              <p className="mt-6 text-center text-4xl font-nunito font-extrabold text-gray-900">
+              <p className="login__Heading--Primary">
                 Welcome To Kalpavriksh
               </p>
-              <p className="font-medium text-center text-indigo-600 hover:text-indigo-500">
+              <p className="login__Heading--Secondary">
                 Sign in to your account
               </p>
             </div>

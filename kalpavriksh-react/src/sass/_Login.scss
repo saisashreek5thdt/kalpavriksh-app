@@ -1,0 +1,28 @@
+.login {
+    @apply bg-gray-50 max-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
+
+    &__Container {
+        @apply max-w-md w-full space-y-8;
+    }
+
+    &__Image {
+        @apply mx-auto h-12 w-auto;
+    }
+
+    &__Heading--Primary {
+        @apply mt-6 text-center text-3xl tracking-tight font-bold text-gray-900;
+    }
+
+    &__Heading--Secondary {
+        @apply font-medium text-center text-indigo-600 hover:text-indigo-500;
+    }
+
+    &__Form--Controller {
+        @apply mt-8 space-y-6 #{!important};
+    }
+
+    &__Form--Input[type="email"], &__Form--Input[type="password"] {
+        @apply appearance-none rounded-none relative block w-full px-3 py-2 my-6 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm #{!important};
+    }
+
+}
