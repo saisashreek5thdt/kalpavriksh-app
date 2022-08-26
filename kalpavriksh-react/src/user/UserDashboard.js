@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Formik } from "formik";
 import { CreateFormComponent, UploadDietChartComponent } from "../Components";
 
 import Stepper from "./Stepper";
@@ -81,13 +80,13 @@ const UserDashboard = () => {
 
   return (
     <>
-      <div className="h-screen">
-        <Disclosure as="nav" className="bg-gray-800">
+      <div className="body">
+        <Disclosure as="nav" className="disclosure">
           {({ open }) => (
             <>
               <Navbar />
-              <Disclosure.Panel className="md:hidden">
-                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <Disclosure.Panel className="disclosure__panel">
+                <div className="disclosure__container">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -95,9 +94,9 @@ const UserDashboard = () => {
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "block px-3 py-2 rounded-md text-base font-medium"
+                          ? "disclosure__item--current"
+                          : "disclosure__item--current--danger",
+                        "disclosure__item"
                       )}
                       aria-current={item.current ? "page" : undefined}
                     >
@@ -105,32 +104,32 @@ const UserDashboard = () => {
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="pt-4 pb-3 border-t border-gray-700">
-                  <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
+                <div className="mobile">
+                  <div className="mobile__container">
+                    <div className="mobile__img">
                       <img
-                        className="h-10 w-10 rounded-full"
+                        className="mobile__imgtag"
                         src={user.imageUrl}
                         alt=""
                       />
                     </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">
+                    <div className="mobile__name">
+                      <div className="mobile__username">
                         {user.name}
                       </div>
-                      <div className="text-sm font-medium leading-none text-gray-400">
+                      <div className="mobile__email">
                         {user.email}
                       </div>
                     </div>
                     <button
                       type="button"
-                      className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      className="mobile__button"
                     >
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                      <span className="mobile__span">View notifications</span>
+                      <BellIcon className="mobile__icon" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="mt-3 px-2 space-y-1">
+                  <div className="navigation">
                     {/* {userNavigation.map((item) => (
                         <Disclosure.Button
                           key={item.name}

@@ -18,7 +18,7 @@ const DoctorDashboard = () => {
             </a>
           </div>
           <div className="flex text-indigo-500">
-            <p className="mr-4">
+            <p className="mr-5">
               {JSON.parse(localStorage.getItem("kalpavriksh")).username}
             </p>
             <a

@@ -69,26 +69,26 @@ const Stepper = ({ steps, currentStep }) => {
         key={index}
         className={
           index !== newStep.length - 1
-            ? "w-full max-w-2xl flex flex-grow-2 items-center"
-            : "flex items-center"
+            ? "stepper"
+            : "stepper__success"
         }
       >
-        <div className="relative flex flex-col items-center text-teal-600">
+        <div className="stepper__steps">
           <div
-            className={`rounded-full transition duration-500 ease-in-out border-2 border-gray-300 h-12 w-12 flex items-center justify-center py-3  ${
+            className={` stepper__steps--inner ${
               step.selected
                 ? "bg-green-600 text-white font-bold border border-green-600 "
-                : ""
+                : "stepper__steps-inner"
             }`}
           >
             {step.completed ? (
-              <span className="text-white font-bold text-xl">&#10003;</span>
+              <span className="stepper__steps--index">&#10003;</span>
             ) : (
               index + 1
             )}
           </div>
           <div
-            className={`absolute top-0  text-center mt-16 w-32 text-xs font-medium uppercase ${
+            className={` stepper__steps--highlighted ${
               step.highlighted ? "text-gray-900" : "text-gray-400"
             }`}
           >
@@ -96,7 +96,7 @@ const Stepper = ({ steps, currentStep }) => {
           </div>
         </div>
         <div
-          className={`flex-auto border-t-2 transition duration-500 ease-in-out  ${
+          className={`stepper__steps--completed  ${
             step.completed ? "border-green-600" : "border-gray-300 "
           }  `}
         ></div>
@@ -105,7 +105,7 @@ const Stepper = ({ steps, currentStep }) => {
   });
 
   return (
-    <div className="mx-4 p-4 flex justify-between items-center">
+    <div className="stepsdisplay">
       {stepsDisplay}
     </div>
   );

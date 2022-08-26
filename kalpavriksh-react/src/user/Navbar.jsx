@@ -29,50 +29,50 @@ function classNames(...classes) {
 
 const Navbar = () => {
     const history = useHistory();
-    return (<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-                <div className="flex-shrink-0">
+    return (<div className="nav">
+        <div className="nav__flex">
+            <div className="nav__flexshrink">
+                <div className="nav__image">
                     <img
-                        className="h-8 w-8"
+                        className="nav__imagetag"
                         src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
                         alt="Workflow"
                     />
                 </div>
-                <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
-                        <Link to='/userrole/' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                <div className="nav__navbar">
+                    <div className="nav__container">
+                        <Link to='/userrole/' className="nav__link">
                             Dashboard
                         </Link>
-                        <Link to='/userrole/createPatient' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <Link to='/userrole/createPatient' className="nav__link">
                             Enroll Patient
                         </Link>
-                        <Link to='/userrole/createForm' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <Link to='/userrole/createForm' className="nav__link">
                             Create Form
                         </Link>
-                        <Link to='/userrole/uploadDietChart' className="text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <Link to='/userrole/uploadDietChart' className="nav__link">
                             Upload Diet Chart
                         </Link>
                     </div>
                 </div>
             </div>
-            <div className="hidden md:block">
-                <div className="ml-4 flex items-center md:ml-6">
+            <div className="nav__notification">
+                <div className="nav__notification--button">
                     <button
                         type="button"
-                        className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        className="nav__notification--button--button"
                     >
-                        <span className="sr-only">View notifications</span>
+                        <span className="nav__notification--button--span">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
                     {/* Profile dropdown */}
-                    <Menu as="div" className="ml-3 relative">
+                    <Menu as="div" className="nav__notification--menu">
                         <div>
-                            <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                                <span className="sr-only">Open user menu</span>
+                            <Menu.Button className="nav__notification--menu--button">
+                                <span className="nav__notification--span">Open user menu</span>
                                 <img
-                                    className="h-8 w-8 rounded-full"
+                                    className="nav__notification--imgtag"
                                     src={user.imageUrl}
                                     alt=""
                                 />
@@ -95,7 +95,7 @@ const Navbar = () => {
                                                 to={item.href}
                                                 className={classNames(
                                                     active ? "bg-gray-100" : "",
-                                                    "block px-4 py-2 text-sm text-gray-700"
+                                                    "nav__notification--menuitems"
                                                 )}
                                             >
                                                 {item.name}
@@ -109,7 +109,7 @@ const Navbar = () => {
                     </Menu>
                 </div>
             </div>
-            <div className="-mr-2 flex md:hidden">
+            <div className="nav__notification--mobile">
                 {/* Mobile menu button */}
                 {/* <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">Open main menu</span>

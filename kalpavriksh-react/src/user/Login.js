@@ -28,12 +28,12 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gray-100 h-screen">
-      <div className="grid w-full">
+    <div className="login">
+      <div className="login__Container">
         {" "}
-        <div className="login">
+        <div className="login__Body">
           {" "}
-          <div className="login__Container">
+          <div className="login__Content">
             {" "}
             <div>
               <img
@@ -51,26 +51,26 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-2 mx-4 md:mx-0">
+      <div className="form">
         <form
-          className="w-full max-w-md bg-white rounded-lg shadow-md p-12 pb-5"
+          className="form__Container"
           onSubmit={loginHandler}
           method="POST"
         >
-          <div className="flex flex-wrap -mx-3 mb-6 ">
-            <div className="w-full md:w-full px-3 mb-6">
+          <div className="form__flex">
+            <div className="form__Content">
               <label
-                className="block uppercase tracking-wide text-indigo-600 text-xs font-bold mb-2"
+                className="form__label"
                 htmlFor="Password"
               >
                 Email address
               </label>
               <input
                 // className="appearance-none block w-full bg-white text-gray-900 font-nunito text-indigo-600 font-medium border border-gray-200 drop-shadow-sm rounded-lg py-2 px-3 leading-tight focus:outline-none"
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 rounded focus:outline-none focus:z-10 sm:text-sm ${
+                className={`form__input ${
                   emailerr
-                    ? "border-red-300 text-red-500 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
+                    ? "form_error"
+                    : "form_success"
                 }`}
                 type="email"
                 required
@@ -84,13 +84,13 @@ const Login = () => {
             </div>
             <div className="w-full md:w-full px-3 mb-6">
               <label
-                className="block uppercase tracking-wide font-nunito text-indigo-600 text-gray-700 text-xs font-bold mb-2"
+                className="form__label"
                 htmlFor="Password"
               >
                 Password
               </label>
               <input
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border placeholder-gray-500 rounded focus:outline-none focus:z-10 sm:text-sm border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
+                className="form__password"
                 type="password"
                 required
                 minLength={8}
@@ -103,15 +103,15 @@ const Login = () => {
                 }}
               />
             </div>
-            <div className="w-full flex items-center justify-between px-3 mb-3 ">
-              <label htmlFor="remember" className="flex items-center w-1/2">
+            <div className="remember">
+              <label htmlFor="remember" className="remember__label">
                 <input
                   type="checkbox"
                   name=""
                   id=""
-                  className="mr-1 bg-white shadow"
+                  className="remember__input"
                 />
-                <span className="text-sm text-gray-700 pt-1">Remember Me</span>
+                <span className="remember__span">Remember Me</span>
               </label>
               {/* <div className="w-1/2 text-right">
                 <a href="#" className="text-blue-500 text-sm tracking-tight">
@@ -119,14 +119,14 @@ const Login = () => {
                 </a>
               </div> */}
             </div>
-            <div className="w-full md:w-full px-3 mb-6">
+            <div className="submit">
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="submit__button"
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <span className="submit__span">
                   <LockClosedIcon
-                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    className="submit__icon"
                     aria-hidden="true"
                   />
                 </span>
@@ -138,9 +138,9 @@ const Login = () => {
                 Or Continue With
               </span>
             </div>
-            <div className="flex items-center w-full mt-6">
-              <div className="w-full md:w-full px-2 pt-4 mx-2">
-                <button className="appearance-none flex items-center justify-center block w-full text-gray-300 shadow-lg border border-gray-300 rounded-lg py-2 px-3 leading-tight hover:bg-gray-100 hover:text-gray-700 focus:outline-none">
+            <div className="sociallogin">
+              <div className="sociallogin__container">
+                <button className="sociallogin__button">
                   {/* <button className="group relative w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md text-white shadow-lg border border-gray-300 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> */}
                   {/* <svg
                     className="h-6 w-6 fill-current text-gray-700"
@@ -150,7 +150,7 @@ const Login = () => {
                     <path d="M 15.003906 3 C 8.3749062 3 3 8.373 3 15 C 3 21.627 8.3749062 27 15.003906 27 C 25.013906 27 27.269078 17.707 26.330078 13 L 25 13 L 22.732422 13 L 15 13 L 15 17 L 22.738281 17 C 21.848702 20.448251 18.725955 23 15 23 C 10.582 23 7 19.418 7 15 C 7 10.582 10.582 7 15 7 C 17.009 7 18.839141 7.74575 20.244141 8.96875 L 23.085938 6.1289062 C 20.951937 4.1849063 18.116906 3 15.003906 3 z"/>
                   </svg> */}
                   <svg
-                    className="h-6 w-6 fill-current text-gray-500"
+                    className="sociallogin__svg"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 30 30"
                   >
@@ -159,14 +159,14 @@ const Login = () => {
                   </svg>
                 </button>
                 {emailerr ? (
-                  <p className="font-medium text-center text-red-500 font-nunito pt-4">
+                  <p className="email_err">
                     You're not authorized to signin here.
                   </p>
                 ) : (
                   <p></p>
                 )}
                 {passerr ? (
-                  <p className="font-medium text-center text-red-500 font-nunito pt-4">
+                  <p className="password_err">
                     Invalid Password.
                   </p>
                 ) : (
