@@ -1,4 +1,4 @@
-import react from 'react'
+import React from 'react'
 import { Formik } from 'formik';
 import { Input } from '../Components'
 

@@ -95,7 +95,7 @@ const UserDashboard = () => {
                       className={classNames(
                         item.current
                           ? "disclosure__item--current"
-                          : "disclosure__item--current--danger",
+                          : "disclosure__item--current-danger",
                         "disclosure__item"
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -198,7 +198,7 @@ const UserDashboard = () => {
           </div>
         </div>
 
-        <div
+        {/* <div
           className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
           id="staticBackdrop1"
           data-bs-backdrop="static"
@@ -228,7 +228,7 @@ const UserDashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div
           className="modal fade fixed top-0 left-0 hidden w-full max-w-4xl md:max-w-2xl sm:max-w-xl h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -257,7 +257,7 @@ const UserDashboard = () => {
               </div>
               <div className="modal-body relative p-4">
                 {/* <PatientPersonalInfo /> */}
-                {<UploadDietChartComponent />}
+                <UploadDietChartComponent />
               </div>
             </div>
           </div>

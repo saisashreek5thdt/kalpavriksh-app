@@ -22,7 +22,7 @@
   }
 
   &__Heading--Secondary {
-    @apply font-medium text-center text-indigo-600 hover:text-indigo-500;
+    @apply font-medium text-center text-2xl text-indigo-600 hover:text-indigo-500;
   }
 
   &__Form--Controller {
@@ -36,11 +36,11 @@
 }
 
 .form {
-  @apply flex items-center justify-center my-2 mx-4 md:mx-0;
+  @apply flex items-center justify-center my-2 mx-4 md:mx-0 #{!important};
   // @apply bg-gray-50 max-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
 
   &__Container {
-    @apply w-full max-w-md bg-white rounded-lg shadow-md p-12 pb-5;
+    @apply w-full max-w-md items-center justify-center align-middle justify-items-center bg-white rounded-lg shadow-md p-12 pb-5 #{!important};
   }
 
   &__flex {
