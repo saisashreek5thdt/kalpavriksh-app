@@ -1,15 +1,67 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
 import { useHistory } from "react-router-dom";
 
 import { LockClosedIcon } from "@heroicons/react/solid";
 
+import InputLog from "../../Components/Input-Log";
+
+import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../util/validators";
+
+import { useForm } from "../../hooks/form-hooks";
+
+import { AuthContext } from "../../context/auth-context";
+
 const LoginForm = () => {
+
+  const auth = useContext(AuthContext);
+  const [isLogged, setIsLogged] = useState(false);
+
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      email: {
+        value: "",
+        isValid: false
+      },
+      password: {
+        value: "",
+        isValid: false
+      }
+    },
+    false
+  );
+
+  const loggedHandler = () => {
+    if (!isLogged) {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: undefined
+        },
+        formState.inputs.email.isValid && formState.inputs.password.isValid
+      );
+    } else {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: {
+            value: "",
+            isValid: false
+          }
+        },
+        false
+      );
+    }
+    setIsLogged(prevLogg => !prevLogg);
+  };
+
   const history = useHistory();
 
   const loginHandler = (event) => {
     event.preventDefault();
-    history.push("/userrole");
+    console.log(formState.inputs);
+    auth.login();
+    //history.push("/userrole/");
   };
 
   return (
@@ -21,8 +73,32 @@ const LoginForm = () => {
         onSubmit={loginHandler}
       >
         <input type="hidden" name="remember" defaultValue="true" />
+
         <div className="login__Form--Inputbox">
-          <div>
+
+            <InputLog 
+              element="input"
+              id="email-address"
+              type="email"
+              label="Email Address"
+              placeholder="Enter Email Address"
+              validators={[VALIDATOR_EMAIL()]}
+              errorText="Please Enter Valid Email Address"
+              onInput={inputHandler}
+            />
+
+            <InputLog 
+              element="input"
+              id="password"
+              type="password"
+              label="Password"
+              placeholder="Enter Password"
+              validators={[VALIDATOR_MINLENGTH(6)]}
+              errorText="Please Enter Valid Password"
+              onInput={inputHandler}
+            />
+
+          {/* <div>
             <label htmlFor="email-address" className="login__Form--Inputbox-Label">
               Email address
             </label>
@@ -49,7 +125,7 @@ const LoginForm = () => {
               className="login__Form--Inputbox-InputPWD"
               placeholder="Password"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="login__FlexContainer">
@@ -73,6 +149,7 @@ const LoginForm = () => {
           <button
             type="submit"
             className="group login__Btn--Group"
+            disabled={!formState.isValid}
           >
             <span className="login__Btn--Span">
               <LockClosedIcon
@@ -80,7 +157,7 @@ const LoginForm = () => {
                 aria-hidden="true"
               />
             </span>
-            Sign in
+            {!isLogged ? "Sign in" : ""}
           </button>
         </div>
         <div className="login__Divider--Box">

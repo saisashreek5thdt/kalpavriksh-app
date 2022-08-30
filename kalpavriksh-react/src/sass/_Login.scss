@@ -49,6 +49,16 @@
                 @apply appearance-none font-nunito rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm;
             }
 
+            &-Input {
+                &[type="email"], &[type="password"] {
+                    @apply appearance-none font-nunito rounded-md relative block w-full px-3 py-2 my-4 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm;
+                }
+            }
+
+            &-InputError{
+                @apply text-lg text-red-600 font-medium pt-2 my-2;
+            }
+
         }
     }
 

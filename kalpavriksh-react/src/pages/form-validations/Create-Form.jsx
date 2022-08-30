@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+import { VALIDATOR_REQUIRE } from "../../util/validators";
 
 import Input from "../../Components/Input";
 

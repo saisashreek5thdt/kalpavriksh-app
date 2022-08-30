@@ -3,9 +3,10 @@ import { useHistory } from "react-router-dom";
 
 import Navbar from "../shared/Navbar";
 
-import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+import { VALIDATOR_REQUIRE } from "../../util/validators";
 
 import Input from "../../Components/Input";
+import Select from "../../Components/Select";
 
 import { useForm } from "../../hooks/form-hooks";
 
@@ -45,10 +46,18 @@ const UploadDietChart = () => {
     false
   );
 
+  const cuisineOptions = [
+    { value: 'Please Select a Cuisine' },
+    { value: 'Vegetarian' },
+    { value: 'Non-Veg' },
+    { value: 'Egg' },
+  ];
+
   const history = useHistory();
 
   const uploadDietCharthHandler = (e) => {
     e.preventDefault();
+    console.log(formState.inputs);
     history.push("/userrole/");
   };
 
@@ -237,7 +246,17 @@ const UploadDietChart = () => {
                                 />
                               </div> */}
 
-                              <div className="forms__Controller--Grids_Cols">
+                              <Select 
+                                element="select"
+                                id="patient-vegetationType"
+                                label="Vegetation Type"
+                                option={cuisineOptions}
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Select Your Cuisine"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-vegetationType"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -255,7 +274,7 @@ const UploadDietChart = () => {
                                   <option>Non - Veg</option>
                                   <option>Egg</option>
                                 </select>
-                              </div>
+                              </div> */}
 
                               <Input 
                                 element="input"

@@ -2,7 +2,7 @@ import React, {useReducer, useEffect} from "react";
 
 import { validate } from "../util/validators";
 
-const selectReducer = (state, action) => {
+const inputReducer = (state, action) => {
     switch (action.type) {
         case 'CHANGE' :
             return {
@@ -21,9 +21,9 @@ const selectReducer = (state, action) => {
     }
 };
 
-const Select = (props) => {
+const InputLog = (props) => {
 
-    const [inputState, dispatch] = useReducer(selectReducer, {
+    const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
         isTouched: false,
         isValid: props.initialValue || false
@@ -51,15 +51,16 @@ const Select = (props) => {
     };
 
     const element = 
-        props.element === 'select' ? (
-            <select 
+        props.element === 'input' ? (
+            <input 
                 id={props.id}
-                className="forms__Controller--Grids_Cols-Select"
+                type={props.type}
+                className="login__Form--Inputbox-Input"
+                placeholder={props.placeholder}
                 onChange={changeHandler}
-                onBlur={touchHandler} 
-                options={props.options}>
-                    <option>{props.options}</option>
-                </select>
+                onBlur={touchHandler}
+                value={inputState.value}
+                />
         ) : (
             <textarea
                 id={props.id}
@@ -71,13 +72,13 @@ const Select = (props) => {
         );
 
     return (
-        <div className="forms__Controller--Grids_Cols">
-            <label htmlFor={props.id} className="forms__Controller--Grids_Cols-Label">{props.label}</label>
+        <div>
+            <label htmlFor={props.id} className="login__Form--Inputbox-Label">{props.label}</label>
             {element}
-            {!inputState.isValid && inputState.isTouched && <p className="forms__Controller--Grids_Cols-InputError">{props.errorText}</p>}
+            {!inputState.isValid && inputState.isTouched && <p className="login__Form--Inputbox-InputError">{props.errorText}</p>}
         </div>
     );
 
 };
 
-export default Select;
+export default InputLog;
