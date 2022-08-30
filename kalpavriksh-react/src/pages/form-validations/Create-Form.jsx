@@ -1,13 +1,39 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+
+import Input from "../../Components/Input";
+
+import { useForm } from "../../hooks/form-hooks";
+
 import Navbar from "../shared/Navbar";
 
 const CreateForm = () => {
+
+  const [formState, inputHandler] = useForm(
+    {
+      formTitle: {
+        value: '',
+        isValid: false
+      },
+      questionTitle: {
+        value: '',
+        isValid: false
+      },
+      questionChoice: {
+        value: '',
+        isValid: false
+      },
+    },
+    false
+  );
+
   const history = useHistory();
 
   const createFormHandler = (e) => {
     e.preventDefault();
+    console.log(formState.inputs);
     history.push("/userrole/");
   };
 
@@ -41,7 +67,18 @@ const CreateForm = () => {
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
-                              <div className="forms__Controller--Grids_Cols">
+
+                              <Input 
+                                element="input"
+                                id="patient-formQuestionTitle"
+                                type="text"
+                                label="Form Question Title"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Form Title"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-formQuestionTitle"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -55,7 +92,7 @@ const CreateForm = () => {
                                   autoComplete="patient-formQuestionTitle"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> */}
 
                               <div className="col-span-3 sm:col-span-6">
                                 <button
@@ -86,7 +123,57 @@ const CreateForm = () => {
                                 </select>
                               </div>
 
-                              <div className="forms__Controller--Grids_Cols">
+                              <Input 
+                                element="input"
+                                id="patient-questionTitle"
+                                type="text"
+                                label="Question Title"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Question Title"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-questionChoice"
+                                type="text"
+                                label="Question Choice 1"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Question Choice"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-questionChoice"
+                                type="text"
+                                label="Question Choice 2"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Question Choice"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-questionChoice"
+                                type="text"
+                                label="Question Choice 3"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Question Choice"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-questionChoice"
+                                type="text"
+                                label="Question Choice 4"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter a Question Choice"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-questionTitle"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -164,7 +251,7 @@ const CreateForm = () => {
                                   autoComplete="patient-questionChoice"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> */}
 
                             </div>
                           </div>

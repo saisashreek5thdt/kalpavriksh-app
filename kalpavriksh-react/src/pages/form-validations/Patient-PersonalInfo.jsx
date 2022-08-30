@@ -1,14 +1,39 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+
+import Input from "../../Components/Input";
+
+import { useForm } from "../../hooks/form-hooks";
+
 import Navbar from "../shared/Navbar";
 
 const PatientPersonalInfo = () => {
+
+  const [formState, inputHandler] = useForm(
+    {
+      amountPaid: {
+        value: '',
+        isValid: false
+      },
+      paymentDate: {
+        value: '',
+        isValid: false
+      },
+      refID: {
+        value: '',
+        isValid: false
+      },
+    },
+    false
+  );
 
   const history = useHistory();
 
   const patientPersonalHandler = (e) => {
     e.preventDefault();
+    console.log(formState.inputs);
     history.push('/userrole/');
   };
 
@@ -38,21 +63,16 @@ const PatientPersonalInfo = () => {
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-amountPaid"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Amount Paid
-                                </label>
-                                <input
-                                  type="number"
-                                  name="patient-amountPaid"
-                                  id="patient-amountPaid"
-                                  autoComplete="patient-amountPaid"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
+
+                              <Input 
+                                element="input"
+                                id="patient-amountPaid"
+                                type="number"
+                                label="Amount Paid"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter the Amount"
+                                onInput={inputHandler}
+                              />
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
@@ -77,6 +97,42 @@ const PatientPersonalInfo = () => {
                                 </select>
                               </div>
 
+                              <Input 
+                                element="input"
+                                id="patient-paymentDate"
+                                type="date"
+                                label="Payment Date"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Valid Date"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-refID"
+                                type="text"
+                                label="Ref. ID"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Valid Ref ID"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
+                                <label
+                                  htmlFor="patient-amountPaid"
+                                  className="forms__Controller--Grids_Cols-Label"
+                                >
+                                  Amount Paid
+                                </label>
+                                <input
+                                  type="number"
+                                  name="patient-amountPaid"
+                                  id="patient-amountPaid"
+                                  autoComplete="patient-amountPaid"
+                                  className="forms__Controller--Grids_Cols-Input"
+                                />
+                              </div>                              
+
                               <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-paymentDate"
@@ -91,7 +147,7 @@ const PatientPersonalInfo = () => {
                                   autoComplete="patient-paymentDate"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> 
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
@@ -108,6 +164,7 @@ const PatientPersonalInfo = () => {
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
                               </div>
+                              */}
                             </div>
                           </div>
                         </div>

@@ -1,14 +1,51 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import Input from "../../Components/Input";
+
+import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+
+import { useForm } from "../../hooks/form-hooks";
+
 import Navbar from "../shared/Navbar";
 
 const PatientHealthInfo = () => {
+
+  const [formState, inputHandler] = useForm(
+    {
+      height: {
+        value: '',
+        isValid: false
+      },
+      weight: {
+        value: '',
+        isValid: false
+      },
+      caretakerName: {
+        value: '',
+        isValid: false
+      },
+      caretakerNumber: {
+        value: '',
+        isValid: false
+      },
+      preferredCall: {
+        value: '',
+        isValid: false
+      },
+      date: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
 
   const history = useHistory();
 
   const patientHealthHandler = (e) => {
     e.preventDefault();
+    console.log(formState.inputs);
     history.push('/userrole/:pid/enroll/personalinfo/');
   };
 
@@ -38,7 +75,68 @@ const PatientHealthInfo = () => {
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
-                              <div className="forms__Controller--Grids_Cols">
+
+                              <Input
+                                id="patient-height"
+                                element="input"
+                                type="number"
+                                label="Height"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Height"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                id="patient-weight"
+                                element="input"
+                                type="number"
+                                label="Weight"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Weight"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                id="patient-caretakerName"
+                                element="input"
+                                type="text"
+                                label="CaretakerName"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Name"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                id="patient-caretakerNumber"
+                                element="input"
+                                type="text"
+                                label="CaretakerNumber"
+                                validators={[VALIDATOR_MAXLENGTH(10)]}
+                                errorText="Please Enter Valid 10 Digit Number"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                id="patient-caretakerTime"
+                                element="input"
+                                type="text"
+                                label="CaretakerTime"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Time"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                id="patient-caretakerDate"
+                                element="input"
+                                type="date"
+                                label="Caretakerate"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Valid Date"
+                                onInput={inputHandler}
+                               />   
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-height"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -88,33 +186,6 @@ const PatientHealthInfo = () => {
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
-                                  htmlFor="patient-caretakerRelation"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Caretaker's Relation
-                                </label>
-                                <select
-                                  id="patient-caretakerRelation"
-                                  name="patient-caretakerRelation"
-                                  autoComplete="patient-caretakerRelation"
-                                  className="forms__Controller--Grids_Cols-Select"
-                                >
-                                  <option>
-                                    Please Select Caretaker's Relation
-                                  </option>
-                                  <option>Father</option>
-                                  <option>Mother</option>
-                                  <option>Son</option>
-                                  <option>Daughter</option>
-                                  <option>Spouse</option>
-                                  <option>Uncle</option>
-                                  <option>Aunt</option>
-                                  <option>Other</option>
-                                </select>
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
                                   htmlFor="patient-caretakerNumber"
                                   className="forms__Controller--Grids_Cols-Label"
                                 >
@@ -147,6 +218,51 @@ const PatientHealthInfo = () => {
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
+                                  htmlFor="patient-startEnd"
+                                  className="forms__Controller--Grids_Cols-Label"
+                                >
+                                  Start &amp; End Date
+                                </label>
+                                <input
+                                  type="date"
+                                  name="patient-startEnd"
+                                  id="patient-startEnd"
+                                  autoComplete="patient-startEnd"
+                                  className="forms__Controller--Grids_Cols-Input"
+                                />
+                              </div>
+                              
+                              */}
+
+                              <div className="forms__Controller--Grids_Cols">
+                                <label
+                                  htmlFor="patient-caretakerRelation"
+                                  className="forms__Controller--Grids_Cols-Label"
+                                >
+                                  Caretaker's Relation
+                                </label>
+                                <select
+                                  id="patient-caretakerRelation"
+                                  name="patient-caretakerRelation"
+                                  autoComplete="patient-caretakerRelation"
+                                  className="forms__Controller--Grids_Cols-Select"
+                                >
+                                  <option>
+                                    Please Select Caretaker's Relation
+                                  </option>
+                                  <option>Father</option>
+                                  <option>Mother</option>
+                                  <option>Son</option>
+                                  <option>Daughter</option>
+                                  <option>Spouse</option>
+                                  <option>Uncle</option>
+                                  <option>Aunt</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+
+                              <div className="forms__Controller--Grids_Cols">
+                                <label
                                   htmlFor="patient-planSelected"
                                   className="forms__Controller--Grids_Cols-Label"
                                 >
@@ -164,22 +280,6 @@ const PatientHealthInfo = () => {
                                   <option>Plan C</option>
                                   <option>Plan D</option>
                                 </select>
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-startEnd"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Start &amp; End Date
-                                </label>
-                                <input
-                                  type="date"
-                                  name="patient-startEnd"
-                                  id="patient-startEnd"
-                                  autoComplete="patient-startEnd"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
                               </div>
 
                               <div className="forms__Controller--Grids_Cols">

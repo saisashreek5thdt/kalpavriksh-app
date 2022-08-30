@@ -1,14 +1,50 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import Input from "../../Components/Input";
+import Select from "../../Components/Select";
+
+import { VALIDATOR_EMAIL, VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+
+import { useForm } from "../../hooks/form-hooks";
+
 import Navbar from "../shared/Navbar";
 
 const EnrollPatient = () => {
+
+  const [formState, inputHandler] = useForm(
+    {
+      phone: {
+        value: '',
+        isValid: false
+      },
+      email: {
+        value: '',
+        isValid: false
+      },
+      fullName: {
+        value: '',
+        isValid: false
+      },
+      date: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
+
+  const genderOptions = [
+    { value: 'Please Select a Gender' },
+    { value: 'Male' },
+    { value: 'Fe-Male' }
+  ];
 
   const history = useHistory();
 
   const patientFormHandler = (e) => {
       e.preventDefault();
+      console.log(formState.inputs);
       history.push('/userrole/:pid/enroll/healthinfo/');
   };
 
@@ -60,7 +96,56 @@ const EnrollPatient = () => {
                               </div>
                             </div>
                             <div className="forms__Controller--Grids">
-                              <div className="forms__Controller--Grids_Cols">
+
+                              <Input
+                                element="input"
+                                id="patient-phone"
+                                type="tel"
+                                label="Phone"
+                                validators={[VALIDATOR_MAXLENGTH(10)]}
+                                errorText="Please Enter 10 Digit Number"
+                                onInput={inputHandler}
+                               />
+
+                              <Input
+                                element="input"
+                                id="patient-email"
+                                type="email"
+                                label="Email"
+                                validators={[VALIDATOR_EMAIL()]}
+                                errorText="Please Enter a valid Email Address"
+                                onInput={inputHandler}
+                               />
+
+                               <Input
+                                element="input"
+                                id="patient-fullName"
+                                type="text"
+                                label="Full Name"
+                                validators={VALIDATOR_REQUIRE()}
+                                errorText="Please Enter Valid Name"
+                                onInput={inputHandler}
+                                />
+
+                                <Input
+                                  element="input"
+                                  id="patient-dob"
+                                  type="date"
+                                  label="D.O.B"
+                                  errorText="Please Enter Valid Date"
+                                  onInput={inputHandler}
+                                 />
+
+                                 {/* <Select
+                                  element="select"
+                                  id="patient-gender"
+                                  label="Please Select Gender"
+                                  options={genderOptions}
+                                  validators={VALIDATOR_REQUIRE()}
+                                  errorText="Please Select Your Gender"
+                                  onInput={inputHandler} /> */}
+
+                               {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-phone"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -122,7 +207,7 @@ const EnrollPatient = () => {
                                   autoComplete="patient-dob"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> */}
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
@@ -148,6 +233,7 @@ const EnrollPatient = () => {
                             <button
                               type="submit"
                               className="forms__Controller--Btn-Container_Btn"
+                              disabled={!formState.isValid}
                             >
                               Save &amp; Next
                             </button>

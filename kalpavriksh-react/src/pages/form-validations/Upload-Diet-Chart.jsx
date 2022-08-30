@@ -3,7 +3,48 @@ import { useHistory } from "react-router-dom";
 
 import Navbar from "../shared/Navbar";
 
+import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+
+import Input from "../../Components/Input";
+
+import { useForm } from "../../hooks/form-hooks";
+
 const UploadDietChart = () => {
+
+  const [formState, inputHandler] = useForm(
+    {
+      caloriesLow: {
+        value: '',
+        isValid: false
+      },
+      caloriesHigh: {
+        value: '',
+        isValid: false
+      },
+      carbohydratesLow: {
+        value: '',
+        isValid: false
+      },
+      carbohydratesHigh: {
+        value: '',
+        isValid: false
+      },
+      protiens: {
+        value: '',
+        isValid: false
+      },
+      fats: {
+        value: '',
+        isValid: false
+      },
+      cuisine: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
+
   const history = useHistory();
 
   const uploadDietCharthHandler = (e) => {
@@ -39,7 +80,68 @@ const UploadDietChart = () => {
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
-                              <div className="forms__Controller--Grids_Cols">
+
+                              <Input 
+                                element="input"
+                                id="patient-caloriesRangeLow"
+                                type="text"
+                                label="Calories Range (Lower Value)"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-caloriesRangeHigh"
+                                type="text"
+                                label="Calories Range (High Value)"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-carbohydratesRangeLow"
+                                type="text"
+                                label="Carbohydrates Range (Lower Value)"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-carbohydratesRangeHigh"
+                                type="text"
+                                label="Carbohydrates Range (High Value)"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-protiens"
+                                type="text"
+                                label="Protiens"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              <Input 
+                                element="input"
+                                id="patient-fats"
+                                type="text"
+                                label="Fats"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter valid Values"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-caloriesRangeLow"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -133,7 +235,7 @@ const UploadDietChart = () => {
                                   autoComplete="patient-fats"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> */}
 
                               <div className="forms__Controller--Grids_Cols">
                                 <label
@@ -155,7 +257,17 @@ const UploadDietChart = () => {
                                 </select>
                               </div>
 
-                              <div className="forms__Controller--Grids_Cols">
+                              <Input 
+                                element="input"
+                                id="patient-cuisine"
+                                type="text"
+                                label="Cuisine"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Your Cuisine"
+                                onInput={inputHandler}
+                              />
+
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-cuisine"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -169,7 +281,7 @@ const UploadDietChart = () => {
                                   autoComplete="patient-cuisine"
                                   className="forms__Controller--Grids_Cols-Input"
                                 />
-                              </div>
+                              </div> */}
 
                               <div className="forms__Controller--Grids_Cols">
                                 <button
