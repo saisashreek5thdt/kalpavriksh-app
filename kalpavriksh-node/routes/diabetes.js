@@ -2,7 +2,7 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { diabetesprograms, diabetesDataForm, diabetesFormQuestions, diabetesFormQuestionchoices, fileUploads } = require(path.join(
+const { diabetesprograms, diabetesDataForm, diabetesFormQuestions,GetAlldiabetesFormQuestions, diabetesFormQuestionchoices, fileUploads } = require(path.join(
     __dirname,
     "..",
     "controllers",
@@ -21,7 +21,8 @@ router.post('/programs', DiabetesProgramValidation, diabetesprograms)
 
 router.post('/dataform',DiabetesDataFormValidation, diabetesDataForm)
 
-router.post('/dataformquestions',DiabetesDataFormQuestionsValidation, diabetesFormQuestions)
+router.get('/dataformquestions/', GetAlldiabetesFormQuestions)
+router.post('/dataformquestions/:dataformid',DiabetesDataFormQuestionsValidation, diabetesFormQuestions)
 
 router.post('/dataformquestionchoices',DiabetesDataFormQuestionChoicesValidation, diabetesFormQuestionchoices)
 

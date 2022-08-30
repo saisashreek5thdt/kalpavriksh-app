@@ -1,13 +1,16 @@
 // NPM Modules
 const [{ v4: uuidv4 }, path] = [require("uuid"), require("path")];
 
+// Mongodb Client Connection
+const { client } = require(path.join(__dirname, "..", "config", "db"));
+
 // Middlewares
-// const { asyncHandler } = require(path.join(
-//   __dirname,
-//   "..",
-//   "middlewares",
-//   "asyncHandler"
-// ));
+const { asyncHandler } = require(path.join(
+  __dirname,
+  "..",
+  "middlewares",
+  "asyncHandler"
+));
 
 exports.PatientRegistration = (req, res, next) => {
     const [ID, PATIENT_ID, DIABETES_PROGRAM_ID] = [uuidv4(), uuidv4(), uuidv4()]
