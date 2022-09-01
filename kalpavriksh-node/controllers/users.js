@@ -1,5 +1,5 @@
 // NPM Modules
-const [{ v4: uuidv4 }, path] = [require("uuid"), require("path")];
+const [path] = [require("path")];
 
 // Mongodb Client Connection
 const { client } = require(path.join(__dirname, "..", "config", "db"));
@@ -58,3 +58,17 @@ exports.UserRolesRegistration = asyncHandler(async (req, res, next) => {
     user: result,
   });
 });
+
+exports.UserRolesAssign = asyncHandler(async (req, res, next) => {
+  const [USER_ROLE_ID, USER_ID] = [req.params.userroleid, req.params.userid];
+  const result = await client
+    .db("kalpavrikshapp")
+    .collection("user_roles_assign")
+    .insertOne({ userrole: { "$ref": "user_roles", "$id": USER_ROLE_ID, "$db": "kalpavrikshapp" }, user: { "$ref": "users", "$id": USER_ID, "$db": "kalpavrikshapp" } });
+  res.json({
+    response: true,
+    message: "User Roles Assigned Successfully.",
+    result,
+  });
+  res.json({ USER_ROLE_ID, USER_ID });
+})

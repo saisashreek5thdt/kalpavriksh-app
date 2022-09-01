@@ -22,9 +22,10 @@ router.post('/programs', DiabetesProgramValidation, diabetesprograms)
 router.post('/dataform',DiabetesDataFormValidation, diabetesDataForm)
 
 router.get('/dataformquestions/', GetAlldiabetesFormQuestions)
+
 router.post('/dataformquestions/:dataformid',DiabetesDataFormQuestionsValidation, diabetesFormQuestions)
 
-router.post('/dataformquestionchoices',DiabetesDataFormQuestionChoicesValidation, diabetesFormQuestionchoices)
+router.post('/dataformquestionchoices/:dataformquestionid',DiabetesDataFormQuestionChoicesValidation, diabetesFormQuestionchoices)
 
 router.post('/fileuploads',FileUploadsValidation, fileUploads)
 

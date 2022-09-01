@@ -2,7 +2,7 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { UserRegistration, UserRolesRegistration, GetAllRegisteredUsers } = require(path.join(
+const { UserRegistration, UserRolesRegistration, GetAllRegisteredUsers, UserRolesAssign } = require(path.join(
   __dirname,
   "..",
   "controllers",
@@ -22,5 +22,7 @@ router.post("/register", UserRegisterValidation, UserRegistration);
 router.get('/all', GetAllRegisteredUsers)
 
 router.post("/userroleregister", UserRolesValidation, UserRolesRegistration);
+
+router.post("/userroleassign/:userroleid/:userid", UserRolesAssign);
 
 module.exports = router;
