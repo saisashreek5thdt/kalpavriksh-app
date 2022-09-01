@@ -12,6 +12,8 @@ import { useForm } from "../../hooks/form-hooks";
 
 import { AuthContext } from "../../context/auth-context";
 
+import DATA from "../../DATA.json";
+
 const LoginForm = () => {
 
   const auth = useContext(AuthContext);

@@ -9,7 +9,7 @@ import Select from "../../Components/Select";
 
 import { useForm } from "../../hooks/form-hooks";
 
-const UploadDietChart = () => {
+const UploadDietChart = ({history}) => {
 
   const [formState, inputHandler] = useForm(
     {
@@ -63,7 +63,7 @@ const UploadDietChart = () => {
     } else {
       console.log(formState.inputs);
     }
-    // history.push("/userrole/");
+    history.push("/userrole/");
   };
 
   return (

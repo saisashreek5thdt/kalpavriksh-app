@@ -9,7 +9,7 @@ import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
-const EnrollPatient = () => {
+const EnrollPatient = ({history}) => {
 
   // const [val, setVal] = useState({ phone: "", email: "", fullName: "", dob: "", vegetation: "" })
 
@@ -53,7 +53,7 @@ const EnrollPatient = () => {
     } else {
       console.log(formState.inputs);
     }
-    // history.push('/userrole/:pid/enroll/healthinfo/');
+    history.push('/userrole/:pid/enroll/healthinfo/');
   };
 
   return (

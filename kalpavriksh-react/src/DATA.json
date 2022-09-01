@@ -1,0 +1,42 @@
+[
+    {
+      "_id": "62dd5fdc9ba3e3b98dee8b53",
+      "username": "Ganesh Raja",
+      "email": "ganeshrajamaddi@gmail.com",
+      "password": "ganeshrajamaddi",
+      "mobile": "7207201717",
+      "role" : "doctor"
+    },
+    {
+      "_id": "62dd5fdc9ba3e3b98dee8b89",
+      "username": "Sai Sashreek D",
+      "email": "sai@5thdt.com",
+      "password": "sashreek1992",
+      "mobile": "9966780269",
+      "role" : "doctor"
+    },
+    {
+      "_id": "62dd603d9ba3e3b98dee8b5e",
+      "username": "Manikanta",
+      "email": "manikantakolla999@gmail.com",
+      "password": "nagasaimanikantakolla",
+      "mobile": "7569722798",
+      "role" : "nurse"
+    },
+    {
+      "_id": "62dd60959ba3e3b98dee8b71",
+      "username": "Nagabhushanam",
+      "email": "nagawwe555@gmail.com",
+      "password": "maddinagabhushanam",
+      "mobile": "9640208066",
+      "role" : "patient"
+    },
+    {
+      "_id": "62dd61129ba3e3b98dee8b7c",
+      "username": "Prakash",
+      "email": "pj19971227@gmail.com",
+      "password": "prakashsainani",
+      "mobile": "7799132690",
+      "role" : "patient"
+    }
+  ]
