@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 import Navbar from "../shared/Navbar";
 
@@ -14,31 +13,35 @@ const UploadDietChart = () => {
 
   const [formState, inputHandler] = useForm(
     {
-      caloriesLow: {
+      patient_caloriesRangeLow: {
         value: '',
         isValid: false
       },
-      caloriesHigh: {
+      patient_caloriesRangeHigh: {
         value: '',
         isValid: false
       },
-      carbohydratesLow: {
+      patient_CarbohydratesRangeLow: {
         value: '',
         isValid: false
       },
-      carbohydratesHigh: {
+      patient_CarbohydratesRangeHigh: {
         value: '',
         isValid: false
       },
-      protiens: {
+      patient_Protiens: {
         value: '',
         isValid: false
       },
-      fats: {
+      patient_Fats: {
         value: '',
         isValid: false
       },
-      cuisine: {
+      patient_VegetationType: {
+        value: '',
+        isValid: false
+      },
+      patient_Cuisine: {
         value: '',
         isValid: false
       }
@@ -53,12 +56,14 @@ const UploadDietChart = () => {
     { value: 'Egg' },
   ];
 
-  const history = useHistory();
-
   const uploadDietCharthHandler = (e) => {
     e.preventDefault();
-    console.log(formState.inputs);
-    history.push("/userrole/");
+    if (formState.inputs.patient_caloriesRangeLow.value === '' || formState.inputs.patient_caloriesRangeHigh.value === '' || formState.inputs.patient_CarbohydratesRangeLow.value === '' || formState.inputs.patient_CarbohydratesRangeHigh.value === '' || formState.inputs.patient_Protiens.value === '' || formState.inputs.patient_Fats.value === '' || formState.inputs.patient_VegetationType.value === '' || formState.inputs.patient_Cuisine.value === '') {
+      return null
+    } else {
+      console.log(formState.inputs);
+    }
+    // history.push("/userrole/");
   };
 
   return (
@@ -90,9 +95,9 @@ const UploadDietChart = () => {
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-caloriesRangeLow"
+                                id="patient_caloriesRangeLow"
                                 type="text"
                                 label="Calories Range (Lower Value)"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -100,9 +105,9 @@ const UploadDietChart = () => {
                                 onInput={inputHandler}
                               />
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-caloriesRangeHigh"
+                                id="patient_caloriesRangeHigh"
                                 type="text"
                                 label="Calories Range (High Value)"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -110,9 +115,9 @@ const UploadDietChart = () => {
                                 onInput={inputHandler}
                               />
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-carbohydratesRangeLow"
+                                id="patient_CarbohydratesRangeLow"
                                 type="text"
                                 label="Carbohydrates Range (Lower Value)"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -120,9 +125,9 @@ const UploadDietChart = () => {
                                 onInput={inputHandler}
                               />
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-carbohydratesRangeHigh"
+                                id="patient_CarbohydratesRangeHigh"
                                 type="text"
                                 label="Carbohydrates Range (High Value)"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -130,9 +135,9 @@ const UploadDietChart = () => {
                                 onInput={inputHandler}
                               />
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-protiens"
+                                id="patient_Protiens"
                                 type="text"
                                 label="Protiens"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -140,9 +145,9 @@ const UploadDietChart = () => {
                                 onInput={inputHandler}
                               />
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-fats"
+                                id="patient_Fats"
                                 type="text"
                                 label="Fats"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -246,11 +251,11 @@ const UploadDietChart = () => {
                                 />
                               </div> */}
 
-                              <Select 
+                              <Select
                                 element="select"
-                                id="patient-vegetationType"
+                                id="patient_VegetationType"
                                 label="Vegetation Type"
-                                option={cuisineOptions}
+                                options={cuisineOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Your Cuisine"
                                 onInput={inputHandler}
@@ -276,9 +281,9 @@ const UploadDietChart = () => {
                                 </select>
                               </div> */}
 
-                              <Input 
+                              <Input
                                 element="input"
-                                id="patient-cuisine"
+                                id="patient_Cuisine"
                                 type="text"
                                 label="Cuisine"
                                 validators={[VALIDATOR_REQUIRE()]}

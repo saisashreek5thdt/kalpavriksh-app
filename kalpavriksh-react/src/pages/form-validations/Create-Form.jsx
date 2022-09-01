@@ -1,5 +1,4 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, {useState} from "react";
 
 import { VALIDATOR_REQUIRE } from "../../util/validators";
 
@@ -10,18 +9,31 @@ import { useForm } from "../../hooks/form-hooks";
 import Navbar from "../shared/Navbar";
 
 const CreateForm = () => {
+  const [question, setQuestion] = useState(false)
 
   const [formState, inputHandler] = useForm(
     {
-      formTitle: {
+      patient_FormQuestionTitle: {
         value: '',
         isValid: false
       },
-      questionTitle: {
+      patient_QuestionTitle: {
         value: '',
         isValid: false
       },
-      questionChoice: {
+      patient_QuestionChoice1: {
+        value: '',
+        isValid: false
+      },
+      patient_QuestionChoice2: {
+        value: '',
+        isValid: false
+      },
+      patient_QuestionChoice3: {
+        value: '',
+        isValid: false
+      },
+      patient_QuestionChoice4: {
         value: '',
         isValid: false
       },
@@ -29,12 +41,14 @@ const CreateForm = () => {
     false
   );
 
-  const history = useHistory();
 
   const createFormHandler = (e) => {
     e.preventDefault();
-    console.log(formState.inputs);
-    history.push("/userrole/");
+    if(formState.inputs.patient_FormQuestionTitle.value === '' || formState.inputs.patient_QuestionTitle.value === '' || formState.inputs.patient_QuestionChoice1.value === '' || formState.inputs.patient_QuestionChoice2.value === '' || formState.inputs.patient_QuestionChoice3.value === '' || formState.inputs.patient_QuestionChoice4.value === ''){
+      return null
+    }else {
+      console.log(formState.inputs);
+    }
   };
 
   return (
@@ -70,7 +84,7 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-formQuestionTitle"
+                                id="patient_FormQuestionTitle"
                                 type="text"
                                 label="Form Question Title"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -98,12 +112,13 @@ const CreateForm = () => {
                                 <button
                                   type="submit"
                                   className="forms__Controller--Btn-Container_Btn-Gray"
+                                  onClick={(e) =>{e.preventDefault(); setQuestion(!question)}}
                                 >
                                   Add Question
                                 </button>
                               </div>
 
-                              <div className="forms__Controller--Grids_Cols">
+                              {question && <> <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-questionType"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -111,7 +126,7 @@ const CreateForm = () => {
                                   Question Type
                                 </label>
                                 <select
-                                  id="patient-questionType"
+                                  id="patient_QuestionType"
                                   name="patient-questionType"
                                   autoComplete="patient-questionType"
                                   className="forms__Controller--Grids_Cols-Select"
@@ -125,7 +140,7 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-questionTitle"
+                                id="patient_QuestionTitle"
                                 type="text"
                                 label="Question Title"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -135,7 +150,7 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-questionChoice"
+                                id="patient_QuestionChoice1"
                                 type="text"
                                 label="Question Choice 1"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -145,7 +160,7 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-questionChoice"
+                                id="patient_QuestionChoice2"
                                 type="text"
                                 label="Question Choice 2"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -155,7 +170,7 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-questionChoice"
+                                id="patient_QuestionChoice3"
                                 type="text"
                                 label="Question Choice 3"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -165,13 +180,13 @@ const CreateForm = () => {
 
                               <Input 
                                 element="input"
-                                id="patient-questionChoice"
+                                id="patient_QuestionChoice4"
                                 type="text"
                                 label="Question Choice 4"
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Enter a Question Choice"
                                 onInput={inputHandler}
-                              />
+                              /></>}
 
                               {/* <div className="forms__Controller--Grids_Cols">
                                 <label

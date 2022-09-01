@@ -58,7 +58,7 @@ const Select = (props) => {
                 onChange={changeHandler}
                 onBlur={touchHandler} 
                 options={props.options}>
-                    <option>{props.options}</option>
+                    {props.options.map(option => <option key={option.value}>{option.value}</option>) }
                 </select>
         ) : (
             <textarea

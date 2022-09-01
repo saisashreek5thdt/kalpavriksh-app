@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
@@ -12,21 +11,27 @@ import Navbar from "../shared/Navbar";
 
 const EnrollPatient = () => {
 
+  // const [val, setVal] = useState({ phone: "", email: "", fullName: "", dob: "", vegetation: "" })
+
   const [formState, inputHandler] = useForm(
     {
-      phone: {
+      patient_phone: {
         value: '',
         isValid: false
       },
-      email: {
+      patient_email: {
         value: '',
         isValid: false
       },
-      fullName: {
+      patient_fullName: {
         value: '',
         isValid: false
       },
-      date: {
+      patient_dob: {
+        value: '',
+        isValid: false
+      },
+      patient_vegetationType: {
         value: '',
         isValid: false
       }
@@ -40,12 +45,15 @@ const EnrollPatient = () => {
     { value: 'Fe-Male' }
   ];
 
-  const history = useHistory();
 
   const patientFormHandler = (e) => {
-      e.preventDefault();
+    e.preventDefault();
+    if (formState.inputs.patient_phone.value === '' || formState.inputs.patient_email.value === '' || formState.inputs.patient_fullName.value === '' || formState.inputs.patient_dob.value === '' || formState.inputs.patient_vegetationType.value === '') {
+      return null
+    } else {
       console.log(formState.inputs);
-      history.push('/userrole/:pid/enroll/healthinfo/');
+    }
+    // history.push('/userrole/:pid/enroll/healthinfo/');
   };
 
   return (
@@ -99,44 +107,45 @@ const EnrollPatient = () => {
 
                               <Input
                                 element="input"
-                                id="patient-phone"
+                                id="patient_phone"
                                 type="tel"
                                 label="Phone"
                                 validators={[VALIDATOR_MAXLENGTH(10)]}
                                 errorText="Please Enter 10 Digit Number"
                                 onInput={inputHandler}
-                               />
+                              />
 
                               <Input
                                 element="input"
-                                id="patient-email"
+                                id="patient_email"
                                 type="email"
                                 label="Email"
                                 validators={[VALIDATOR_EMAIL()]}
                                 errorText="Please Enter a valid Email Address"
                                 onInput={inputHandler}
-                               />
+                              />
 
-                               <Input
+                              <Input
                                 element="input"
-                                id="patient-fullName"
+                                id="patient_fullName"
                                 type="text"
                                 label="Full Name"
-                                validators={VALIDATOR_REQUIRE()}
+                                validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Enter Valid Name"
                                 onInput={inputHandler}
-                                />
+                              />
 
-                                <Input
-                                  element="input"
-                                  id="patient-dob"
-                                  type="date"
-                                  label="D.O.B"
-                                  errorText="Please Enter Valid Date"
-                                  onInput={inputHandler}
-                                 />
+                              <Input
+                                element="input"
+                                id="patient_dob"
+                                type="date"
+                                label="D.O.B"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Valid Date"
+                                onInput={inputHandler}
+                              />
 
-                                 {/* <Select
+                              {/* <Select
                                   element="select"
                                   id="patient-gender"
                                   label="Please Select Gender"
@@ -145,7 +154,7 @@ const EnrollPatient = () => {
                                   errorText="Please Select Your Gender"
                                   onInput={inputHandler} /> */}
 
-                               {/* <div className="forms__Controller--Grids_Cols">
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-phone"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -209,7 +218,7 @@ const EnrollPatient = () => {
                                 />
                               </div> */}
 
-                              <div className="forms__Controller--Grids_Cols">
+                              {/* <div className="forms__Controller--Grids_Cols">
                                 <label
                                   htmlFor="patient-gender"
                                   className="forms__Controller--Grids_Cols-Label"
@@ -226,14 +235,22 @@ const EnrollPatient = () => {
                                   <option>Male</option>
                                   <option>Fe-Male</option>
                                 </select>
-                              </div>
+                              </div> */}
+                              <Select
+                                element="select"
+                                id="patient_vegetationType"
+                                label="Vegetation Type"
+                                options={genderOptions}
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Select Gender"
+                                onInput={inputHandler}
+                              />
                             </div>
                           </div>
                           <div className="forms__Controller--Btn-Container">
                             <button
                               type="submit"
                               className="forms__Controller--Btn-Container_Btn"
-                              disabled={!formState.isValid}
                             >
                               Save &amp; Next
                             </button>
