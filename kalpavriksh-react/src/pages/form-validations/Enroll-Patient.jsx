@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useHistory } from "react-router-dom";
+
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
 
@@ -9,7 +11,7 @@ import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
-const EnrollPatient = ({history}) => {
+const EnrollPatient = () => {
 
   // const [val, setVal] = useState({ phone: "", email: "", fullName: "", dob: "", vegetation: "" })
 
@@ -45,6 +47,7 @@ const EnrollPatient = ({history}) => {
     { value: 'Fe-Male' }
   ];
 
+  const history = useHistory();
 
   const patientFormHandler = (e) => {
     e.preventDefault();
