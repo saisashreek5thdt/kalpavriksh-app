@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useHistory } from "react-router-dom";
+
 import { VALIDATOR_REQUIRE } from "../../util/validators";
 
 import Input from "../../Components/Input";
@@ -8,7 +10,7 @@ import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
-const CreateForm = ({ history }) => {
+const CreateForm = () => {
   const options = [
     { value: '', text: '--Choose an option--' },
     { value: 'textarea', text: 'Text Area' },

@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useHistory } from "react-router-dom";
+
 import Navbar from "../shared/Navbar";
 
 import { VALIDATOR_REQUIRE } from "../../util/validators";
@@ -9,7 +11,7 @@ import Select from "../../Components/Select";
 
 import { useForm } from "../../hooks/form-hooks";
 
-const UploadDietChart = ({history}) => {
+const UploadDietChart = () => {
 
   const [formState, inputHandler] = useForm(
     {
@@ -55,6 +57,8 @@ const UploadDietChart = ({history}) => {
     { value: 'Non-Veg' },
     { value: 'Egg' },
   ];
+
+  const history = useHistory();
 
   const uploadDietCharthHandler = (e) => {
     e.preventDefault();
