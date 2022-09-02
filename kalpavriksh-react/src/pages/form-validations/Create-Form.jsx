@@ -12,15 +12,15 @@ import Navbar from "../shared/Navbar";
 
 const CreateForm = () => {
   const options = [
-    { value: '', text: '--Choose an option--' },
-    { value: 'textarea', text: 'Text Area' },
-    { value: 'checkbox', text: 'CheckBox' },
-    { value: 'radio', text: 'Radio' },
+    { value: "", text: "--Choose an option--" },
+    { value: "textarea", text: "Text Area" },
+    { value: "checkbox", text: "CheckBox" },
+    { value: "radio", text: "Radio" },
   ];
-  const [question, setQuestion] = useState(false)
+  const [question, setQuestion] = useState(false);
   const [selected, setSelected] = useState(options[0].value);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     console.log(event.target.value);
     setSelected(event.target.value);
   };
@@ -28,38 +28,46 @@ const CreateForm = () => {
   const [formState, inputHandler] = useForm(
     {
       patient_FormQuestionTitle: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_QuestionTitle: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_QuestionChoice1: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_QuestionChoice2: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_QuestionChoice3: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_QuestionChoice4: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
     },
     false
   );
 
+  history = useHistory();
 
   const createFormHandler = (e) => {
     e.preventDefault();
-    if (formState.inputs.patient_FormQuestionTitle.value === '' || formState.inputs.patient_QuestionTitle.value === '' || formState.inputs.patient_QuestionChoice1.value === '' || formState.inputs.patient_QuestionChoice2.value === '' || formState.inputs.patient_QuestionChoice3.value === '' || formState.inputs.patient_QuestionChoice4.value === '') {
-      return null
+    if (
+      formState.inputs.patient_FormQuestionTitle.value === "" ||
+      formState.inputs.patient_QuestionTitle.value === "" ||
+      formState.inputs.patient_QuestionChoice1.value === "" ||
+      formState.inputs.patient_QuestionChoice2.value === "" ||
+      formState.inputs.patient_QuestionChoice3.value === "" ||
+      formState.inputs.patient_QuestionChoice4.value === ""
+    ) {
+      return null;
     } else {
       console.log(formState.inputs);
     }
@@ -72,9 +80,7 @@ const CreateForm = () => {
         <Navbar />
         <header className="header__Box">
           <div className="header__Box--Heading">
-            <h1 className="header__Box--Heading-Primary">
-              Dashboard
-            </h1>
+            <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
         <main>
@@ -96,7 +102,6 @@ const CreateForm = () => {
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
-
                               <Input
                                 element="input"
                                 id="patient_FormQuestionTitle"
@@ -107,40 +112,30 @@ const CreateForm = () => {
                                 onInput={inputHandler}
                               />
 
-                              {/* <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-formQuestionTitle"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Form Question Title
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-formQuestionTitle"
-                                  id="patient-formQuestionTitle"
-                                  autoComplete="patient-formQuestionTitle"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div> */}
-
                               <div className="col-span-3 sm:col-span-6">
                                 <button
                                   type="submit"
                                   className="forms__Controller--Btn-Container_Btn-Gray"
-                                  onClick={(e) => { e.preventDefault(); setQuestion(!question) }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setQuestion(!question);
+                                  }}
                                 >
                                   Add Question
                                 </button>
                               </div>
 
-                              {question && <> <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionType"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Type
-                                </label>
-                                {/* <select
+                              {question && (
+                                <>
+                                  {" "}
+                                  <div className="forms__Controller--Grids_Cols">
+                                    <label
+                                      htmlFor="patient-questionType"
+                                      className="forms__Controller--Grids_Cols-Label"
+                                    >
+                                      Question Type
+                                    </label>
+                                    {/* <select
                                   id="patient_QuestionType"
                                   name="patient-questionType"
                                   autoComplete="patient-questionType"
@@ -151,145 +146,78 @@ const CreateForm = () => {
                                   <option>MCQ - Checkbox</option>
                                   <option>MCQ - Radio</option>
                                 </select> */}
-                                <select value={selected} onChange={handleChange} id="patient_QuestionType" name="patient-questionType" autoComplete="patient-questionType" className="forms__Controller--Grids_Cols-Select">
-                                  {options.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                      {option.text}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                                <Input
-                                  element="input"
-                                  id="patient_QuestionTitle"
-                                  type="text"
-                                  label="Question Title"
-                                  validators={[VALIDATOR_REQUIRE()]}
-                                  errorText="Please Enter a Question Title"
-                                  onInput={inputHandler}
-                                />
-                                {selected !== 'textarea' && <><Input
-                                  element="input"
-                                  id="patient_QuestionChoice1"
-                                  type="text"
-                                  label="Question Choice 1"
-                                  validators={[VALIDATOR_REQUIRE()]}
-                                  errorText="Please Enter a Question Choice"
-                                  onInput={inputHandler}
-                                />
-
+                                    <select
+                                      value={selected}
+                                      onChange={handleChange}
+                                      id="patient_QuestionType"
+                                      name="patient-questionType"
+                                      autoComplete="patient-questionType"
+                                      className="forms__Controller--Grids_Cols-Select"
+                                    >
+                                      {options.map((option) => (
+                                        <option
+                                          key={option.value}
+                                          value={option.value}
+                                        >
+                                          {option.text}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
                                   <Input
                                     element="input"
-                                    id="patient_QuestionChoice2"
+                                    id="patient_QuestionTitle"
                                     type="text"
-                                    label="Question Choice 2"
+                                    label="Question Title"
                                     validators={[VALIDATOR_REQUIRE()]}
-                                    errorText="Please Enter a Question Choice"
+                                    errorText="Please Enter a Question Title"
                                     onInput={inputHandler}
                                   />
+                                  {selected !== "textarea" && (
+                                    <>
+                                      <Input
+                                        element="input"
+                                        id="patient_QuestionChoice1"
+                                        type="text"
+                                        label="Question Choice 1"
+                                        validators={[VALIDATOR_REQUIRE()]}
+                                        errorText="Please Enter a Question Choice"
+                                        onInput={inputHandler}
+                                      />
 
-                                  <Input
-                                    element="input"
-                                    id="patient_QuestionChoice3"
-                                    type="text"
-                                    label="Question Choice 3"
-                                    validators={[VALIDATOR_REQUIRE()]}
-                                    errorText="Please Enter a Question Choice"
-                                    onInput={inputHandler}
-                                  />
+                                      <Input
+                                        element="input"
+                                        id="patient_QuestionChoice2"
+                                        type="text"
+                                        label="Question Choice 2"
+                                        validators={[VALIDATOR_REQUIRE()]}
+                                        errorText="Please Enter a Question Choice"
+                                        onInput={inputHandler}
+                                      />
 
-                                  <Input
-                                    element="input"
-                                    id="patient_QuestionChoice4"
-                                    type="text"
-                                    label="Question Choice 4"
-                                    validators={[VALIDATOR_REQUIRE()]}
-                                    errorText="Please Enter a Question Choice"
-                                    onInput={inputHandler}
-                                  /></>}
-                              </>}
+                                      <Input
+                                        element="input"
+                                        id="patient_QuestionChoice3"
+                                        type="text"
+                                        label="Question Choice 3"
+                                        validators={[VALIDATOR_REQUIRE()]}
+                                        errorText="Please Enter a Question Choice"
+                                        onInput={inputHandler}
+                                      />
 
-                              {/* <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionTitle"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Title
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-questionTitle"
-                                  id="patient-questionTitle"
-                                  autoComplete="patient-questionTitle"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Choice 1
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-questionChoice"
-                                  id="patient-questionChoice"
-                                  autoComplete="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Choice 2
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-questionChoice"
-                                  id="patient-questionChoice"
-                                  autoComplete="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Choice 3
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-questionChoice"
-                                  id="patient-questionChoice"
-                                  autoComplete="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Question Choice 4
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-questionChoice"
-                                  id="patient-questionChoice"
-                                  autoComplete="patient-questionChoice"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div> */}
-
+                                      <Input
+                                        element="input"
+                                        id="patient_QuestionChoice4"
+                                        type="text"
+                                        label="Question Choice 4"
+                                        validators={[VALIDATOR_REQUIRE()]}
+                                        errorText="Please Enter a Question Choice"
+                                        onInput={inputHandler}
+                                      />
+                                    </>
+                                  )}
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>

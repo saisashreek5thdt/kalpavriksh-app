@@ -15,7 +15,6 @@ import { AuthContext } from "../../context/auth-context";
 import DATA from "../../DATA.json";
 
 const LoginForm = () => {
-
   const auth = useContext(AuthContext);
   const [isLogged, setIsLogged] = useState(false);
 
@@ -23,12 +22,12 @@ const LoginForm = () => {
     {
       email: {
         value: "",
-        isValid: false
+        isValid: false,
       },
       password: {
         value: "",
-        isValid: false
-      }
+        isValid: false,
+      },
     },
     false
   );
@@ -38,7 +37,7 @@ const LoginForm = () => {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -48,13 +47,13 @@ const LoginForm = () => {
           ...formState.inputs,
           name: {
             value: "",
-            isValid: false
-          }
+            isValid: false,
+          },
         },
         false
       );
     }
-    setIsLogged(prevLogg => !prevLogg);
+    setIsLogged((prevLogg) => !prevLogg);
   };
 
   const history = useHistory();
@@ -63,7 +62,7 @@ const LoginForm = () => {
     event.preventDefault();
     console.log(formState.inputs);
     auth.login();
-    //history.push("/userrole/");
+    history.push("/userrole/");
   };
 
   return (
@@ -77,57 +76,27 @@ const LoginForm = () => {
         <input type="hidden" name="remember" defaultValue="true" />
 
         <div className="login__Form--Inputbox">
+          <InputLog
+            element="input"
+            id="email-address"
+            type="email"
+            label="Email Address"
+            placeholder="Enter Email Address"
+            validators={[VALIDATOR_EMAIL()]}
+            errorText="Please Enter Valid Email Address"
+            onInput={inputHandler}
+          />
 
-            <InputLog 
-              element="input"
-              id="email-address"
-              type="email"
-              label="Email Address"
-              placeholder="Enter Email Address"
-              validators={[VALIDATOR_EMAIL()]}
-              errorText="Please Enter Valid Email Address"
-              onInput={inputHandler}
-            />
-
-            <InputLog 
-              element="input"
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Enter Password"
-              validators={[VALIDATOR_MINLENGTH(6)]}
-              errorText="Please Enter Valid Password"
-              onInput={inputHandler}
-            />
-
-          {/* <div>
-            <label htmlFor="email-address" className="login__Form--Inputbox-Label">
-              Email address
-            </label>
-            <input
-              id="email-address"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="login__Form--Inputbox-InputEmail"
-              placeholder="Email address"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="login__Form--Inputbox-Label">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="login__Form--Inputbox-InputPWD"
-              placeholder="Password"
-            />
-          </div> */}
+          <InputLog
+            element="input"
+            id="password"
+            type="password"
+            label="Password"
+            placeholder="Enter Password"
+            validators={[VALIDATOR_MINLENGTH(6)]}
+            errorText="Please Enter Valid Password"
+            onInput={inputHandler}
+          />
         </div>
 
         <div className="login__FlexContainer">
@@ -163,9 +132,7 @@ const LoginForm = () => {
           </button>
         </div>
         <div className="login__Divider--Box">
-          <span className="login__Divider--Text">
-            Or Continue With
-          </span>
+          <span className="login__Divider--Text">Or Continue With</span>
         </div>
         <div className="login__Social--Container">
           <div className="login__Social--Container-Btn">
@@ -180,7 +147,7 @@ const LoginForm = () => {
             </button>
           </div>
         </div>
-      </form>      
+      </form>
     </>
   );
 };

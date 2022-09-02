@@ -5,58 +5,67 @@ import { useHistory } from "react-router-dom";
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
 
-import { VALIDATOR_EMAIL, VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_REQUIRE,
+  VALIDATOR_MAXLENGTH,
+} from "../../util/validators";
 
 import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
 const EnrollPatient = () => {
-
   // const [val, setVal] = useState({ phone: "", email: "", fullName: "", dob: "", vegetation: "" })
 
   const [formState, inputHandler] = useForm(
     {
       patient_phone: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_email: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_fullName: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_dob: {
-        value: '',
-        isValid: false
+        value: "",
+        isValid: false,
       },
       patient_vegetationType: {
-        value: '',
-        isValid: false
-      }
+        value: "",
+        isValid: false,
+      },
     },
     false
   );
 
   const genderOptions = [
-    { value: 'Please Select a Gender' },
-    { value: 'Male' },
-    { value: 'Fe-Male' }
+    { value: "Please Select a Gender" },
+    { value: "Male" },
+    { value: "Fe-Male" },
   ];
 
   const history = useHistory();
 
   const patientFormHandler = (e) => {
     e.preventDefault();
-    if (formState.inputs.patient_phone.value === '' || formState.inputs.patient_email.value === '' || formState.inputs.patient_fullName.value === '' || formState.inputs.patient_dob.value === '' || formState.inputs.patient_vegetationType.value === '') {
-      return null
+    if (
+      formState.inputs.patient_phone.value === "" ||
+      formState.inputs.patient_email.value === "" ||
+      formState.inputs.patient_fullName.value === "" ||
+      formState.inputs.patient_dob.value === "" ||
+      formState.inputs.patient_vegetationType.value === ""
+    ) {
+      return null;
     } else {
       console.log(formState.inputs);
     }
-    history.push('/userrole/:pid/enroll/healthinfo/');
+    history.push("/userrole/:pid/enroll/healthinfo/");
   };
 
   return (
@@ -65,9 +74,7 @@ const EnrollPatient = () => {
         <Navbar />
         <header className="header__Box">
           <div className="header__Box--Heading">
-            <h1 className="header__Box--Heading-Primary">
-              Dashboard
-            </h1>
+            <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
         <main>
@@ -81,7 +88,11 @@ const EnrollPatient = () => {
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">
-                      <form action="#" method="POST" onSubmit={patientFormHandler}>
+                      <form
+                        action="#"
+                        method="POST"
+                        onSubmit={patientFormHandler}
+                      >
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
                             <div>
@@ -107,7 +118,6 @@ const EnrollPatient = () => {
                               </div>
                             </div>
                             <div className="forms__Controller--Grids">
-
                               <Input
                                 element="input"
                                 id="patient_phone"
@@ -148,97 +158,6 @@ const EnrollPatient = () => {
                                 onInput={inputHandler}
                               />
 
-                              {/* <Select
-                                  element="select"
-                                  id="patient-gender"
-                                  label="Please Select Gender"
-                                  options={genderOptions}
-                                  validators={VALIDATOR_REQUIRE()}
-                                  errorText="Please Select Your Gender"
-                                  onInput={inputHandler} /> */}
-
-                              {/* <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-phone"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Phone
-                                </label>
-                                <input
-                                  type="tel"
-                                  name="patient-phone"
-                                  id="patient-phone"
-                                  autoComplete="patient-phone"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-email"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Email (Optional)
-                                </label>
-                                <input
-                                  type="email"
-                                  name="patient-email"
-                                  id="patient-email"
-                                  autoComplete="patient-email"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-fullName"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Full Name
-                                </label>
-                                <input
-                                  type="text"
-                                  name="patient-fullName"
-                                  id="patient-fullName"
-                                  autoComplete="patient-fullName"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div>
-
-                              <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-dob"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  D.O.B
-                                </label>
-                                <input
-                                  type="date"
-                                  name="patient-dob"
-                                  id="patient-dob"
-                                  autoComplete="patient-dob"
-                                  className="forms__Controller--Grids_Cols-Input"
-                                />
-                              </div> */}
-
-                              {/* <div className="forms__Controller--Grids_Cols">
-                                <label
-                                  htmlFor="patient-gender"
-                                  className="forms__Controller--Grids_Cols-Label"
-                                >
-                                  Select Gender
-                                </label>
-                                <select
-                                  id="patient-gender"
-                                  name="patient-gender"
-                                  autoComplete="patient-gender"
-                                  className="forms__Controller--Grids_Cols-Select"
-                                >
-                                  <option>Please Select Gender</option>
-                                  <option>Male</option>
-                                  <option>Fe-Male</option>
-                                </select>
-                              </div> */}
                               <Select
                                 element="select"
                                 id="patient_vegetationType"
