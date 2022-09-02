@@ -55,7 +55,7 @@ const CreateForm = () => {
     false
   );
 
-  history = useHistory();
+  const history = useHistory();
 
   const createFormHandler = (e) => {
     e.preventDefault();

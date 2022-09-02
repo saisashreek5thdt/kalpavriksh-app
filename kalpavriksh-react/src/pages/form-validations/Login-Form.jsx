@@ -6,6 +6,8 @@ import { LockClosedIcon } from "@heroicons/react/solid";
 
 import InputLog from "../../Components/Input-Log";
 
+import ButtonLog from "../../Components/Button-Log";
+
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../util/validators";
 
 import { useForm } from "../../hooks/form-hooks";
@@ -60,7 +62,15 @@ const LoginForm = () => {
 
   const loginHandler = (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+
+    if (
+      formState.inputs.email.value === "" ||
+      formState.inputs.password.value === ""
+    ) {
+      return null;
+    } else {
+      console.log(formState.inputs);
+    }
     auth.login();
     history.push("/userrole/");
   };
@@ -117,19 +127,17 @@ const LoginForm = () => {
         </div>
 
         <div>
-          <button
-            type="submit"
-            className="group login__Btn--Group"
-            disabled={!formState.isValid}
-          >
-            <span className="login__Btn--Span">
+
+          <ButtonLog type="submit" disabled={!formState.isValid}>
+          <span className="login__Btn--Span">
               <LockClosedIcon
                 className="login__Btn--Span-Icon"
                 aria-hidden="true"
               />
             </span>
             {!isLogged ? "Sign in" : ""}
-          </button>
+          </ButtonLog>
+
         </div>
         <div className="login__Divider--Box">
           <span className="login__Divider--Text">Or Continue With</span>
