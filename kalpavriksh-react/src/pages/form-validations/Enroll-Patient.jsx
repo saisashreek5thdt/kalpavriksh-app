@@ -36,7 +36,7 @@ const EnrollPatient = () => {
         value: "",
         isValid: false,
       },
-      patient_vegetationType: {
+      patient_gender: {
         value: "",
         isValid: false,
       },
@@ -59,7 +59,7 @@ const EnrollPatient = () => {
       formState.inputs.patient_email.value === "" ||
       formState.inputs.patient_fullName.value === "" ||
       formState.inputs.patient_dob.value === "" ||
-      formState.inputs.patient_vegetationType.value === ""
+      formState.inputs.patient_gender.value === ""
     ) {
       return null;
     } else {
@@ -160,8 +160,8 @@ const EnrollPatient = () => {
 
                               <Select
                                 element="select"
-                                id="patient_vegetationType"
-                                label="Vegetation Type"
+                                id="patient_gender"
+                                label="Select Gender"
                                 options={genderOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Gender"

@@ -10,6 +10,7 @@ import { AuthContext } from "./context/auth-context";
 
 import Login from "./user/Login";
 import UserDashboard from "./user/UserDashboard";
+import PatientDashboard from "./user/patientDashboard";
 import EnrollPatient from "./pages/form-validations/Enroll-Patient"
 import PatientHealthInfo from "./pages/form-validations/Patient-HealthInfo";
 import PatientPersonalInfo from "./pages/form-validations/Patient-PersonalInfo";
@@ -17,6 +18,8 @@ import PatientPersonalInfo from "./pages/form-validations/Patient-PersonalInfo";
 import CreateForm from "./pages/form-validations/Create-Form";
 
 import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
+
+import PatientForm from "./pages/form-validations/patient/Patient-Forms";
 
 const App = () => {
 
@@ -39,8 +42,11 @@ const App = () => {
           <Route path="/" exact>
             <Login />
           </Route>
-          <Route path="/userrole/" exact>
+          <Route path="/userrole/:roleid/doctor/" exact>
             <UserDashboard />
+          </Route>
+          <Route path="/userrole/:roleid/patient/" exact>
+            <PatientDashboard />
           </Route>
           <Route path="/userrole/:pid/enroll/" exact>
             <EnrollPatient />
@@ -56,6 +62,9 @@ const App = () => {
           </Route>
           <Route path="/userrole/:pid/form/dietform/" exact>
             <UploadDietChart />
+          </Route>
+          <Route path="/userrole/:roleid/form/patientform/" exact>
+            <PatientForm />
           </Route>
           <Redirect to="/" />
         </Switch>

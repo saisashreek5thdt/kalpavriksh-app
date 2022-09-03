@@ -59,6 +59,7 @@ const CreateForm = () => {
 
   const createFormHandler = (e) => {
     e.preventDefault();
+    /*
     if (
       formState.inputs.patient_FormQuestionTitle.value === "" ||
       formState.inputs.patient_QuestionTitle.value === "" ||
@@ -71,7 +72,9 @@ const CreateForm = () => {
     } else {
       console.log(formState.inputs);
     }
-    history.push("/userrole/");
+    */
+    console.log(formState.inputs);
+    history.push("/userrole/:roleid/doctor/");
   };
 
   return (

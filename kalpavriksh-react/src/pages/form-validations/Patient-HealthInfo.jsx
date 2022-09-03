@@ -14,30 +14,42 @@ import Navbar from "../shared/Navbar";
 const PatientHealthInfo = () => {
   const [formState, inputHandler] = useForm(
     {
-      height: {
+      patient_height: {
         value: "",
         isValid: false,
       },
-      weight: {
+      patient_weight: {
         value: "",
         isValid: false,
       },
-      caretakerName: {
+      patient_caretakerName: {
         value: "",
         isValid: false,
       },
-      caretakerNumber: {
+      patient_caretakerNumber: {
         value: "",
         isValid: false,
       },
-      preferredCall: {
+      patient_preferredCall: {
         value: "",
         isValid: false,
       },
-      date: {
+      patient_caretakerDate: {
         value: "",
         isValid: false,
       },
+      patient_caretakerRelation: {
+        value: "",
+        isValid: false,
+      },
+      patient_planSelected: {
+        value: "",
+        isValid: false,
+      },
+      patient_patientTeam: {
+        value: "",
+        isValid: false,
+      }
     },
     false
   );
@@ -74,6 +86,21 @@ const PatientHealthInfo = () => {
 
   const patientHealthHandler = (e) => {
     e.preventDefault();
+    /*if (
+      formState.inputs.patient_height.value === "" ||
+      formState.inputs.patient_weight.value === "" ||
+      formState.inputs.patient_caretakerName.value === "" ||
+      formState.inputs.patient_caretakerNumber.value === "" ||
+      formState.inputs.patient_preferredCall.value === "" ||
+      formState.inputs.patient_caretakerDate.value === "" ||
+      formState.inputs.patient_caretakerRelation.value === "" ||
+      formState.inputs.patient_planSelected.value === "" ||
+      formState.inputs.patient_patientTeam.value === "" 
+    ) {
+      return null;
+    } else {
+      console.log(formState.inputs);
+    } */
     console.log(formState.inputs);
     history.push("/userrole/:pid/enroll/personalinfo/");
   };
@@ -107,7 +134,7 @@ const PatientHealthInfo = () => {
                           <div className="forms__Controller--Box">
                             <div className="forms__Controller--Grids">
                               <Input
-                                id="patient-height"
+                                id="patient_height"
                                 element="input"
                                 type="number"
                                 label="Height"
@@ -117,7 +144,7 @@ const PatientHealthInfo = () => {
                               />
 
                               <Input
-                                id="patient-weight"
+                                id="patient_weight"
                                 element="input"
                                 type="number"
                                 label="Weight"
@@ -127,7 +154,7 @@ const PatientHealthInfo = () => {
                               />
 
                               <Input
-                                id="patient-caretakerName"
+                                id="patient_caretakerName"
                                 element="input"
                                 type="text"
                                 label="CaretakerName"
@@ -137,7 +164,7 @@ const PatientHealthInfo = () => {
                               />
 
                               <Input
-                                id="patient-caretakerNumber"
+                                id="patient_caretakerNumber"
                                 element="input"
                                 type="tel"
                                 label="CaretakerNumber"
@@ -147,7 +174,7 @@ const PatientHealthInfo = () => {
                               />
 
                               <Input
-                                id="patient-caretakerTime"
+                                id="patient_caretakerTime"
                                 element="input"
                                 type="time"
                                 label="CaretakerTime"
@@ -157,10 +184,10 @@ const PatientHealthInfo = () => {
                               />
 
                               <Input
-                                id="patient-caretakerDate"
+                                id="patient_caretakerDate"
                                 element="input"
                                 type="date"
-                                label="Caretakerate"
+                                label="CaretakerDate"
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Enter Valid Date"
                                 onInput={inputHandler}
@@ -168,7 +195,7 @@ const PatientHealthInfo = () => {
 
                               <Select
                                 element="select"
-                                id="patient-caretakerRelation"
+                                id="patient_caretakerRelation"
                                 label="Caretaker's Relation"
                                 options={relationList}
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -178,7 +205,7 @@ const PatientHealthInfo = () => {
 
                               <Select
                                 element="select"
-                                id="patient-planSelected"
+                                id="patient_planSelected"
                                 label="Select Health Plan"
                                 options={healthPlan}
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -188,7 +215,7 @@ const PatientHealthInfo = () => {
 
                               <Select
                                 element="select"
-                                id="patient-patientTeam"
+                                id="patient_patientTeam"
                                 label="Select Patient Team"
                                 options={healthTeam}
                                 validators={[VALIDATOR_REQUIRE()]}

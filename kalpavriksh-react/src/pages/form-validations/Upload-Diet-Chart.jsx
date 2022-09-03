@@ -61,6 +61,7 @@ const UploadDietChart = () => {
 
   const uploadDietCharthHandler = (e) => {
     e.preventDefault();
+    /*
     if (
       formState.inputs.patient_caloriesRangeLow.value === "" ||
       formState.inputs.patient_caloriesRangeHigh.value === "" ||
@@ -75,7 +76,9 @@ const UploadDietChart = () => {
     } else {
       console.log(formState.inputs);
     }
-    history.push("/userrole/");
+    */
+    console.log(formState.inputs);
+    history.push("/userrole/:roleid/doctor/");
   };
 
   return (

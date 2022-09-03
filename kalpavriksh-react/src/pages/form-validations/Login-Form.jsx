@@ -70,9 +70,10 @@ const LoginForm = () => {
       return null;
     } else {
       console.log(formState.inputs);
+      auth.login();
+      history.push("/userrole/:roleid/patient/");
     }
-    auth.login();
-    history.push("/userrole/");
+    
   };
 
   return (

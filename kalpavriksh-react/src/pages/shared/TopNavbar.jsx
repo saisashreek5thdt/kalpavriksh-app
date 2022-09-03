@@ -12,10 +12,10 @@ const user = {
   imageUrl: User1,
 };
 const navigation = [
-  { name: "Dashboard", href: "/userrole/:roleid/doctor/", current: true },
-  { name: "Enroll Patient", href: "/userrole/:pid/enroll/", current: true },
-  { name: "Create Form", href: "/userrole/:pid/form/createform/", current: true },
-  { name: "Upload Diet Chart", href: "/userrole/:pid/form/dietform/", current: false },
+  { name: "Dashboard", href: "/userrole/:roleid/patient/", current: true },
+  { name: "Daily", href: "/userrole/:roleid/form/patientform/", current: true },
+  { name: "Weekly", href: "/userrole/:roleid/patient/", current: true },
+  { name: "More", href: "/userrole/:roleid/patient/", current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -27,7 +27,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-  const Navbar = () => {
+  const TopNavbar = () => {
     return (
         <Disclosure as="nav" className="navbar__Bg">
           {({ open }) => (
@@ -195,4 +195,4 @@ function classNames(...classes) {
     );
   };
 
-  export default Navbar;
+  export default TopNavbar;

@@ -14,15 +14,19 @@ import Navbar from "../shared/Navbar";
 const PatientPersonalInfo = () => {
   const [formState, inputHandler] = useForm(
     {
-      amountPaid: {
+      patient_amountPaid: {
         value: "",
         isValid: false,
       },
-      paymentDate: {
+      patient_paymentMode: {
         value: "",
         isValid: false,
       },
-      refID: {
+      patient_paymentDate: {
+        value: "",
+        isValid: false,
+      },
+      patient_refID: {
         value: "",
         isValid: false,
       },
@@ -42,8 +46,20 @@ const PatientPersonalInfo = () => {
 
   const patientPersonalHandler = (e) => {
     e.preventDefault();
+    /*
+    if (
+      formState.inputs.amountPaid.value === "" ||
+      formState.inputs.paymentMode.value === "" ||
+      formState.inputs.paymentDate.value === "" ||
+      formState.inputs.refID.value === "" 
+    ) {
+      return null;
+    } else {
+      console.log(formState.inputs);
+    }
+    */
     console.log(formState.inputs);
-    history.push("/userrole/");
+    history.push("/userrole/:roleid/doctor/");
   };
 
   return (
@@ -76,7 +92,7 @@ const PatientPersonalInfo = () => {
                             <div className="forms__Controller--Grids">
                               <Input
                                 element="input"
-                                id="patient-amountPaid"
+                                id="patient_amountPaid"
                                 type="number"
                                 label="Amount Paid"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -86,7 +102,7 @@ const PatientPersonalInfo = () => {
 
                               <Select
                                 element="select"
-                                id="patient-paymentMode"
+                                id="patient_paymentMode"
                                 label="Payment Mode"
                                 options={paymentMode}
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -96,7 +112,7 @@ const PatientPersonalInfo = () => {
 
                               <Input
                                 element="input"
-                                id="patient-paymentDate"
+                                id="patient_paymentDate"
                                 type="date"
                                 label="Payment Date"
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -106,7 +122,7 @@ const PatientPersonalInfo = () => {
 
                               <Input
                                 element="input"
-                                id="patient-refID"
+                                id="patient_refID"
                                 type="text"
                                 label="Ref. ID"
                                 validators={[VALIDATOR_REQUIRE()]}
