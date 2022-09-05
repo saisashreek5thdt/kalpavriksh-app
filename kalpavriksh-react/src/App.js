@@ -21,6 +21,8 @@ import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
 
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
 
+import Stepper from "./pages/form-validations/Stepper";
+
 const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,6 +67,9 @@ const App = () => {
           </Route>
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />
+          </Route>
+          <Route path="/stepper/" exact>
+            <Stepper />
           </Route>
           <Redirect to="/" />
         </Switch>

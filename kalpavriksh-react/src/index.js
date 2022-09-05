@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import 'tw-elements';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
