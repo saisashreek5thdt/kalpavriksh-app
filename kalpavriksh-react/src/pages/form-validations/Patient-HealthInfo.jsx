@@ -7,7 +7,7 @@ import Select from "../../Components/Select";
 
 import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
 
-import { useForm } from "../../Hooks/form-hooks";
+import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
