@@ -1,29 +1,8 @@
-<<<<<<< HEAD
-import react from 'react'
-
-const Input = ({label, input, name, id }) => {
-    return (
-        <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="phone-number"
-                className="block text-sm font-medium text-gray-700">
-                {label}
-            </label>
-            <input type={input}
-                name={name}
-                id={id}
-                autoComplete={true}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-        </div>
-    )
-}
-
-export default Input
-=======
 import React, {useReducer, useEffect} from "react";
 
 import { validate } from "../util/validators";
 
-const inputReducer = (state, action) => {
+const selectReducer = (state, action) => {
     switch (action.type) {
         case 'CHANGE' :
             return {
@@ -42,9 +21,9 @@ const inputReducer = (state, action) => {
     }
 };
 
-const Input = (props) => {
+const Select = (props) => {
 
-    const [inputState, dispatch] = useReducer(inputReducer, {
+    const [inputState, dispatch] = useReducer(selectReducer, {
         value: props.initialValue || '',
         isTouched: false,
         isValid: props.initialValue || false
@@ -72,16 +51,15 @@ const Input = (props) => {
     };
 
     const element = 
-        props.element === 'input' ? (
-            <input 
+        props.element === 'select' ? (
+            <select 
                 id={props.id}
-                type={props.type}
-                className="forms__Controller--Grids_Cols-Input"
-                placeholder={props.placeholder}
+                className="forms__Controller--Grids_Cols-Select"
                 onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-                />
+                onBlur={touchHandler} 
+                options={props.options}>
+                    {props.options.map(option => <option key={option.value}>{option.value}</option>) }
+                </select>
         ) : (
             <textarea
                 id={props.id}
@@ -102,5 +80,4 @@ const Input = (props) => {
 
 };
 
-export default Input;
->>>>>>> c2b858116a3c474af3fab495f0863220a17eaee0
+export default Select;

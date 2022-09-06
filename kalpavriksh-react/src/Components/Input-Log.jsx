@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-import react from 'react'
-
-const Input = ({label, input, name, id }) => {
-    return (
-        <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="phone-number"
-                className="block text-sm font-medium text-gray-700">
-                {label}
-            </label>
-            <input type={input}
-                name={name}
-                id={id}
-                autoComplete={true}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-        </div>
-    )
-}
-
-export default Input
-=======
 import React, {useReducer, useEffect} from "react";
 
 import { validate } from "../util/validators";
@@ -42,7 +21,7 @@ const inputReducer = (state, action) => {
     }
 };
 
-const Input = (props) => {
+const InputLog = (props) => {
 
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
@@ -76,7 +55,7 @@ const Input = (props) => {
             <input 
                 id={props.id}
                 type={props.type}
-                className="forms__Controller--Grids_Cols-Input"
+                className="login__Form--Inputbox-Input"
                 placeholder={props.placeholder}
                 onChange={changeHandler}
                 onBlur={touchHandler}
@@ -93,14 +72,13 @@ const Input = (props) => {
         );
 
     return (
-        <div className="forms__Controller--Grids_Cols">
-            <label htmlFor={props.id} className="forms__Controller--Grids_Cols-Label">{props.label}</label>
+        <div>
+            <label htmlFor={props.id} className="login__Form--Inputbox-Label">{props.label}</label>
             {element}
-            {!inputState.isValid && inputState.isTouched && <p className="forms__Controller--Grids_Cols-InputError">{props.errorText}</p>}
+            {!inputState.isValid && inputState.isTouched && <p className="login__Form--Inputbox-InputError">{props.errorText}</p>}
         </div>
     );
 
 };
 
-export default Input;
->>>>>>> c2b858116a3c474af3fab495f0863220a17eaee0
+export default InputLog;
