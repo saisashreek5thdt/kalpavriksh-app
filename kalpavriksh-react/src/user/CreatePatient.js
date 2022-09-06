@@ -164,12 +164,12 @@ const CreatePatient = () => {
             <div className="mt-10 sm:mt-0">
               <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="mt-5 md:mt-0 md:col-span-2">
-                <div className="mx-auto rounded-2xl bg-white pb-2 shadow-xl">
+                <div className="mx-auto w-full max-w-4xl md:max-w-2xl sm:max-w-xl rounded-2xl bg-white pb-2 shadow-xl">
                       {/* Stepper */}
-                      <div className="horizontal container mt-5 ">
+                      <div className="horizontal container mt-5 w-full max-w-4xl md:max-w-2xl sm:max-w-xl">
                         <Stepper steps={steps} currentStep={currentStep} />
 
-                        <div className="my-10 p-10 ">
+                        <div className="my-10 p-10 w-full max-w-4xl md:max-w-2xl sm:max-w-xl">
                           {displayStep(currentStep)}
                         </div>
                       </div>

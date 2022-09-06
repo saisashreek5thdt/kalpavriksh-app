@@ -1,115 +1,88 @@
 import React, { ReactFragment } from "react";
-
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { Formik } from 'formik';
+import { Input, InputPhoto } from '../../Components'
 
 import "tw-elements";
 
 import useForm from "../../Hooks/useForm";
 
 const PatientPersonalInfo = () => {
-  const { handleChange, errors } = useForm()
   return (
     <>
-      <div>
-        <div className="grid grid-cols-none gap-6">
-          <label className="px-4 block text-sm font-medium text-gray-700">Photo</label>
-          <div className="mt-1 flex items-center">
-            <span className="mx-4 inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-              <svg
-                className="h-full w-full text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </span>
-            <button type="button"
-              className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Change
+      <Formik
+        initialValues={{ phoneNumber: "", emailAddress: "", fullName: "", dob: "" }}
+        validate={values => {
+          const errors = {};
+          if (!values.emailAddress || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.emailAddress)) {
+            errors.emailAddress = 'Required';
+          }
+          if (!values.fullName || values.fullName.length < 4) {
+            errors.fullName = 'Full name must be at least 4 characters long';
+          }
+          if (!values.dob) {
+            errors.dob = 'Enter a valid DOB'
+          }
+          if (!values.phoneNumber || values.phoneNumber.length < 10 || values.phoneNumber.length > 13) {
+            errors.phoneNumber = 'Please enter a valid phoneNumber'
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit} className="w-full max-w-4xl md:max-w-2xl sm:max-w-xl">
+            <InputPhoto />
+            <div className="px-4 py-5 grid grid-cols-6 gap-6">
+              <Input label="Phone Number" input="number" name="phoneNumber" id="phone-number" onChange={handleChange} onBlur={handleBlur} value={values.phoneNumber} />
+              <span className="text-red-500 text-sm">{errors.phoneNumber && touched.phoneNumber && errors.phoneNumber}</span>
+              <Input label="Email address" input="email" name="emailAddress" id="email-address" onChange={handleChange} onBlur={handleBlur} value={values.emailAddress} />
+              <span className="text-red-500 text-sm">{errors.emailAddress && touched.emailAddress && errors.emailAddress}</span>
+              <Input label="Full Name" input="text" name="fullName" id="full-name" onChange={handleChange} onBlur={handleBlur} value={values.fullName} />
+              <span className="text-red-500 text-sm">{errors.fullName && touched.fullName && errors.fullName}</span>
+              <Input label="D.O.B" input="date" name="dob" id="dob" onChange={handleChange} onBlur={handleBlur} value={values.dob} />
+              <span className="text-red-500 text-sm">{errors.dob && touched.dob && errors.dob}</span>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Gender
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  autoComplete="gender"
+                  onChange={handleChange}
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option>Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+              <div>
+              </div>
+            </div>
+            <button type="submit" disabled={isSubmitting}>
+              Submit
             </button>
-          </div>
-        </div>
-        <div className="px-4 py-5 grid grid-cols-6 gap-6">
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="phone-number"
-              className="block text-sm font-medium text-gray-700">
-              Phone Number
-            </label>
-            <input type="number"
-              name="phone-number"
-              id="phone-number"
-              autoComplete="phone-number"
-              onChange={handleChange}
-              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-            {errors.phonenumber && (
-              <p className="block text-sm font-medium text-red-500">
-                {errors.phonenumber}
-              </p>
-            )}
-          </div>
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="email-address"
-              className="block text-sm font-medium text-gray-700">
-              Email address
-            </label>
-            <input type="text"
-              name="email-address"
-              id="email-address"
-              autoComplete="email"
-              onChange={handleChange}
-              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-          </div>
-          <div className="col-span-6 sm:col-span-3">
-            <label htmlFor="full-name"
-              className="block text-sm font-medium text-gray-700">Full Name</label>
-            <input
-              type="text"
-              name="full-name"
-              id="full-name"
-              autoComplete="full-name"
-              onChange={handleChange}
-              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="dob"
-              className="block text-sm font-medium text-gray-700"
-            >
-              D.O.B
-            </label>
-            <input
-              type="date"
-              name="dob"
-              id="dob"
-              autoComplete="dob"
-              onChange={handleChange}
-              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="gender"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Gender
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              autoComplete="gender"
-              onChange={handleChange}
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              <option>Select Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-          <div>
-          </div>
-        </div>
-      </div>
+          </form>
+        )}
+      </Formik>
     </>
   )
 }

@@ -69,7 +69,7 @@ const Stepper = ({ steps, currentStep }) => {
         key={index}
         className={
           index !== newStep.length - 1
-            ? "w-full flex items-center"
+            ? "w-full max-w-2xl flex flex-grow-2 items-center"
             : "flex items-center"
         }
       >

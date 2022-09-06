@@ -1,0 +1,172 @@
+.navbar {
+
+    &__Bg {
+        @apply bg-gray-800;
+    }
+
+    &__Container {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+
+        &--FlexBox {
+            @apply flex items-center justify-between h-16;
+
+            &-Items {
+                @apply flex items-center;
+            }
+
+            &-ImgBox {
+                @apply flex-shrink-0;
+            }
+
+            &-Img {
+                @apply h-8 w-8;
+            }
+        }
+    }
+
+    &__Hidden {
+        @apply hidden md:block;
+    }
+
+    &__Items {
+        @apply ml-10 flex items-baseline space-x-4;
+    }
+
+    &__Item {
+        @apply px-3 py-2 rounded-md text-sm font-medium;
+
+        &--Active {
+            @apply bg-gray-900 text-white;
+        }
+
+        &--Hover {
+            @apply text-gray-300 hover:bg-gray-700 hover:text-white;
+        }
+    }
+
+    &__Profile{
+        @apply ml-4 flex items-center md:ml-6;
+
+        &--Notify {
+            &-Btn {
+                &[type="button"]{
+                    @apply bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+                }                
+            
+                &_Span {
+                    @apply sr-only;
+                }
+                &_Icon {
+                    @apply h-6 w-6;
+                }
+            }
+        }
+
+        &--MenuBox {
+            @apply ml-3 relative;
+
+            &-Container {
+                &[type="button"]{
+                    @apply max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+                }
+            }
+
+            &-Img {
+                @apply h-8 w-8 rounded-full;
+            }
+
+            &-ItemBox {
+                @apply origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none #{!important};
+            }
+
+            &-Items {
+                @apply block px-4 py-2 text-sm text-gray-700;
+                &_Active {
+                    @apply bg-gray-100;
+                }
+            }
+        }
+
+
+        &--MobileMenu {
+            &-Container {
+                @apply -mr-2 flex md:hidden;
+            }
+
+            &-Btn {
+                &[type="button"] {
+                    @apply bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+                }
+            }
+
+            &-Icon {
+                @apply block h-6 w-6;
+            }
+
+            &-Panel {
+                @apply md:hidden;
+            }
+
+            &-Items {
+                @apply px-2 pt-2 pb-3 space-y-1 sm:px-3;
+            }
+
+            &-Item {
+                @apply block px-3 py-2 rounded-md text-base font-medium;
+
+                &_Active {
+                    @apply bg-gray-900 text-white;
+                }
+
+                &_Hover {
+                    @apply text-gray-300 hover:bg-gray-700 hover:text-white;
+                }
+            }
+
+            &-InfoBox {
+                @apply pt-4 pb-3 border-t border-gray-700;
+
+                &_FlexBox {
+                    @apply flex items-center px-5;
+                }
+
+                &_Img {
+                    @apply h-10 w-10 rounded-full;
+                }
+
+                &_UserBox {
+                    @apply ml-3;
+                }
+
+                &_UserName {
+                    @apply text-base font-medium leading-none text-white #{!important};
+                }
+
+                &_UserEmail {
+                    @apply text-sm font-medium leading-none text-gray-400;
+                }
+
+                &_Btn {
+                    &[type="button"] {
+                        @apply ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+                    }
+                }
+
+                &_Icon {
+                    @apply h-6 w-6;
+                }
+            }
+
+            &-InfoItems {
+                @apply mt-3 px-2 space-y-1;
+            }
+
+            &-InfoItem {
+                @apply block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700;
+            }
+
+        }
+
+    }
+
+}

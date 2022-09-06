@@ -99,6 +99,7 @@ const Navbar = () => {
                                                 )}
                                             >
                                                 {item.name}
+                                                onClick={item.onClick}
                                             </NavLink>
                                         )}
                                     </Menu.Item>

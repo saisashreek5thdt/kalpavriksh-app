@@ -17,22 +17,22 @@ const { PatientRegisterValidation, PatientPaymentsValidation, PatientDataFormsQu
   "validators"
 ));
 
-router.post("/register", PatientRegisterValidation, PatientRegistration);
+router.post("/register/:patientdid/:diabetesprogramid", PatientRegisterValidation, PatientRegistration);
 
-router.post("/patientteamsregister", PatientTeamsRegistration);
+router.post("/patientteamsregister/:patientenrollmentid/:userid", PatientTeamsRegistration);
 
-router.post("/patientpayments", PatientPaymentsValidation, PatientPayments);
+router.post("/patientpayments/:patientid/:patientenrollmentid", PatientPaymentsValidation, PatientPayments);
 
-router.post("/patientdataforms", PatientDataForms);
+router.post("/patientdataforms/:dataformid/:patientenrollmentid/:attachedby", PatientDataForms);
 
-router.post("/patientdataformsquestions", PatientDataFormsQuestionsValidation, PatientDataFormsQuestions);
+router.post("/patientdataformsquestions/:dataformid/:dataformquestionid/:questionschoiceid/:patadataformattachmentid", PatientDataFormsQuestionsValidation, PatientDataFormsQuestions);
 
-router.post("/patientfileassignment", PatientDataFormsQuestions, PatientFileAssignments);
+router.post("/patientfileassignment/:fileuploadid/:patientenrollmentid/:attachedby", PatientDataFormsQuestions, PatientFileAssignments);
 
-router.post("/patientdoctorappointments", PatientDoctorAppointmentsValidation, PatientDoctorAppointments);
+router.post("/patientdoctorappointments/:patientdid/:doctorid/:patientenrollmentid", PatientDoctorAppointmentsValidation, PatientDoctorAppointments);
 
-router.post("/patientmedicines", PatientmedicinesValidation, PatientMedicines);
+router.post("/patientmedicines/:patientid/:medicineid", PatientmedicinesValidation, PatientMedicines);
 
-router.post("/patientnotes", PatientNotesValidation, PatientNotes);
+router.post("/patientnotes/:patientdid/:doctorid/:patientenrollmentid", PatientNotesValidation, PatientNotes);
 
 module.exports = router;
