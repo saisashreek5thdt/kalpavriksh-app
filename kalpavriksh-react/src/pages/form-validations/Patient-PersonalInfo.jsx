@@ -7,7 +7,7 @@ import Input from "../../Components/Input";
 
 import Select from "../../Components/Select";
 
-import { useForm } from "../../hooks/form-hooks";
+import { useForm } from "../../Hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 

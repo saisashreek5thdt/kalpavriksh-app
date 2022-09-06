@@ -6,7 +6,7 @@ import { VALIDATOR_REQUIRE } from "../../util/validators";
 
 import Input from "../../Components/Input";
 
-import { useForm } from "../../hooks/form-hooks";
+import { useForm } from "../../Hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
