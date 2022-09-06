@@ -10,7 +10,7 @@ import ButtonLog from "../../Components/Button-Log";
 
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../util/validators";
 
-import { useForm } from "../../hooks/form-hooks";
+import { useForm } from "../../Hooks/form-hooks";
 
 import { AuthContext } from "../../context/auth-context";
 
