@@ -2,7 +2,6 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", 
-    './node_modules/tw-elements/dist/js/**/*.js'
   ],
   theme: {
     extend: {},
@@ -13,7 +12,6 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss'),
-    require('tw-elements/dist/plugin'),
     require('autoprefixer'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),

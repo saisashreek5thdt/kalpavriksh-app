@@ -9,7 +9,7 @@ import { VALIDATOR_REQUIRE } from "../../util/validators";
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
 
-import { useForm } from "../../Hooks/form-hooks";
+import { useForm } from "../../hooks/form-hooks";
 
 const UploadDietChart = () => {
   const [formState, inputHandler] = useForm(
