@@ -7,6 +7,7 @@ import Navbar from "../pages/shared/Navbar";
 const UserDashboard = () => {
   return (
     <>
+      {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
         <Navbar />
         <header className="header__Box">
@@ -22,7 +23,9 @@ const UserDashboard = () => {
             <div className="dashboard__Content--Box">
               <div className="dashboard__Content--Border" />
               <div>
+                {/* Floating Button Container Starts Here */}
                 <Container>
+                    {/* Floating Item 1 */}
                     <Link 
                       href="/userrole/:pid/enroll/personalinfo/" 
                       tooltip="Patient Enrollment Form"
@@ -30,6 +33,7 @@ const UserDashboard = () => {
                       text="Patient Enrollment Form"
                       className="fab-item btn btn-link btn-lg text-white"
                     />
+                    {/* Floating Item 2 */}
                     <Link 
                       href="/userrole/:pid/enroll/healthinfo/" 
                       tooltip="Patient Enrollment Form"
@@ -37,6 +41,7 @@ const UserDashboard = () => {
                       text="Patient Enrollment Form"
                       className="fab-item btn btn-link btn-lg text-white"
                     />
+                    {/* Floating Item 3 */}
                     <Link 
                       href="/userrole/:pid/enroll/" 
                       tooltip="Patient Enrollment Form"
@@ -44,6 +49,7 @@ const UserDashboard = () => {
                       text="Patient Enrollment Form"
                       className="fab-item btn btn-link btn-lg text-white"
                     />
+                    {/* Floating Button */}
                     <Button 
                       tooltip="The big plus button!"
                       icon="fas fa-plus"
@@ -51,12 +57,14 @@ const UserDashboard = () => {
                       onClick={() => alert('Button Clicked')}
                     />
                 </Container>
+                {/* Floating Button Container Ends Here */}
               </div>
             </div>
             {/* /End replace */}
           </div>
         </main>
       </div>
+      {/* Dashboard Container Ends Here */}
     </>
   );
 };

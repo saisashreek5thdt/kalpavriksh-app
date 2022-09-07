@@ -83,13 +83,18 @@ const UploadDietChart = () => {
 
   return (
     <>
+      {/* Patient Dashboard Container Starts Here */}
       <div className="dashboard__Container">
+        {/* Navbar Container Starts Here */}
         <Navbar />
+        {/* Navbar Container Ends Here */}
+        {/* Header Section Starts Here */}
         <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
+        {/* Header Section Ends Here */}
         <main>
           <div className="forms__Container">
             {/* Replace with your content */}
@@ -101,14 +106,18 @@ const UploadDietChart = () => {
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">
+                      {/* Form Section Start */}
                       <form
                         action="#"
                         method="POST"
                         onSubmit={uploadDietCharthHandler}
                       >
+                        {/* Form Controller Section Start */}
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
+                            {/* Form Input Section Start */}
                             <div className="forms__Controller--Grids">
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_caloriesRangeLow"
@@ -118,7 +127,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_caloriesRangeHigh"
@@ -128,7 +137,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_CarbohydratesRangeLow"
@@ -138,7 +147,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_CarbohydratesRangeHigh"
@@ -148,7 +157,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_Protiens"
@@ -158,7 +167,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_Fats"
@@ -168,7 +177,7 @@ const UploadDietChart = () => {
                                 errorText="Please Enter valid Values"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Select Component Vegetation Type */}
                               <Select
                                 element="select"
                                 id="patient_VegetationType"
@@ -178,7 +187,7 @@ const UploadDietChart = () => {
                                 errorText="Please Select Your Cuisine"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_Cuisine"
@@ -188,8 +197,9 @@ const UploadDietChart = () => {
                                 errorText="Please Enter Your Cuisine"
                                 onInput={inputHandler}
                               />
-
+                              {/* Upload File Section Start */}
                               <div className="forms__Controller--Grids_Cols">
+                                {/* Upload Button Start */}
                                 <button
                                   type="file"
                                   name="patient-uploadFile"
@@ -199,11 +209,17 @@ const UploadDietChart = () => {
                                 >
                                   Upload File
                                 </button>
+                                {/* Upload Button End */}
                               </div>
+                              {/* Upload File Section End */}
                             </div>
+                            {/* Form Input Section End */}
                           </div>
                         </div>
+                        {/* Form Controller Section End */}
+                        {/* Form Button Container Start */}
                         <div className="forms__Controller--Btn-Container">
+                          {/* Form Button Start */}
                           <div className="text-right">
                             <button
                               type="submit"
@@ -212,8 +228,11 @@ const UploadDietChart = () => {
                               Submit
                             </button>
                           </div>
+                          {/* Form Button End */}
                         </div>
+                        {/* Form Button Container End */}
                       </form>
+                      {/* Form Section End */}
                     </div>
                   </div>
                 </div>
@@ -224,6 +243,7 @@ const UploadDietChart = () => {
           </div>
         </main>
       </div>
+      {/* Patient Dashboard Container Ends Here */}
     </>
   );
 };

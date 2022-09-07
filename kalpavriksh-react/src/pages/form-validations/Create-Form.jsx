@@ -79,13 +79,18 @@ const CreateForm = () => {
 
   return (
     <>
+      {/* Patient Dashboard Container Starts Here */}
       <div className="dashboard__Container">
+        {/* Navbar Container Starts Here */}
         <Navbar />
+        {/* Navbar Container Ends Here */}
+        {/* Header Section Starts Here */}
         <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
+        {/* Header Section Ends Here */}
         <main>
           <div className="forms__Container">
             {/* Replace with your content */}
@@ -97,14 +102,18 @@ const CreateForm = () => {
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">
+                      {/* Form Section Start */}
                       <form
                         action="#"
                         method="POST"
                         onSubmit={createFormHandler}
                       >
+                        {/* Form Controller Section Start */}
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
+                            {/* Form Input Section Start */}
                             <div className="forms__Controller--Grids">
+                              {/* Input Type Component Text */}
                               <Input
                                 element="input"
                                 id="patient_FormQuestionTitle"
@@ -114,8 +123,9 @@ const CreateForm = () => {
                                 errorText="Please Enter a Form Title"
                                 onInput={inputHandler}
                               />
-
+                              {/* Add Question Section Start */}  
                               <div className="col-span-3 sm:col-span-6">
+                                {/* Addd Question Button Start */}
                                 <button
                                   type="submit"
                                   className="forms__Controller--Btn-Container_Btn-Gray"
@@ -126,11 +136,12 @@ const CreateForm = () => {
                                 >
                                   Add Question
                                 </button>
+                                {/* Addd Question Button End */}
                               </div>
+                              {/* Add Question Section End */}
 
                               {question && (
                                 <>
-                                  {" "}
                                   <div className="forms__Controller--Grids_Cols">
                                     <label
                                       htmlFor="patient-questionType"
@@ -149,6 +160,7 @@ const CreateForm = () => {
                                   <option>MCQ - Checkbox</option>
                                   <option>MCQ - Radio</option>
                                 </select> */}
+                                    {/* Input Type Component Select */}
                                     <select
                                       value={selected}
                                       onChange={handleChange}
@@ -167,6 +179,7 @@ const CreateForm = () => {
                                       ))}
                                     </select>
                                   </div>
+                                  {/* Input Type Component Text */}
                                   <Input
                                     element="input"
                                     id="patient_QuestionTitle"
@@ -178,6 +191,7 @@ const CreateForm = () => {
                                   />
                                   {selected !== "textarea" && (
                                     <>
+                                      {/* Input Type Component Text */}
                                       <Input
                                         element="input"
                                         id="patient_QuestionChoice1"
@@ -187,7 +201,7 @@ const CreateForm = () => {
                                         errorText="Please Enter a Question Choice"
                                         onInput={inputHandler}
                                       />
-
+                                      {/* Input Type Component Text */}
                                       <Input
                                         element="input"
                                         id="patient_QuestionChoice2"
@@ -197,7 +211,7 @@ const CreateForm = () => {
                                         errorText="Please Enter a Question Choice"
                                         onInput={inputHandler}
                                       />
-
+                                      {/* Input Type Component Text */}
                                       <Input
                                         element="input"
                                         id="patient_QuestionChoice3"
@@ -207,7 +221,7 @@ const CreateForm = () => {
                                         errorText="Please Enter a Question Choice"
                                         onInput={inputHandler}
                                       />
-
+                                      {/* Input Type Component Text */}
                                       <Input
                                         element="input"
                                         id="patient_QuestionChoice4"
@@ -222,9 +236,13 @@ const CreateForm = () => {
                                 </>
                               )}
                             </div>
+                            {/* Form Input Section End */}
                           </div>
                         </div>
+                        {/* Form Controller Section End */}
+                        {/* Form Button Container Start */}
                         <div className="forms__Controller--Btn-Container">
+                          {/* Form Button Start */}
                           <div className="text-right">
                             <button
                               type="submit"
@@ -233,8 +251,11 @@ const CreateForm = () => {
                               Submit
                             </button>
                           </div>
+                          {/* Form Button End */}
                         </div>
+                        {/* Form Button Container End */}
                       </form>
+                      {/* Form Section End */}
                     </div>
                   </div>
                 </div>
@@ -245,6 +266,7 @@ const CreateForm = () => {
           </div>
         </main>
       </div>
+      {/* Patient Dashboard Container Ends Here */}
     </>
   );
 };
