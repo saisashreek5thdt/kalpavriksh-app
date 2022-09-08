@@ -48,7 +48,6 @@ const PatientPersonalInfo = () => {
 
   const patientPersonalHandler = (e) => {
     e.preventDefault();
-    /*
     if (
       formState.inputs.amountPaid.value === "" ||
       formState.inputs.paymentMode.value === "" ||
@@ -58,10 +57,8 @@ const PatientPersonalInfo = () => {
       return null;
     } else {
       console.log(formState.inputs);
+      history.push("/userrole/:roleid/doctor/");
     }
-    */
-    console.log(formState.inputs);
-    history.push("/userrole/:roleid/doctor/");
   };
 
   return (
@@ -95,7 +92,7 @@ const PatientPersonalInfo = () => {
                     { label: "Step 3", active: true, completed: true },
                   ]}
                   active="true"
-                  activeStep={1}
+                  activeStep={2}
                   activeBgColor="#3E503C"
                 />
                 {/* Stepper Section End */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import { Stepper } from "react-form-stepper";
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
 
-import FloatingButton from '../../Components/Floating-Button'
+import FloatingButton from "../../Components/Floating-Button";
 
 import {
   VALIDATOR_EMAIL,
@@ -98,12 +98,12 @@ const EnrollPatient = () => {
                 {/* Stepper Section Start */}
                 <Stepper
                   steps={[
-                    { label: "Step 1", active: true, completed: true },
+                    { label: "Step 1", active: false, completed: false },
                     { label: "Step 2", active: false, completed: false },
                     { label: "Step 3", active: false, completed: false },
                   ]}
                   active="true"
-                  activeStep={1}
+                  activeStep={0}
                   activeBgColor="#3E503C"
                 />
                 {/* Stepper Section End */}

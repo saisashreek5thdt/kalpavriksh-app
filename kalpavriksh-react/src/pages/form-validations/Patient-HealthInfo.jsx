@@ -88,7 +88,7 @@ const PatientHealthInfo = () => {
 
   const patientHealthHandler = (e) => {
     e.preventDefault();
-    /*if (
+    if (
       formState.inputs.patient_height.value === "" ||
       formState.inputs.patient_weight.value === "" ||
       formState.inputs.patient_caretakerName.value === "" ||
@@ -102,9 +102,8 @@ const PatientHealthInfo = () => {
       return null;
     } else {
       console.log(formState.inputs);
-    } */
-    console.log(formState.inputs);
-    history.push("/userrole/:pid/enroll/personalinfo/");
+      history.push("/userrole/:pid/enroll/personalinfo/");
+    }
   };
 
   return (
@@ -138,7 +137,7 @@ const PatientHealthInfo = () => {
                     { label: "Step 3", active: false, completed: false },
                   ]}
                   active="true"
-                  activeStep={2}
+                  activeStep={1}
                   activeBgColor="#3E503C"
                 />
                 {/* Stepper Section End */}
