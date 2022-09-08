@@ -10,6 +10,8 @@ import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
+import FloatingButton from '../../Components/Floating-Button'
+
 const CreateForm = () => {
   const options = [
     { value: "", text: "--Choose an option--" },
@@ -267,6 +269,7 @@ const CreateForm = () => {
         </main>
       </div>
       {/* Patient Dashboard Container Ends Here */}
+      <FloatingButton />
     </>
   );
 };

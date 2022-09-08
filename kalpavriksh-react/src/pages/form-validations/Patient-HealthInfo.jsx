@@ -138,7 +138,7 @@ const PatientHealthInfo = () => {
                     { label: "Step 3", active: false, completed: false },
                   ]}
                   active="true"
-                  activeStep={1}
+                  activeStep={2}
                   activeBgColor="#3E503C"
                 />
                 {/* Stepper Section End */}

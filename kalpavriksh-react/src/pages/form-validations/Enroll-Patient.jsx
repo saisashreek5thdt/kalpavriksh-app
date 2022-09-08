@@ -7,6 +7,8 @@ import { Stepper } from "react-form-stepper";
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
 
+import FloatingButton from '../../Components/Floating-Button'
+
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_REQUIRE,
@@ -224,6 +226,7 @@ const EnrollPatient = () => {
         </main>
       </div>
       {/* Patient Dashboard Container Ends Here */}
+      <FloatingButton />
     </>
   );
 };

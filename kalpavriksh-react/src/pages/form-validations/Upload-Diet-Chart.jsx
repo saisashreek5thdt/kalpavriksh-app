@@ -11,6 +11,8 @@ import Select from "../../Components/Select";
 
 import { useForm } from "../../hooks/form-hooks";
 
+import FloatingButton from '../../Components/Floating-Button'
+
 const UploadDietChart = () => {
   const [formState, inputHandler] = useForm(
     {
@@ -244,6 +246,7 @@ const UploadDietChart = () => {
         </main>
       </div>
       {/* Patient Dashboard Container Ends Here */}
+      <FloatingButton />
     </>
   );
 };
