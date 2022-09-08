@@ -75,6 +75,12 @@
                     &[type="number"], &[type="email"], &[type="text"], &[type="date"], &[type="tel"], &[type="time"] {
                         @apply mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
                     }
+                    &[type="radio"] {
+                        @apply h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500;
+                    }
+                    &[type="checkbox"] {
+                        @apply h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
+                    }
                 }
 
                 &-InputError {
