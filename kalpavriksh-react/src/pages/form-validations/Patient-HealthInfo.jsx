@@ -138,7 +138,7 @@ const PatientHealthInfo = () => {
                   ]}
                   active="true"
                   activeStep={1}
-                  activeBgColor="#3E503C"
+                  activebgcolor="#3E503C"
                 />
                 {/* Stepper Section End */}
                 <div className="forms__GridBox">
@@ -197,7 +197,7 @@ const PatientHealthInfo = () => {
                               />
                               {/* Input Type Component Time */}
                               <Input
-                                id="patient_caretakerTime"
+                                id="patient_preferredCall"
                                 element="input"
                                 type="time"
                                 label="CaretakerTime"

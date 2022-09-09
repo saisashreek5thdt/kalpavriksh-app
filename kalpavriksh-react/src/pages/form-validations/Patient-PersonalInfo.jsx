@@ -49,10 +49,10 @@ const PatientPersonalInfo = () => {
   const patientPersonalHandler = (e) => {
     e.preventDefault();
     if (
-      formState.inputs.amountPaid.value === "" ||
-      formState.inputs.paymentMode.value === "" ||
-      formState.inputs.paymentDate.value === "" ||
-      formState.inputs.refID.value === "" 
+      formState.inputs.patient_amountPaid.value === "" ||
+      formState.inputs.patient_paymentMode.value === "" ||
+      formState.inputs.patient_paymentDate.value === "" ||
+      formState.inputs.patient_refID.value === "" 
     ) {
       return null;
     } else {
@@ -93,7 +93,7 @@ const PatientPersonalInfo = () => {
                   ]}
                   active="true"
                   activeStep={2}
-                  activeBgColor="#3E503C"
+                  activebgcolor="#3E503C"
                 />
                 {/* Stepper Section End */}
                 <div className="forms__GridBox">

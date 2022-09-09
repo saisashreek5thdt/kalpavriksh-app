@@ -14,8 +14,8 @@ const user = {
 const navigation = [
   { name: "Dashboard", href: "/userrole/:roleid/patient/", current: true },
   { name: "Daily", href: "/userrole/:roleid/form/patientform/", current: true },
-  { name: "Weekly", href: "/userrole/:roleid/patient/", current: true },
-  { name: "More", href: "/userrole/:roleid/patient/", current: false },
+  { name: "Weekly", href: "/userrole/:roleid/form/patientform/", current: true },
+  { name: "More", href: "/userrole/:roleid/form/patientform/", current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },

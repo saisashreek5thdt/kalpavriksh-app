@@ -16,13 +16,17 @@ import { AuthContext } from "../../context/auth-context";
 
 import DATA from "../../DATA.json";
 
+const authenticateduser = JSON.parse(localStorage.getItem("kalpavriksh"));
+
+const role = authenticateduser ? authenticateduser.emailAddress : null;
+
 const LoginForm = () => {
   const auth = useContext(AuthContext);
   const [isLogged, setIsLogged] = useState(false);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
-      email: {
+      emailAddress: {
         value: "",
         isValid: false,
       },
@@ -41,7 +45,7 @@ const LoginForm = () => {
           ...formState.inputs,
           name: undefined,
         },
-        formState.inputs.email.isValid && formState.inputs.password.isValid
+        formState.inputs.emailAddress.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
@@ -63,15 +67,23 @@ const LoginForm = () => {
   const loginHandler = (event) => {
     event.preventDefault();
 
+    const user = DATA.find((data) => data.email === loggedHandler);
+
+    if(!user) return setIsLogged(true);
+
+    if (user.password !== loggedHandler) return setIsLogged(true);
+
+    localStorage.setItem("kalpavriksh", JSON.stringify(user));
+
     if (
-      formState.inputs.email.value === "" ||
+      formState.inputs.emailAddress.value === "" ||
       formState.inputs.password.value === ""
     ) {
       return null;
     } else {
       console.log(formState.inputs);
       auth.login();
-      history.push("/userrole/:roleid/patient/");
+      history.push(`/userrole/:roleid/${role}/`);
     }
     
   };
@@ -91,7 +103,7 @@ const LoginForm = () => {
           {/* Input for Email Address */}
           <InputLog
             element="input"
-            id="email-address"
+            id="emailAddress"
             type="email"
             label="Email Address"
             placeholder="Enter Email Address"

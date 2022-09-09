@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { useHistory } from "react-router-dom";
 
@@ -104,7 +104,7 @@ const EnrollPatient = () => {
                   ]}
                   active="true"
                   activeStep={0}
-                  activeBgColor="#3E503C"
+                  activebgcolor="#3E503C"
                 />
                 {/* Stepper Section End */}
                 <div className="forms__GridBox">

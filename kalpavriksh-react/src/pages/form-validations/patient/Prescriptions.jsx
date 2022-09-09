@@ -1,9 +1,17 @@
 import React from "react";
 
-import TopNavbar from "../pages/shared/TopNavbar";
-import Bottombar from "../pages/shared/Bottombar";
+import { useHistory } from "react-router-dom";
 
-const PatientDashboard = () => {
+import TopNavbar from "../../shared/TopNavbar";
+
+import Table from "../../shared/Table";
+
+import Bottombar from "../../shared/Bottombar";
+
+const Prescriptions = () => {
+
+  const history = useHistory();
+
   return (
     <>
       {/* Patient Dashboard Container Starts Here */}
@@ -21,9 +29,19 @@ const PatientDashboard = () => {
         <main>
           <div className="dashboard__Content">
             {/* Replace with your content */}
-            <div className="dashboard__Content--Box">
+            {/* <div className="dashboard__Content--Box">
               <div className="dashboard__Content--Border" />
+            </div> */}
+            <div className="text-left">
+              <button
+                type="button"
+                className="forms__Controller--Btn-Container_Btn-Gray"
+                onClick={() => history.push("/userrole/:roleid/form/appointments/")}
+              >
+                Appointments
+              </button>
             </div>
+            <Table />
             {/* /End replace */}
           </div>
         </main>
@@ -33,4 +51,4 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+export default Prescriptions;

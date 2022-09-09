@@ -20,6 +20,8 @@ import CreateForm from "./pages/form-validations/Create-Form";
 import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
 
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
+import Prescriptions from "./pages/form-validations/patient/Prescriptions";
+import Appointments from "./pages/form-validations/patient/Appointments";
 
 const App = () => {
 
@@ -66,6 +68,14 @@ const App = () => {
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />
           </Route>
+          <Route path="/userrole/:roleid/form/prescriptions/" exact>
+            <Prescriptions />
+          </Route>
+
+          <Route path="/userrole/:roleid/form/appointments/" exact>
+            <Appointments />
+          </Route>
+
           <Redirect to="/" />
         </Switch>
       </Router>

@@ -73,8 +73,6 @@
 
 import React from "react";
 
-import { Container, Link, Button } from "react-floating-action-button";
-
 import Navbar from "../pages/shared/Navbar";
 import FloatingButton from '../Components/Floating-Button'
 

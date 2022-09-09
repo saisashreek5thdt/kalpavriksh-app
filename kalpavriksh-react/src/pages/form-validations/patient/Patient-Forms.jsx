@@ -10,11 +10,12 @@ import TopNavbar from "../../shared/TopNavbar";
 
 import { VALIDATOR_REQUIRE } from "../../../util/validators";
 
-import Input from "../../../Components/Input";
+import InputPatient from "../../../Components/Input-Patient";
 
 import Checkbox from "../../../Components/Checkbox";
 
 import { useForm } from "../../../hooks/form-hooks";
+import Bottombar from "../../shared/Bottombar";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -209,7 +210,12 @@ const PatientForms = () => {
                       <div className="forms__Controller">
                         <div className="forms__Controller--Box">
                           <div className="forms__Controller--Grids">
-                            <Input
+                            <div className="forms__Controller--Grids_Cols-6">
+                              <p className="text-center text-xl"> GRAPH SECTION</p>
+                            </div>
+                          </div>
+                          <div className="forms__Controller--Grids">
+                            <InputPatient
                               element="input"
                               id="patient_QuestionAnswer1"
                               type="text"
@@ -220,7 +226,7 @@ const PatientForms = () => {
                             />
                           </div>
                           <div className="forms__Controller--Grids">
-                            <Input
+                            <InputPatient
                               element="input"
                               id="patient_QuestionAnswer2"
                               type="text"
@@ -293,6 +299,7 @@ const PatientForms = () => {
             {/* /End replace */}
           </div>
         </main>
+        <Bottombar />
       </div>
     </>
   );
