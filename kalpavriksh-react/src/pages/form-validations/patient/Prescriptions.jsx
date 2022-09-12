@@ -29,10 +29,9 @@ const Prescriptions = () => {
         <main>
           <div className="dashboard__Content">
             {/* Replace with your content */}
-            {/* <div className="dashboard__Content--Box">
-              <div className="dashboard__Content--Border" />
-            </div> */}
+            {/* Dropdown Form Button Start */}
             <div className="text-left">
+              {/* Button Container Start */}
               <button
                 type="button"
                 className="forms__Controller--Btn-Container_Btn-Gray"
@@ -40,8 +39,12 @@ const Prescriptions = () => {
               >
                 Appointments
               </button>
+              {/* Button Container End */}
             </div>
+            {/* Dropdown Form Button End */}
+            {/* Table Container Start */}
             <Table />
+            {/* Table Container End */}
             {/* /End replace */}
           </div>
         </main>

@@ -3,7 +3,7 @@ import React from "react";
 const viewIcon = () => {
   return (
     <>
-      <div className="w-6 mr-2 transform hover:text-blue-500 hover:scale-110">
+      <div className="icon icon__View">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -31,7 +31,7 @@ const viewIcon = () => {
 const editIcon = () => {
   return (
     <>
-      <div className="w-6 mr-2 transform hover:text-green-500 hover:scale-110">
+      <div className="icon icon__Edit">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -53,7 +53,7 @@ const editIcon = () => {
 const deleteIcon = () => {
   return (
     <>
-      <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+      <div className="icon icon__Delete">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

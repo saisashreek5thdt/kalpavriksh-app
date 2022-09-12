@@ -74,12 +74,12 @@ const PatientForms = () => {
             {/* Replace with your content */}
             <div className="dashboard__Content--Box">
               {/* <div className="dashboard__Content--Border" /> */}
-              {/* <h3 className="text-2xl text-center">
-                Patient Form Daily, Weekly, More
-              </h3> */}
+              {/* Dropdown Box Start */}
               <div className="dropdown-RightBox">
+                {/* Dropdown Container Menu Start */}
                 <Menu as="div" className="dropdown__Container">
                   <div>
+                    {/* Dropdown Menu Button Start */}
                     <Menu.Button className="dropdown__Menu--Btn">
                       <PaperClipIcon className="dropdown__Menu--Btn-Icon_1" />
                       Attach Form
@@ -88,6 +88,7 @@ const PatientForms = () => {
                         aria-hidden="true"
                       />
                     </Menu.Button>
+                    {/* Dropdown Menu Button End */}
                   </div>
 
                   <Transition
@@ -99,8 +100,10 @@ const PatientForms = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
+                    {/* Menu Items Start */}
                     <Menu.Items className="dropdown__Menu--Items-Box">
                       <div className="py-1">
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -116,6 +119,8 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -131,8 +136,11 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
+                        {/* Menu Item Start */}
                       </div>
                       <div className="py-1">
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -148,6 +156,8 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -163,8 +173,10 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
                       </div>
                       <div className="py-1">
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -180,6 +192,8 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
+                        {/* Menu Item Start */}
                         <Menu.Item>
                           {({ active }) => (
                             <a
@@ -195,26 +209,41 @@ const PatientForms = () => {
                             </a>
                           )}
                         </Menu.Item>
+                        {/* Menu Item End */}
                       </div>
                     </Menu.Items>
+                    {/* Menu Items End */}
                   </Transition>
                 </Menu>
+                {/* Dropdown Container Menu End */}
               </div>
+              {/* Dropdown Box End */}
               <div className="text-center text-xl">
                 {/* <h3>Form Section</h3> */}
               </div>
+              {/* Patient Form Box Start */}
               <div className="forms__GridBox">
+                {/* Patient Form Columns Start */}
                 <div className="forms__GridBox--GridCols">
+                  {/* Patient Form Column Gaps Start */}
                   <div className="forms__GridBox--GridGaps">
+                    {/* Patient Form Controller Start */}
                     <form action="#" method="POST" onSubmit={patientFormHandler}>
                       <div className="forms__Controller">
+                        {/* Patient Form Controller Box Start */}
                         <div className="forms__Controller--Box">
+                          {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
+                            {/* Patient Form Graph End */}
                             <div className="forms__Controller--Grids_Cols-6">
                               <p className="text-center text-xl"> GRAPH SECTION</p>
                             </div>
+                            {/* Patient Form Graph End */}
                           </div>
+                          {/* Patient Form Controller Grid End */}
+                          {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
+                            {/* Input for Question Start */}
                             <InputPatient
                               element="input"
                               id="patient_QuestionAnswer1"
@@ -224,8 +253,12 @@ const PatientForms = () => {
                               errorText="Please Enter valid Answer"
                               onInput={inputHandler}
                             />
+                            {/* Input for Question End */}
                           </div>
+                          {/* Patient Form Controller Grid End */}
+                          {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
+                            {/* Input for Question Start */}
                             <InputPatient
                               element="input"
                               id="patient_QuestionAnswer2"
@@ -235,8 +268,12 @@ const PatientForms = () => {
                               errorText="Please Enter valid Answer"
                               onInput={inputHandler}
                             />
+                            {/* Input for Question End */}
                           </div>
+                          {/* Patient Form Controller Grid End */}
+                          {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
+                            {/* Input Checkbox for Option Start */}
                             <Checkbox
                               element="input"
                               id="patient_CheckboxOption1"
@@ -246,7 +283,8 @@ const PatientForms = () => {
                               errorText="Please Select valid Answer"
                               onInput={inputHandler}
                             />
-
+                            {/* Input Checkbox for Option End */}
+                            {/* Input Checkbox for Option Start */}
                             <Checkbox
                               element="input"
                               id="patient_CheckboxOption2"
@@ -256,9 +294,12 @@ const PatientForms = () => {
                               errorText="Please Select valid Answer"
                               onInput={inputHandler}
                             />
-
+                            {/* Input Checkbox for Option End */}
                           </div>
+                          {/* Patient Form Controller Grid End */}
+                          {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
+                            {/* Input Checkbox for Option Start */}
                             <Checkbox
                               element="input"
                               id="patient_RadioOption1"
@@ -268,7 +309,8 @@ const PatientForms = () => {
                               errorText="Please Select valid Answer"
                               onInput={inputHandler}
                             />
-
+                            {/* Input Checkbox for Option End */}
+                            {/* Input Checkbox for Option Start */}
                             <Checkbox
                               element="input"
                               id="patient_RadioOption2"
@@ -278,23 +320,34 @@ const PatientForms = () => {
                               errorText="Please Select valid Answer"
                               onInput={inputHandler}
                             />
+                            {/* Input Checkbox for Option End */}
                           </div>
+                          {/* Patient Form Controller Grid End */}
                         </div>
+                        {/* Patient Form Controller Box End */}
                       </div>
+                      {/* Patient Form Controller Button Container Start */}
                       <div className="forms__Controller--Btn-Container">
                         <div className="text-right">
+                          {/* Patient Form Controller Button Green Start */}
                           <button
                             type="submit"
                             className="forms__Controller--Btn-Container_Btn-Green"
                           >
                             Submit
                           </button>
+                          {/* Patient Form Controller Button Green End */}
                         </div>
                       </div>
+                      {/* Patient Form Controller Button Container End */}
                     </form>
+                    {/* Patient Form Controller End */}
                   </div>
+                  {/* Patient Form Column Gaps End */}
                 </div>
+                {/* Patient Form Columns End */}
               </div>
+              {/* Patient Form Box End */}
             </div>
             {/* /End replace */}
           </div>
