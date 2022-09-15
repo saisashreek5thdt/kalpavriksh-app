@@ -1,0 +1,19 @@
+.checkbox {
+    &__Container {
+        @apply flex items-start;
+    }
+
+    &__Item {
+        @apply flex h-5 items-center;
+    }
+
+    &__Label {
+        @apply ml-3 text-sm;
+    }
+
+    &__Text {
+        &-Gray {
+            @apply text-gray-500;
+        }
+    }
+}

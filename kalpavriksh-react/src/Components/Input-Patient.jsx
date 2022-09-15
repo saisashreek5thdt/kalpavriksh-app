@@ -21,7 +21,7 @@ const inputReducer = (state, action) => {
     }
 };
 
-const Input = (props) => {
+const InputPatient = (props) => {
 
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
@@ -55,7 +55,7 @@ const Input = (props) => {
             <input 
                 id={props.id}
                 type={props.type}
-                className="forms__Controller--Grids_Cols-Input"
+                className="forms__Controller--Grids_Cols-6-Input"
                 placeholder={props.placeholder}
                 onChange={changeHandler}
                 onBlur={touchHandler}
@@ -72,13 +72,13 @@ const Input = (props) => {
         );
 
     return (
-        <div className="forms__Controller--Grids_Cols">
-            <label htmlFor={props.id} className="forms__Controller--Grids_Cols-Label">{props.label}</label>
+        <div className="forms__Controller--Grids_Cols-6">
+            <label htmlFor={props.id} className="forms__Controller--Grids_Cols-6-Label">{props.label}</label>
             {element}
-            {!inputState.isValid && inputState.isTouched && <p className="forms__Controller--Grids_Cols-InputError">{props.errorText}</p>}
+            {!inputState.isValid && inputState.isTouched && <p className="forms__Controller--Grids_Cols-6-InputError">{props.errorText}</p>}
         </div>
     );
 
 };
 
-export default Input;
+export default InputPatient;

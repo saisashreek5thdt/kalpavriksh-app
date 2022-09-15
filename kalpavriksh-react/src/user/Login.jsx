@@ -9,11 +9,16 @@ const Login = () => {
 
   return (
     <React.Fragment>
+      {
+      /* Login Page */
+      }
+      {/* Login Container Starts Here */}
       <div className="login__Container">
         <div className="login__Container-Height">
           <div className="login__Container-Flexbox">
             <div className="login__Container-Imgbox">
               <div>
+                {/* Login Page Image */}
                 <img
                   className="login__Container-Img"
                   src={logoImg}
@@ -26,11 +31,14 @@ const Login = () => {
                   Sign in to your account
                 </h2>
               </div>
+              {/* Login Form Page Starts Here*/}
               <LoginForm />
+              {/* Login Form Page Ends Here*/}
             </div>
           </div>
         </div>
       </div>
+      {/* Login Container Ends Here */}
     </React.Fragment>
   );
 };

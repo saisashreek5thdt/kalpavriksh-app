@@ -2,8 +2,12 @@ import React from "react";
 
 import { useHistory } from "react-router-dom";
 
+import { Stepper } from "react-form-stepper";
+
 import Input from "../../Components/Input";
 import Select from "../../Components/Select";
+
+import FloatingButton from "../../Components/Floating-Button";
 
 import {
   VALIDATOR_EMAIL,
@@ -11,7 +15,7 @@ import {
   VALIDATOR_MAXLENGTH,
 } from "../../util/validators";
 
-import { useForm } from "../../Hooks/form-hooks";
+import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
@@ -70,13 +74,18 @@ const EnrollPatient = () => {
 
   return (
     <>
+      {/* Patient Dashboard Container Starts Here */}
       <div className="dashboard__Container">
+        {/* Navbar Container Starts Here */}
         <Navbar />
+        {/* Navbar Container Ends Here */}
+        {/* Header Section Starts Here */}
         <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
+        {/* Header Section Ends Here */}
         <main>
           <div className="forms__Container">
             {/* Replace with your content */}
@@ -85,16 +94,32 @@ const EnrollPatient = () => {
                 <h2 className="forms__Header--FlexBox-Heading">
                   Enroll Patient Form
                 </h2>
+                {/* Multi Step Form Section Starts Here */}
+                {/* Stepper Section Start */}
+                <Stepper
+                  steps={[
+                    { label: "Step 1", active: false, completed: false },
+                    { label: "Step 2", active: false, completed: false },
+                    { label: "Step 3", active: false, completed: false },
+                  ]}
+                  active="true"
+                  activeStep={0}
+                  activebgcolor="#3E503C"
+                />
+                {/* Stepper Section End */}
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">
+                      {/* Multi Form Section Start */}
                       <form
                         action="#"
                         method="POST"
                         onSubmit={patientFormHandler}
                       >
+                        {/* Mutli Form Controller Start */}
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
+                            {/* Mutli Form Image Picker Section Start */}
                             <div>
                               <label className="forms__Controller--Box_Label-Photo">
                                 Photo
@@ -117,7 +142,10 @@ const EnrollPatient = () => {
                                 </button>
                               </div>
                             </div>
+                            {/* Mutli Form Image Picker Section End */}
+                            {/* Multi Form Input Section Start */}
                             <div className="forms__Controller--Grids">
+                              {/* Input Type Component Phone */}
                               <Input
                                 element="input"
                                 id="patient_phone"
@@ -127,7 +155,7 @@ const EnrollPatient = () => {
                                 errorText="Please Enter 10 Digit Number"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Email Address */}
                               <Input
                                 element="input"
                                 id="patient_email"
@@ -137,7 +165,7 @@ const EnrollPatient = () => {
                                 errorText="Please Enter a valid Email Address"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Full Name */}
                               <Input
                                 element="input"
                                 id="patient_fullName"
@@ -147,7 +175,7 @@ const EnrollPatient = () => {
                                 errorText="Please Enter Valid Name"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Date */}
                               <Input
                                 element="input"
                                 id="patient_dob"
@@ -157,7 +185,7 @@ const EnrollPatient = () => {
                                 errorText="Please Enter Valid Date"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Select Component Gender */}
                               <Select
                                 element="select"
                                 id="patient_gender"
@@ -168,20 +196,28 @@ const EnrollPatient = () => {
                                 onInput={inputHandler}
                               />
                             </div>
+                            {/* Multi Form Input Section End */}
                           </div>
+                          {/* Mutli Form Button Container Start */}
                           <div className="forms__Controller--Btn-Container">
+                            {/* Mutli Form Button Start */}
                             <button
                               type="submit"
                               className="forms__Controller--Btn-Container_Btn"
                             >
                               Save &amp; Next
                             </button>
+                            {/* Mutli Form Button End */}
                           </div>
+                          {/* Mutli Form Button Container End */}
                         </div>
+                        {/* Mutli Form Controller End */}
                       </form>
+                      {/* Multi Form Section End */}
                     </div>
                   </div>
                 </div>
+                {/* Multi Step Form Section Ends Here */}
               </div>
             </div>
 
@@ -189,6 +225,8 @@ const EnrollPatient = () => {
           </div>
         </main>
       </div>
+      {/* Patient Dashboard Container Ends Here */}
+      <FloatingButton />
     </>
   );
 };

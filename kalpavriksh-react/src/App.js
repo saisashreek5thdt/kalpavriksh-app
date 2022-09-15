@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 
 import { AuthContext } from "./context/auth-context";
@@ -20,8 +20,8 @@ import CreateForm from "./pages/form-validations/Create-Form";
 import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
 
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
-
-import Stepper from "./pages/form-validations/Stepper";
+import Prescriptions from "./pages/form-validations/patient/Prescriptions";
+import Appointments from "./pages/form-validations/patient/Appointments";
 
 const App = () => {
 
@@ -68,9 +68,14 @@ const App = () => {
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />
           </Route>
-          <Route path="/stepper/" exact>
-            <Stepper />
+          <Route path="/userrole/:roleid/form/prescriptions/" exact>
+            <Prescriptions />
           </Route>
+
+          <Route path="/userrole/:roleid/form/appointments/" exact>
+            <Appointments />
+          </Route>
+
           <Redirect to="/" />
         </Switch>
       </Router>
@@ -102,6 +107,6 @@ const App = () => {
       </AuthContext.Provider>
     </>
   );
-};
+}
 
 export default App;
