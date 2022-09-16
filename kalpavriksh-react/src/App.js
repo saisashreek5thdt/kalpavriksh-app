@@ -18,6 +18,9 @@ import PatientPersonalInfo from "./pages/form-validations/Patient-PersonalInfo";
 import CreateForm from "./pages/form-validations/Create-Form";
 
 import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
+import PatientAppointmentInfo from "./pages/form-validations/Patient-AppointmentInfo";
+import MyPatientsInfo from "./pages/form-validations/MyPatients-Info";
+import PatientViewInfo from "./pages/form-validations/Patient-View-Info";
 
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
 import Prescriptions from "./pages/form-validations/patient/Prescriptions";
@@ -64,6 +67,15 @@ const App = () => {
           </Route>
           <Route path="/userrole/:pid/form/dietform/" exact>
             <UploadDietChart />
+          </Route>
+          <Route path="/userrole/:pid/form/appointment/" exact>
+            <PatientAppointmentInfo />
+          </Route>
+          <Route path="/userrole/:pid/form/appointment/patientinfo_view" exact>
+            <PatientViewInfo />
+          </Route>
+          <Route path="/userrole/:pid/form/mypatients/" excat>
+            <MyPatientsInfo />
           </Route>
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />

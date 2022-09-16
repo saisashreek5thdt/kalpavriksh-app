@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import { LockClosedIcon } from "@heroicons/react/solid";
+import { LockClosedIcon } from "@heroicons/react/24/solid";
 
 import InputLog from "../../Components/Input-Log";
 

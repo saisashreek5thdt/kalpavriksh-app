@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { UserIcon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import logoImg from "../../assets/images/logo/workflow-mark.svg";
 import User1 from "../../assets/images/user/user1.jpg";
@@ -11,15 +11,9 @@ const user = {
   email: "tom@example.com",
   imageUrl: User1,
 };
-const navigation = [
-  { name: "Dashboard", href: "/userrole/:roleid/doctor/", current: true },
-  { name: "Enroll Patient", href: "/userrole/:pid/enroll/", current: true },
-  { name: "Create Form", href: "/userrole/:pid/form/createform/", current: true },
-  { name: "Upload Diet Chart", href: "/userrole/:pid/form/dietform/", current: false },
-];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
+  { name: "Your Profile", href: "/" },
+  { name: "Settings", href: "/" },
   { name: "Sign out", href: "/" },
 ];
 
@@ -41,25 +35,6 @@ function classNames(...classes) {
                         src={logoImg}
                         alt="Workflow"
                       />
-                    </div>
-                    <div className="navbar__Hidden">
-                      <div className="navbar__Items">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current
-                                ? "navbar__Item--Active"
-                                : "navbar__Item--Hover",
-                              "navbar__Item"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
                     </div>
                   </div>
                   <div className="navbar__Hidden">
@@ -119,9 +94,9 @@ function classNames(...classes) {
                     <Disclosure.Button className="navbar__Profile--MobileMenu-Btn">
                       <span className="navbar__Profile--Notify-Btn_Span">Open main menu</span>
                       {open ? (
-                        <XIcon className="navbar__Profile--MobileMenu-Icon" aria-hidden="true" />
+                        <XMarkIcon className="navbar__Profile--MobileMenu-Icon" aria-hidden="true" />
                       ) : (
-                        <MenuIcon
+                        <UserIcon
                           className="navbar__Profile--MobileMenu-Icon"
                           aria-hidden="true"
                         />
@@ -132,24 +107,6 @@ function classNames(...classes) {
               </div>
 
               <Disclosure.Panel className="navbar__Profile--MobileMenu-Panel">
-                <div className="navbar__Profile--MobileMenu-Items">
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "navbar__Profile--MobileMenu-Item_Active"
-                          : "navbar__Profile--MobileMenu-Item_Hover",
-                        "navbar__Profile--MobileMenu-Item"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div>
                 <div className="navbar__Profile--MobileMenu-InfoBox">
                   <div className="navbar__Profile--MobileMenu-InfoBox_FlexBox">
                     <div className="navbar__Container--FlexBox-ImgBox">

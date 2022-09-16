@@ -1,5 +1,0 @@
-export { default as PopupButton } from './PopupButton'
-export { default as Input } from './Input'
-export { default as InputPhoto } from './InputPhoto'
-export { default as CreateFormComponent } from './CreateFormComponent'
-export { default as UploadDietChartComponent } from './UploadDietChartComponent'

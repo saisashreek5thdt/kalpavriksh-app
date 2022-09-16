@@ -74,6 +74,7 @@
 import React from "react";
 
 import Navbar from "../pages/shared/Navbar";
+import DoctorTabs from "../pages/shared/DoctorTabs";
 import FloatingButton from '../Components/Floating-Button'
 
 const UserDashboard = () => {
@@ -82,11 +83,14 @@ const UserDashboard = () => {
       {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
         <Navbar />
-        <header className="header__Box">
+       <DoctorTabs />
+        {/*
+          <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
+        */}
         <main>
           <div className="dashboard__Content">
             {/* Replace with your content */}
