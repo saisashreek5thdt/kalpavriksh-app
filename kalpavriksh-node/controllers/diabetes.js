@@ -12,6 +12,10 @@ const { asyncHandler } = require(path.join(
   "asyncHandler"
 ));
 
+// Desc   -  Create Diabetes Programs
+// Route  -  /api/v1/diabetes/programs
+// Method -  POST
+// Access -  Private
 exports.diabetesprograms = asyncHandler(async (req, res, next) => {
   const { name, number_of_days } = req.body;
   const result = await client

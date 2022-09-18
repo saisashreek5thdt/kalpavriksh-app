@@ -2,7 +2,7 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { UserRegistration, UserRolesRegistration, GetAllRegisteredUsers, UserRolesAssign } = require(path.join(
+const { UserRegistration, GetAllRegisteredUsers, GetOneRegisterUserById, UserLogin, OTPAuthentication, UpdateRegisteredUser } = require(path.join(
   __dirname,
   "..",
   "controllers",
@@ -16,13 +16,18 @@ const { UserRegisterValidation, UserRolesValidation } = require(path.join(
   "middlewares",
   "validators"
 ));
+const {isUserAuthorized} = require(path.join(__dirname, '..', 'middlewares', 'isAuthorized'))
 
 router.post("/register", UserRegisterValidation, UserRegistration);
 
 router.get('/all', GetAllRegisteredUsers)
 
-router.post("/userroleregister", UserRolesValidation, UserRolesRegistration);
+router.get('/user/:registerid', GetOneRegisterUserById)
 
-router.post("/userroleassign/:userroleid/:userid", UserRolesAssign);
+router.put('/login', UserLogin)
+
+router.post('/otp', OTPAuthentication)
+
+router.put('/user/update/:registerid',isUserAuthorized, UpdateRegisteredUser)
 
 module.exports = router;
