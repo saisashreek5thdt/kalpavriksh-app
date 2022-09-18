@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 
 import { AuthContext } from "./context/auth-context";
@@ -18,10 +18,13 @@ import PatientPersonalInfo from "./pages/form-validations/Patient-PersonalInfo";
 import CreateForm from "./pages/form-validations/Create-Form";
 
 import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
+import PatientAppointmentInfo from "./pages/form-validations/Patient-AppointmentInfo";
+import MyPatientsInfo from "./pages/form-validations/MyPatients-Info";
+import PatientViewInfo from "./pages/form-validations/Patient-View-Info";
 
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
-
-import Stepper from "./pages/form-validations/Stepper";
+import Prescriptions from "./pages/form-validations/patient/Prescriptions";
+import Appointments from "./pages/form-validations/patient/Appointments";
 
 const App = () => {
 
@@ -65,12 +68,26 @@ const App = () => {
           <Route path="/userrole/:pid/form/dietform/" exact>
             <UploadDietChart />
           </Route>
+          <Route path="/userrole/:pid/form/appointment/" exact>
+            <PatientAppointmentInfo />
+          </Route>
+          <Route path="/userrole/:pid/form/appointment/patientinfo_view" exact>
+            <PatientViewInfo />
+          </Route>
+          <Route path="/userrole/:pid/form/mypatients/" excat>
+            <MyPatientsInfo />
+          </Route>
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />
           </Route>
-          <Route path="/stepper/" exact>
-            <Stepper />
+          <Route path="/userrole/:roleid/form/prescriptions/" exact>
+            <Prescriptions />
           </Route>
+
+          <Route path="/userrole/:roleid/form/appointments/" exact>
+            <Appointments />
+          </Route>
+
           <Redirect to="/" />
         </Switch>
       </Router>
@@ -102,6 +119,6 @@ const App = () => {
       </AuthContext.Provider>
     </>
   );
-};
+}
 
 export default App;

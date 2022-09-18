@@ -1,11 +1,9 @@
 import React from 'react';
-
 import { createRoot } from 'react-dom/client';
-
 import './index.scss';
 import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import 'tw-elements';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);

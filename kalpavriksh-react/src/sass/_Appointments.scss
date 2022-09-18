@@ -1,0 +1,31 @@
+.appointment {
+
+    &__MainContainer {
+        @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+
+        &--TextAlign {
+            @apply sm:text-center md:text-left lg:text-left;            
+        }
+
+    }
+
+    &__Text {
+        @apply text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl md:text-2xl;
+
+        &--Inline {
+            @apply block xl:inline;
+        }
+
+        &--Number {
+            @apply text-indigo-600;
+        }
+
+    }
+
+    &__Filter {
+        &--Date {
+            @apply w-48 sm:text-center lg:text-left;
+        }
+    }
+
+}

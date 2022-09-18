@@ -1,0 +1,83 @@
+.patient {
+
+    &__ViewBox {
+        &--Container {
+            @apply overflow-hidden bg-white shadow sm:rounded-lg;
+        }
+
+        &--Heading {
+            @apply px-4 py-5 sm:px-6;
+
+            &_Primary {
+                @apply text-lg font-medium leading-6 text-gray-900;
+            }
+            &_Paragraph {
+                @apply mt-1 max-w-2xl text-sm text-gray-500;
+            }
+        }
+
+        &--BorderBox {
+            @apply border-t border-gray-200;
+
+            &_Alternate-1 {
+                @apply bg-white;
+            }
+
+            &_Alternate-2 {
+                @apply bg-gray-50;
+            }
+
+            &_LeftTextBox {
+                @apply px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6;
+            }
+
+            &_LeftText {
+                @apply text-sm font-bold text-gray-500;
+            }
+
+            &_RightText {
+                @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+            }
+
+        }
+
+        &--Attachments {
+            &_BG {
+                @apply bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6;
+            }
+
+            &_ListBox {
+                @apply mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0;
+            }
+
+            &_ListItems {
+                @apply divide-y divide-gray-200 rounded-md border border-gray-200;
+            }
+
+            &_ListItemBox {
+                @apply flex items-center justify-between py-3 pl-3 pr-4 text-sm;
+            }
+
+            &_ListItem {
+                @apply flex w-0 flex-1 items-center;
+            }
+
+            &_ListItem-Button {
+                @apply h-5 w-5 flex-shrink-0 text-gray-400;
+            }
+
+            &_ListItem-ButtonTxt {
+                @apply ml-2 w-0 flex-1 truncate;
+            }
+
+            &_ListItem-Text {
+                @apply ml-4 flex-shrink-0;
+            }
+
+            &_ListItem-Anchor {
+                @apply font-medium text-indigo-600 hover:text-indigo-500;
+            }
+
+        }
+    }
+}
