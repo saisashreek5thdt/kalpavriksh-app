@@ -74,7 +74,7 @@
 import React from "react";
 
 import Navbar from "../pages/shared/Navbar";
-import FloatingButton from '../Components/Floating-Button'
+import FloatingButton from "../Components/Floating-Button";
 
 const UserDashboard = () => {
   return (
