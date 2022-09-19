@@ -2,33 +2,63 @@
 const [router, path] = [require("express").Router(), require("path")];
 
 // Controllers
-const { diabetesprograms, diabetesDataForm, diabetesFormQuestions,GetAlldiabetesFormQuestions, diabetesFormQuestionchoices, fileUploads } = require(path.join(
-    __dirname,
-    "..",
-    "controllers",
-    "diabetes"
-));
+const {
+  diabetesprograms,
+  diabetesDataForm,
+  GetAlldiabetesForms,
+  fileUploads,
+  GetSingleDataFormQuestion,
+  UpdateDataFormQuestion,
+  DeleteDataFormQuestion,
+  GetAllDiabetesPrograms,
+  GetDiabetesProgramById,
+  UpdateDiabetesProgramById,
+  DeleteDiabetesProgramById,
+  createMedicines,
+  GetAllMedicines,
+  GetMedicineById,
+  UpdateMedicineById,
+  DeleteMedicineById,
+} = require(path.join(__dirname, "..", "controllers", "diabetes"));
 
 // Middlewares
-const { DiabetesProgramValidation, DiabetesDataFormValidation,DiabetesDataFormQuestionsValidation, DiabetesDataFormQuestionChoicesValidation, FileUploadsValidation, MedicinesValidation } = require(path.join(
-    __dirname,
-    "..",
-    "middlewares",
-    "validators"
-));
+const {
+  DiabetesProgramValidation,
+  DiabetesDataFormValidation,
+  FileUploadsValidation,
+  MedicinesValidation,
+} = require(path.join(__dirname, "..", "middlewares", "validators"));
 
-router.post('/programs', DiabetesProgramValidation, diabetesprograms)
+router.post("/programs", DiabetesProgramValidation, diabetesprograms);
 
-router.post('/dataform',DiabetesDataFormValidation, diabetesDataForm)
+router.get("/programs/all", GetAllDiabetesPrograms);
 
-router.get('/dataformquestions/', GetAlldiabetesFormQuestions)
+router.get("/programs/program/:programid", GetDiabetesProgramById);
 
-router.post('/dataformquestions/:dataformid',DiabetesDataFormQuestionsValidation, diabetesFormQuestions)
+router.put("/programs/program/:programid", UpdateDiabetesProgramById);
 
-router.post('/dataformquestionchoices/:dataformquestionid',DiabetesDataFormQuestionChoicesValidation, diabetesFormQuestionchoices)
+router.delete("/programs/program/:programid", DeleteDiabetesProgramById);
 
-router.post('/fileuploads',FileUploadsValidation, fileUploads)
+router.post("/dataform", DiabetesDataFormValidation, diabetesDataForm);
 
-router.post('/medicines',MedicinesValidation, fileUploads)
+router.get("/dataformquestions/all", GetAlldiabetesForms);
 
-module.exports = router
+router.get("/dataformquestion/:dataformquestionid", GetSingleDataFormQuestion);
+
+router.put("/dataformquestion/:dataformquestionid", UpdateDataFormQuestion);
+
+router.delete("/dataformquestion/:dataformquestionid", DeleteDataFormQuestion);
+
+router.post("/fileuploads", FileUploadsValidation, fileUploads);
+
+router.post("/medicines", MedicinesValidation, createMedicines);
+
+router.get("/medicines/all", GetAllMedicines);
+
+router.get("/medicines/medicine/:medicineid", GetMedicineById);
+
+router.put("/medicines/medicine/:medicineid", UpdateMedicineById);
+
+router.delete("/medicines/medicine/:medicineid", DeleteMedicineById);
+
+module.exports = router;
