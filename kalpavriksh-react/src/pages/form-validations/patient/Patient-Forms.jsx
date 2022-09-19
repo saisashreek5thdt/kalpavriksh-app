@@ -234,15 +234,6 @@ const PatientForms = () => {
                         <div className="forms__Controller--Box">
                           {/* Patient Form Controller Grid Start */}
                           <div className="forms__Controller--Grids">
-                            {/* Patient Form Graph End */}
-                            <div className="forms__Controller--Grids_Cols-6">
-                              <p className="text-center text-xl"> GRAPH SECTION</p>
-                            </div>
-                            {/* Patient Form Graph End */}
-                          </div>
-                          {/* Patient Form Controller Grid End */}
-                          {/* Patient Form Controller Grid Start */}
-                          <div className="forms__Controller--Grids">
                             {/* Input for Question Start */}
                             <InputPatient
                               element="input"
