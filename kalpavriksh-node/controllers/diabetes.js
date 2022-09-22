@@ -159,7 +159,7 @@ exports.diabetesDataForm = asyncHandler(async (req, res, next) => {
 });
 
 // Desc   -  Get all data form questions
-// Route  -  /api/v1/diabetes/dataformquestions/all
+// Route  -  /api/v1/diabetes/dataform/all
 // Method -  GET
 // Access -  Private
 exports.GetAlldiabetesForms = asyncHandler(async (req, res, next) => {

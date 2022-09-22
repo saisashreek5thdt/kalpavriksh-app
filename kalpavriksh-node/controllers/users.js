@@ -118,7 +118,7 @@ exports.UserLogin = asyncHandler(async (req, res, next) => {
       for (let i = 0; i < 6; i++) {
         otp += str[Math.floor(Math.random() * str.length)];
       }
-      OtpMailer(email, otp)
+      OtpMailer(email, otp);
       await client
         .db("kalpavrikshapp")
         .collection("users")
@@ -222,4 +222,16 @@ exports.UpdateRegisteredUser = asyncHandler(async (req, res, next) => {
     .catch((err) =>
       res.json({ response: false, message: "User Details Update Failed.", err })
     );
+});
+
+// Desc   -  Delete Registered user
+// Route  -  /api/v1/users/user/delete/:registerid
+// Method -  DELETE
+// Access -  Private
+exports.DeleteRegisteredUser = asyncHandler(async (req, res, next) => {
+  await client
+    .db("kalpavrikshapp")
+    .collection("users")
+    .deleteOne({ _id: ObjectId(req.user._id) });
+  return res.json({ response: true, message: "User Deleted Succesfully." });
 });

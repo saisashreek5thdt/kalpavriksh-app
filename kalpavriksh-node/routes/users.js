@@ -9,10 +9,11 @@ const {
   UserLogin,
   OTPAuthentication,
   UpdateRegisteredUser,
+  DeleteRegisteredUser
 } = require(path.join(__dirname, "..", "controllers", "users"));
 
 // Middlewares
-const { UserRegisterValidation, UserRolesValidation } = require(path.join(
+const { UserRegisterValidation } = require(path.join(
   __dirname,
   "..",
   "middlewares",
@@ -36,5 +37,7 @@ router.put("/login", UserLogin);
 router.post("/otp", OTPAuthentication);
 
 router.put("/user/update/:registerid", isUserAuthorized, UpdateRegisteredUser);
+
+router.delete("/user/delete/:registerid", isUserAuthorized, DeleteRegisteredUser);
 
 module.exports = router;

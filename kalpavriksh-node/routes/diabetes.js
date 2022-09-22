@@ -41,13 +41,13 @@ router.delete("/programs/program/:programid", DeleteDiabetesProgramById);
 
 router.post("/dataform", DiabetesDataFormValidation, diabetesDataForm);
 
-router.get("/dataformquestions/all", GetAlldiabetesForms);
+router.get("/dataform/all", GetAlldiabetesForms);
 
-router.get("/dataformquestion/:dataformquestionid", GetSingleDataFormQuestion);
+router.get("/dataform/:dataformquestionid", GetSingleDataFormQuestion);
 
-router.put("/dataformquestion/:dataformquestionid", UpdateDataFormQuestion);
+router.put("/dataform/:dataformquestionid", UpdateDataFormQuestion);
 
-router.delete("/dataformquestion/:dataformquestionid", DeleteDataFormQuestion);
+router.delete("/dataform/:dataformquestionid", DeleteDataFormQuestion);
 
 router.post("/fileuploads", FileUploadsValidation, fileUploads);
 

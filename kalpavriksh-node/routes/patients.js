@@ -36,7 +36,6 @@ router.put("/patient/:patiendid", DeletePatientDetailsById);
 
 router.post(
   "/patientfileassignment/:fileuploadid/:patientenrollmentid/:attachedby",
-  PatientDataFormsQuestions,
   PatientFileAssignments
 );
 
