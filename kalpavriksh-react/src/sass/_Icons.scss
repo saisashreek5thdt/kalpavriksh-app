@@ -1,0 +1,29 @@
+.icon {
+
+    @apply w-6 mr-2 transform;
+
+    &__View {
+
+        &:hover {
+            @apply hover:text-blue-500 hover:scale-110;
+        }
+
+    }
+
+    &__Edit {
+
+        &:hover {
+            @apply hover:text-green-500 hover:scale-110;
+        }
+
+    }
+
+    &__Delete {
+
+        &:hover {
+            @apply hover:text-red-500 hover:scale-110;
+        }
+
+    }
+
+}

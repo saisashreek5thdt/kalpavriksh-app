@@ -1,0 +1,110 @@
+.table {
+
+    &__Flow {
+        @apply overflow-x-auto;
+    }
+
+    &__Screen {
+        @apply min-w-full min-h-screen flex overflow-hidden;
+    }
+
+    &__Width {
+        @apply w-full lg:w-5/6 my-6;
+    }
+
+    &__Shadow {
+        @apply shadow-md rounded;
+    }
+
+    &__Length {
+        @apply min-w-max w-full table-auto;
+    }
+
+    &__Row {
+
+        &--Top {
+            @apply bg-gray-200 text-gray-600 uppercase text-sm leading-normal;
+
+            &-Head {
+                @apply py-3 px-4 text-left;
+            }
+
+        }
+
+        &--Content {
+            @apply text-gray-600 text-sm font-light;
+
+            &-Info {
+                @apply py-3 px-6 text-left;
+            }
+
+            &-Taginfo {
+                @apply py-1 px-3 rounded-full text-xs;
+            }
+
+        }
+
+        &--Alternate {
+            &-1 {
+                @apply border-b border-gray-200 hover:bg-gray-100;
+            }
+            &-2 {
+                @apply border-b border-gray-200 bg-gray-50 hover:bg-gray-100;
+            }
+        }
+
+        &--Index {
+            @apply py-3 px-3 text-left;
+        }
+
+    }
+
+    &__Flex {
+
+        &--Items {
+            @apply flex text-left;
+        }
+
+        &--Buttons {
+            @apply flex text-left justify-center;
+        }
+
+    }
+
+    &__Font {
+
+        &--Medium {
+            @apply font-medium;
+        }
+
+        &--Bold1 {
+            @apply font-semibold;
+        }
+
+    }
+
+    &__Text {
+
+        &--Center {
+            @apply text-center;
+        }
+
+    }
+
+    &__Tags {
+
+        &--Green {
+            @apply bg-green-200 text-green-600;
+        }
+
+        &--Red {
+            @apply bg-red-200 text-red-600;
+        }
+
+        &--Yellow {
+            @apply bg-yellow-200 text-yellow-600;
+        }
+
+    }
+
+}

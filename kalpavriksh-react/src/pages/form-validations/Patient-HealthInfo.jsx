@@ -1,13 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+import { Stepper } from "react-form-stepper";
+
 import Input from "../../Components/Input";
 
 import Select from "../../Components/Select";
 
 import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from "../../util/validators";
 
-import { useForm } from "../../Hooks/form-hooks";
+import { useForm } from "../../hooks/form-hooks";
 
 import Navbar from "../shared/Navbar";
 
@@ -49,7 +51,7 @@ const PatientHealthInfo = () => {
       patient_patientTeam: {
         value: "",
         isValid: false,
-      }
+      },
     },
     false
   );
@@ -86,7 +88,7 @@ const PatientHealthInfo = () => {
 
   const patientHealthHandler = (e) => {
     e.preventDefault();
-    /*if (
+    if (
       formState.inputs.patient_height.value === "" ||
       formState.inputs.patient_weight.value === "" ||
       formState.inputs.patient_caretakerName.value === "" ||
@@ -100,20 +102,24 @@ const PatientHealthInfo = () => {
       return null;
     } else {
       console.log(formState.inputs);
-    } */
-    console.log(formState.inputs);
-    history.push("/userrole/:pid/enroll/personalinfo/");
+      history.push("/userrole/:pid/enroll/personalinfo/");
+    }
   };
 
   return (
     <>
+      {/* Patient Dashboard Container Starts Here */}
       <div className="dashboard__Container">
+        {/* Navbar Container Starts Here */}
         <Navbar />
+        {/* Navbar Container Ends Here */}
+        {/* Header Section Starts Here */}
         <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
         </header>
+        {/* Header Section Ends Here */}
         <main>
           <div className="forms__Container">
             {/* Replace with your content */}
@@ -122,17 +128,34 @@ const PatientHealthInfo = () => {
                 <h2 className="forms__Header--FlexBox-Heading">
                   Enroll Patient Form
                 </h2>
+                {/* Multi Step Form Section Starts Here */}
+                {/* Stepper Section Start */}
+                <Stepper
+                  steps={[
+                    { label: "Step 1", completed: true },
+                    { label: "Step 2", active: true, completed: false },
+                    { label: "Step 3", active: false, completed: false },
+                  ]}
+                  active="true"
+                  activeStep={1}
+                  activebgcolor="#3E503C"
+                />
+                {/* Stepper Section End */}
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">
+                      {/* Multi Form Section Start */}
                       <form
                         action="#"
                         method="POST"
                         onSubmit={patientHealthHandler}
                       >
+                        {/* Mutli Form Controller Start */}
                         <div className="forms__Controller">
                           <div className="forms__Controller--Box">
+                            {/* Multi Form Input Section Start */}
                             <div className="forms__Controller--Grids">
+                              {/* Input Type Component Number */}
                               <Input
                                 id="patient_height"
                                 element="input"
@@ -142,7 +165,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Height"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Number */}
                               <Input
                                 id="patient_weight"
                                 element="input"
@@ -152,7 +175,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Weight"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Text */}
                               <Input
                                 id="patient_caretakerName"
                                 element="input"
@@ -162,7 +185,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Name"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Phone */}
                               <Input
                                 id="patient_caretakerNumber"
                                 element="input"
@@ -172,9 +195,9 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Valid 10 Digit Number"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Time */}
                               <Input
-                                id="patient_caretakerTime"
+                                id="patient_preferredCall"
                                 element="input"
                                 type="time"
                                 label="CaretakerTime"
@@ -182,7 +205,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Time"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Type Component Date */}
                               <Input
                                 id="patient_caretakerDate"
                                 element="input"
@@ -192,7 +215,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Enter Valid Date"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Select Component Caretaker Relation */}
                               <Select
                                 element="select"
                                 id="patient_caretakerRelation"
@@ -202,7 +225,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Select Carataker Relation"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Select Component Health Plan */}
                               <Select
                                 element="select"
                                 id="patient_planSelected"
@@ -212,7 +235,7 @@ const PatientHealthInfo = () => {
                                 errorText="Please Select Health Plan"
                                 onInput={inputHandler}
                               />
-
+                              {/* Input Select Component Patient Team */}
                               <Select
                                 element="select"
                                 id="patient_patientTeam"
@@ -223,9 +246,13 @@ const PatientHealthInfo = () => {
                                 onInput={inputHandler}
                               />
                             </div>
+                            {/* Multi Form Input Section End */}
                           </div>
                         </div>
+                        {/* Mutli Form Controller End */}
+                        {/* Mutli Form Button Container Start */}
                         <div className="forms__Controller--Btn-Container">
+                          {/* Mutli Form Button Start */}
                           <div className="text-right">
                             <button
                               type="submit"
@@ -234,11 +261,15 @@ const PatientHealthInfo = () => {
                               Save &amp; Next
                             </button>
                           </div>
+                          {/* Mutli Form Button End */}
                         </div>
+                        {/* Mutli Form Button Container End */}
                       </form>
+                      {/* Multi Form Section End */}
                     </div>
                   </div>
                 </div>
+                {/* Multi Step Form Section Ends Here */}
               </div>
             </div>
 
@@ -246,6 +277,7 @@ const PatientHealthInfo = () => {
           </div>
         </main>
       </div>
+      {/* Patient Dashboard Container Ends Here */}
     </>
   );
 };
