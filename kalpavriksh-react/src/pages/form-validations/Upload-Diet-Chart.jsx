@@ -88,14 +88,14 @@ const UploadDietChart = () => {
       {/* Patient Dashboard Container Starts Here */}
       <div className="dashboard__Container">
         {/* Navbar Container Starts Here */}
-        <Navbar />
+        {/* <Navbar /> */}
         {/* Navbar Container Ends Here */}
         {/* Header Section Starts Here */}
-        <header className="header__Box">
+        {/* <header className="header__Box">
           <div className="header__Box--Heading">
             <h1 className="header__Box--Heading-Primary">Dashboard</h1>
           </div>
-        </header>
+        </header> */}
         {/* Header Section Ends Here */}
         <main>
           <div className="forms__Container">
