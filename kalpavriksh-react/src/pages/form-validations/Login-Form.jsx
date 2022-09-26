@@ -67,11 +67,11 @@ const LoginForm = () => {
   const loginHandler = (event) => {
     event.preventDefault();
 
-    const user = DATA.find((data) => data.email === loggedHandler);
+    const user = DATA.find((data) => data.email === formState.inputs.emailAddress.value);
 
     if(!user) return setIsLogged(true);
 
-    if (user.password !== loggedHandler) return setIsLogged(true);
+    if (user.password !== formState.inputs.password.value) return setIsLogged(true);
 
     localStorage.setItem("kalpavriksh", JSON.stringify(user));
 
@@ -81,9 +81,8 @@ const LoginForm = () => {
     ) {
       return null;
     } else {
-      console.log(formState.inputs);
       auth.login();
-      history.push(`/userrole/:roleid/${role}/`);
+      history.push(`/userrole/:roleid/${user.role}/`);
     }
     
   };
