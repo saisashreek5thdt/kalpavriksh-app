@@ -40,21 +40,7 @@ const TabNav = () => {
         <li className="nav-item flex-grow text-center" role="presentation">
           <a
             href="#tabs-messagesJustify"
-            className="
-      nav-link
-      w-full
-      block
-      font-medium
-      text-xs
-      leading-tight
-      uppercase
-      border-x-0 border-t-0 border-b-2 border-transparent
-      px-6
-      py-3
-      my-2
-      hover:border-transparent hover:bg-gray-100
-      focus:border-transparent
-    "
+            className="nav-link w-full block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
             id="tabs-messages-tabJustify"
             data-bs-toggle="pill"
             data-bs-target="#tabs-messagesJustify"
@@ -63,6 +49,48 @@ const TabNav = () => {
             aria-selected="false"
           >
             Upload DietChart
+          </a>
+        </li>
+        <li className="nav-item flex-grow text-center" role="presentation">
+          <a
+            href="#tabs-appointmentsJustify"
+            className="nav-link w-full block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+            id="tabs-appointments-tabJustify"
+            data-bs-toggle="pill"
+            data-bs-target="#tabs-appointmentsJustify"
+            role="tab"
+            aria-controls="tabs-appointmentsJustify"
+            aria-selected="false"
+          >
+            Appointments
+          </a>
+        </li>
+        <li className="nav-item flex-grow text-center" role="presentation">
+          <a
+            href="#tabs-mypatientsJustify"
+            className="nav-link w-full block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+            id="tabs-mypatients-tabJustify"
+            data-bs-toggle="pill"
+            data-bs-target="#tabs-mypatientsJustify"
+            role="tab"
+            aria-controls="tabs-mypatientsJustify"
+            aria-selected="false"
+          >
+            My Patients
+          </a>
+        </li>
+        <li className="nav-item flex-grow text-center" role="presentation">
+          <a
+            href="#tabs-chatJustify"
+            className="nav-link w-full block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+            id="tabs-chat-tabJustify"
+            data-bs-toggle="pill"
+            data-bs-target="#tabs-chatJustify"
+            role="tab"
+            aria-controls="tabs-chatJustify"
+            aria-selected="false"
+          >
+            Chat
           </a>
         </li>
       </ul>
@@ -88,6 +116,30 @@ const TabNav = () => {
           id="tabs-messagesJustify"
           role="tabpanel"
           aria-labelledby="tabs-profile-tabJustify"
+        >
+          <UploadDietChart />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-appointmentsJustify"
+          role="tabpanel"
+          aria-labelledby="tabs-appointments-tabJustify"
+        >
+          <UploadDietChart />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-mypatientsJustify"
+          role="tabpanel"
+          aria-labelledby="tabs-mypatients-tabJustify"
+        >
+          <UploadDietChart />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-chatJustify"
+          role="tabpanel"
+          aria-labelledby="tabs-chat-tabJustify"
         >
           <UploadDietChart />
         </div>
