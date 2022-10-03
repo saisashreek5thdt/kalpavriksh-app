@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import Appointments from "../pages/form-validations/patient/Appointments";
-=======
 import PatientInfo from "../pages/form-validations/PatientInfo";
 import PatientDoctorInfo from "../pages/form-validations/PatientDoctorInfo";
->>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
 
 const TabNav = () => {
   return (
@@ -13,10 +9,6 @@ const TabNav = () => {
         id="tabs-tabJustify"
         role="tablist"
       >
-<<<<<<< HEAD
-        
-=======
->>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
         <li className="nav-item flex-grow text-center" role="presentation">
           <a
             href="#tabs-appointmentsJustify"
@@ -67,11 +59,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-appointments-tabJustify"
         >
-<<<<<<< HEAD
-          <Appointments />
-=======
           <PatientInfo />
->>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
         </div>
         <div
           className="tab-pane fade"
@@ -79,11 +67,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-mypatients-tabJustify"
         >
-<<<<<<< HEAD
-          
-=======
           <PatientDoctorInfo />
->>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
         </div>
         <div
           className="tab-pane fade"
@@ -91,11 +75,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-chat-tabJustify"
         >
-<<<<<<< HEAD
-          
-=======
           Chat Section
->>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
         </div>
       </div>
     </>
