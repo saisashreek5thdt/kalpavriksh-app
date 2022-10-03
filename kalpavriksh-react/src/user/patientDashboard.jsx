@@ -3,9 +3,13 @@ import React from "react";
 import TopNavbar from "../pages/shared/TopNavbar";
 import Bottombar from "../pages/shared/Bottombar";
 
+<<<<<<< HEAD
 
 const PatientDashboard = () => {
 
+=======
+const PatientDashboard = () => {
+>>>>>>> 49bd499919fa7d74edc1ec2ff940bda6785865a7
 
   return (
     <>

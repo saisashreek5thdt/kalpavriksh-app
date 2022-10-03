@@ -22,6 +22,7 @@ import UploadDietChart from "./pages/form-validations/Upload-Diet-Chart";
 import PatientForm from "./pages/form-validations/patient/Patient-Forms";
 import Prescriptions from "./pages/form-validations/patient/Prescriptions";
 import Appointments from "./pages/form-validations/patient/Appointments";
+import PatientViewInfo from "./pages/form-validations/PatientViewInfo";
 
 const App = () => {
 
@@ -64,6 +65,9 @@ const App = () => {
           </Route>
           <Route path="/userrole/:pid/form/dietform/" exact>
             <UploadDietChart />
+          </Route>
+          <Route path="/userrole/:pid/form/appointment/patientinfo_view" exact>
+            <PatientViewInfo />
           </Route>
           <Route path="/userrole/:roleid/form/patientform/" exact>
             <PatientForm />
