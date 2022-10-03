@@ -1,6 +1,5 @@
-import EnrollPatient from "../pages/form-validations/Enroll-Patient";
-import CreateForm from "../pages/form-validations/Create-Form";
-import UploadDietChart from "../pages/form-validations/Upload-Diet-Chart";
+import Appointments from "../pages/form-validations/patient/Appointments";
+
 const TabNav = () => {
   return (
     <>
@@ -55,36 +54,12 @@ const TabNav = () => {
       </ul>
       <div className="tab-content" id="tabs-tabContentJustify">
         <div
-          className="tab-pane fade show active"
-          id="tabs-homeJustify"
-          role="tabpanel"
-          aria-labelledby="tabs-home-tabJustify"
-        >
-          <EnrollPatient />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-profileJustify"
-          role="tabpanel"
-          aria-labelledby="tabs-profile-tabJustify"
-        >
-          <CreateForm />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-messagesJustify"
-          role="tabpanel"
-          aria-labelledby="tabs-profile-tabJustify"
-        >
-          <UploadDietChart />
-        </div>
-        <div
           className="tab-pane fade"
           id="tabs-appointmentsJustify"
           role="tabpanel"
           aria-labelledby="tabs-appointments-tabJustify"
         >
-          <UploadDietChart />
+          <Appointments />
         </div>
         <div
           className="tab-pane fade"
@@ -92,7 +67,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-mypatients-tabJustify"
         >
-          <UploadDietChart />
+          
         </div>
         <div
           className="tab-pane fade"
@@ -100,7 +75,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-chat-tabJustify"
         >
-          <UploadDietChart />
+          
         </div>
       </div>
     </>
