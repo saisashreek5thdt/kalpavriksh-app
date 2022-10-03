@@ -2,9 +2,9 @@ import React, { Fragment } from "react";
 
 import { Popover, Transition } from "@headlessui/react";
 import {
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+  MenuIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 
 const DoctorTabs = () => {
   return (
@@ -21,7 +21,7 @@ const DoctorTabs = () => {
           <div className="tabmenu__MenuHide">
             <Popover.Button className="tabmenu__MenuHide--Button">
               <span className="sr-only">Open menu</span>
-              <Bars3Icon className="tabmenu__MenuHide--ButtonIcon" aria-hidden="true" />
+              <MenuIcon className="tabmenu__MenuHide--ButtonIcon" aria-hidden="true" />
             </Popover.Button>
           </div>
           <Popover.Group
@@ -92,7 +92,7 @@ const DoctorTabs = () => {
                 <div className="-mr-2">
                   <Popover.Button className="tabmenu__NavMobileContainer--FlexButton">
                     <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="tabmenu__NavMobileContainer--FlexButtonIcon" aria-hidden="true" />
+                    <XIcon className="tabmenu__NavMobileContainer--FlexButtonIcon" aria-hidden="true" />
                   </Popover.Button>
                 </div>
               </div>

@@ -1,8 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-import { Stepper } from "react-form-stepper";
-
 import { VALIDATOR_REQUIRE } from "../../util/validators";
 
 import Input from "../../Components/Input";
@@ -84,18 +82,6 @@ const PatientPersonalInfo = () => {
                   Enroll Patient Form
                 </h2>
                 {/* Multi Step Form Section Starts Here */}
-                {/* Stepper Section Start */}
-                <Stepper
-                  steps={[
-                    { label: "Step 1", active: true, completed: true },
-                    { label: "Step 2", active: true, completed: true },
-                    { label: "Step 3", active: true, completed: true },
-                  ]}
-                  active="true"
-                  activeStep={2}
-                  activebgcolor="#3E503C"
-                />
-                {/* Stepper Section End */}
                 <div className="forms__GridBox">
                   <div className="forms__GridBox--GridCols">
                     <div className="forms__GridBox--GridGaps">

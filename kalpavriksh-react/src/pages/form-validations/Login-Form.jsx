@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import { LockClosedIcon } from "@heroicons/react/24/solid";
+import { LockClosedIcon } from "@heroicons/react/solid/";
 
 import InputLog from "../../Components/Input-Log";
 
@@ -146,7 +146,7 @@ const LoginForm = () => {
           <ButtonLog type="submit" disabled={!formState.isValid}>
           <span className="login__Btn--Span">
               <LockClosedIcon
-                className="login__Btn--Span-Icon"
+                className="w-24 h-24 login__Btn--Span-Icon"
                 aria-hidden="true"
               />
             </span>

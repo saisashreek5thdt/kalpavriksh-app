@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { UserIcon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { UserIcon, BellIcon, XIcon } from "@heroicons/react/outline";
 
 import logoImg from "../../assets/images/logo/workflow-mark.svg";
 import User1 from "../../assets/images/user/user1.jpg";
@@ -44,7 +44,7 @@ function classNames(...classes) {
                         className="navbar__Profile--Notify-Btn"
                       >
                         <span className="navbar__Profile--Notify-Btn_Span">View notifications</span>
-                        <BellIcon className="navbar__Profile--Notify-Btn_Icon" aria-hidden="true" />
+                        <BellIcon className="h-24 w-24 navbar__Profile--Notify-Btn_Icon" aria-hidden="true" />
                       </button>
 
                       {/* Profile dropdown */}
@@ -94,10 +94,10 @@ function classNames(...classes) {
                     <Disclosure.Button className="navbar__Profile--MobileMenu-Btn">
                       <span className="navbar__Profile--Notify-Btn_Span">Open main menu</span>
                       {open ? (
-                        <XMarkIcon className="navbar__Profile--MobileMenu-Icon" aria-hidden="true" />
+                        <XIcon className="w-24 h-24 navbar__Profile--MobileMenu-Icon" aria-hidden="true" />
                       ) : (
                         <UserIcon
-                          className="navbar__Profile--MobileMenu-Icon"
+                          className="w-24 h-24 navbar__Profile--MobileMenu-Icon"
                           aria-hidden="true"
                         />
                       )}
@@ -129,7 +129,7 @@ function classNames(...classes) {
                       className="navbar__Profile--MobileMenu-InfoBox_Btn"
                     >
                       <span className="navbar__Profile--Notify-Btn_Span">View notifications</span>
-                      <BellIcon className="navbar__Profile--MobileMenu-InfoBox_Icon" aria-hidden="true" />
+                      <BellIcon className="w-24 h-24 navbar__Profile--MobileMenu-InfoBox_Icon" aria-hidden="true" />
                     </button>
                   </div>
                   <div className="navbar__Profile--MobileMenu-InfoItems">

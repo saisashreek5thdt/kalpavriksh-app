@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../shared/Navbar";
 import DoctorTabs from "../shared/DoctorTabs";
 
-import { PaperClipIcon } from "@heroicons/react/20/solid";
+import { PaperClipIcon } from "@heroicons/react/outline";
 
 const PatientViewInfo = () => {
   return (
