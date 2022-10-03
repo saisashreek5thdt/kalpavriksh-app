@@ -13,9 +13,6 @@ const user = {
 };
 const navigation = [
   { name: "Dashboard", href: "/userrole/:roleid/doctor/", current: true },
-  { name: "Enroll Patient", href: "/userrole/:pid/enroll/", current: true },
-  { name: "Create Form", href: "/userrole/:pid/form/createform/", current: true },
-  { name: "Upload Diet Chart", href: "/userrole/:pid/form/dietform/", current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
