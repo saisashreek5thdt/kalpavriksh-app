@@ -2,14 +2,13 @@ import React from "react";
 import Navbar from "../shared/Navbar";
 import DoctorTabs from "../shared/DoctorTabs";
 
-import PatientInfo from "./PatientInfo";
+import PatientDoctorInfo from "./PatientDoctorInfo";
 
-const PatientAppointmentInfo = () => {
+const MyPatientsInfo = () => {
   return (
     <>
       {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
-        {/* <Navbar /> */}
         {/* <DoctorTabs /> */}
         {/*
           <header className="header__Box">
@@ -23,7 +22,7 @@ const PatientAppointmentInfo = () => {
             {/* Replace with your content */}
             <div className="dashboard__Content--Box">
               {/* <div className="dashboard__Content--Border" /> */}
-              <PatientInfo />
+              <PatientDoctorInfo />
             </div>
             {/* /End replace */}
           </div>
@@ -34,4 +33,4 @@ const PatientAppointmentInfo = () => {
   );
 };
 
-export default PatientAppointmentInfo;
+export default MyPatientsInfo;
