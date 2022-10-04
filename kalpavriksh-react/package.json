@@ -24,7 +24,10 @@
     "workbox-range-requests": "^6.5.4",
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4",
-    "workbox-streams": "^6.5.4"
+    "firebase": "^9.9.4",
+    "uuid": "^8.3.2",
+    "workbox-streams": "^6.5.4",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

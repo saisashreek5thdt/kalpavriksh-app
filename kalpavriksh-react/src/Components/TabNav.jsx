@@ -1,6 +1,10 @@
 import EnrollPatient from "../pages/form-validations/Enroll-Patient";
 import CreateForm from "../pages/form-validations/Create-Form";
 import UploadDietChart from "../pages/form-validations/Upload-Diet-Chart";
+import MyPatientsInfo from '../pages/form-validations/MyPatientsInfo'
+import PatientAppointmentInfo from '../pages/form-validations/PatientAppointmentInfo'
+import Chat from '../pages/shared/Chat'
+
 const TabNav = () => {
   return (
     <>
@@ -125,7 +129,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-appointments-tabJustify"
         >
-          <UploadDietChart />
+          <PatientAppointmentInfo />
         </div>
         <div
           className="tab-pane fade"
@@ -133,7 +137,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-mypatients-tabJustify"
         >
-          <UploadDietChart />
+          <MyPatientsInfo />
         </div>
         <div
           className="tab-pane fade"
@@ -141,7 +145,7 @@ const TabNav = () => {
           role="tabpanel"
           aria-labelledby="tabs-chat-tabJustify"
         >
-          <UploadDietChart />
+          <Chat />
         </div>
       </div>
     </>
