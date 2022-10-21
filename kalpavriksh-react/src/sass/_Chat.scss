@@ -1,0 +1,53 @@
+.chat {
+    &__FormContainer {
+        @apply bg-indigo-300 h-screen flex items-center justify-center
+    }
+    &__FormWrapper {
+        @apply bg-white flex flex-col items-center
+    }
+    &__Logo {
+        @apply text-purple-800 font-bold text-2xl
+    }
+    &__Title {
+        @apply text-purple-800 text-xs
+    }
+    &__Form {
+        @apply flex flex-col
+    }
+    &__Input {
+        @apply p-4 w-64 bg-transparent text-white
+    }
+    &__Button {
+        @apply bg-indigo-400 text-white p-2 font-bold cursor-pointer
+    }
+    &__img {
+        @apply w-8 bg-gray-300 h-6 w-6 object-cover
+    }
+    &__Label {
+        @apply flex items-center text-indigo-400 text-xs cursor-pointer
+    }
+    &__Para {
+        @apply text-purple-800 text-xs mt-2
+    }
+    &__home {
+        @apply bg-indigo-300 h-screen flex items-center justify-center
+    }
+    &__Container {
+        @apply flex overflow-hidden
+    }
+    &__Sidebar {
+        @apply bg-indigo-900 relative
+    }
+    &__Navbar {
+        @apply flex items-center bg-gray-800 h-12 p-2 justify-between text-gray-300
+    }
+    &__User {
+        @apply flex
+    }
+    &__SearchForm {
+        @apply p-2
+    }
+    &__UserChat {
+        @apply p-2 flex items-center text-white cursor-pointer
+    }
+}

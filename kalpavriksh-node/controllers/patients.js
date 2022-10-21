@@ -40,7 +40,7 @@ exports.PatientRegistration = asyncHandler(async (req, res, next) => {
       end_date,
       bill_amount,
       bill_paid,
-      patientid: ObjectId(req.params.patientid),
+      //patientid: ObjectId(req.params.patientid),
       diabetesprogramid: ObjectId(req.params.diabetesprogramid),
       doctorid: ObjectId(req.params.doctorid),
       assignedteammember: req.query.userid ? ObjectId(req.query.userid) : null,
