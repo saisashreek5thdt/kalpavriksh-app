@@ -28,22 +28,26 @@ const PatientInfo = () => {
   return (
     <>
       <main className="appointment__MainContainer">
-        <div className="appointment__MainContainer--TextAlign">
-          <p className="appointment__Text">
-            <span className="appointment__Text--Inline">Appointments for Today</span>
-            <span className="appointment__Text--Inline appointment__Text--Number"> 25</span>
-          </p>
-        </div>
-        <div className="appointment__Filter--Date">
-          <Input
-            element="input"
-            type="date"
-            id="appointment_date"
-            label=""
-            validator={[VALIDATOR_REQUIRE()]}
-            errorText="Select Date"
-            onInput={inputHandler}
-          />
+        <div className="card__Box--Start">
+          <div className="card__Block">
+            <h5 className="card__Heading">
+              Appointments for Today
+              <span className="card__Heading--Span">
+                25
+              </span>
+            </h5>
+            <div className="mt-5">
+              <Input
+                element="input"
+                type="date"
+                id="appointment_date"
+                label=""
+                validator={[VALIDATOR_REQUIRE()]}
+                errorText="Select Date"
+                onInput={inputHandler}
+              />
+            </div>
+          </div>
         </div>
       </main>
       <div className="table__Flow">
@@ -81,9 +85,12 @@ const PatientInfo = () => {
                           <button
                             type="button"
                             className="forms__Controller--Btn-Container_Btn-Gray"
+                            data-bs-toggle="modal"
+                            data-bs-target="#medicineModal"
                           >
                             Medicines
                           </button>
+                          <MedicineModal />
                         </div>
                       </div>
                     </td>
@@ -121,9 +128,12 @@ const PatientInfo = () => {
                           <button
                             type="button"
                             className="forms__Controller--Btn-Container_Btn-Gray"
+                            data-bs-toggle="modal"
+                            data-bs-target="#medicineModal"
                           >
                             Medicines
                           </button>
+                          <MedicineModal />
                         </div>
                       </div>
                     </td>
@@ -163,9 +173,12 @@ const PatientInfo = () => {
                           <button
                             type="button"
                             className="forms__Controller--Btn-Container_Btn-Gray"
+                            data-bs-toggle="modal"
+                            data-bs-target="#medicineModal"
                           >
                             Medicines
                           </button>
+                          <MedicineModal />
                         </div>
                       </div>
                     </td>
@@ -197,3 +210,47 @@ const PatientInfo = () => {
 };
 
 export default PatientInfo;
+
+const MedicineModal = () => {
+  return (
+    <>
+      <div
+        className="modal__Container"
+        id="medicineModal"
+        tabindex="-1"
+        aria-labelledby="medicineModalTitle"
+        aria-modal="true"
+        role="dialog"
+      >
+        <div className="modal__Dialog">
+          <div className="modal__Content">
+            <div className="modal__Header">
+              <h5
+                className="modal__Header--Title"
+                id="medicineModalScrollableLabel"
+              >
+                Medicines & Diet Charts
+              </h5>
+              <button
+                type="button"
+                className="modal__Header--Btn-Close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal__Body">
+              <p>This is a Modal Body.</p>
+            </div>
+            <div className="modal__Footer">
+              <button
+                type="button"
+                className="modal__Footer--Btn"
+                data-bs-dismiss="modal"
+              > Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};

@@ -1,7 +1,4 @@
 import React from "react";
-import Navbar from "../shared/Navbar";
-import DoctorTabs from "../shared/DoctorTabs";
-
 import PatientInfo from "./PatientInfo";
 
 const PatientAppointmentInfo = () => {
@@ -9,8 +6,6 @@ const PatientAppointmentInfo = () => {
     <>
       {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
-        {/* <Navbar /> */}
-        {/* <DoctorTabs /> */}
         {/*
           <header className="header__Box">
           <div className="header__Box--Heading">

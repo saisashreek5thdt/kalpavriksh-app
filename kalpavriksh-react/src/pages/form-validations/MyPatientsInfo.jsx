@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../shared/Navbar";
-import DoctorTabs from "../shared/DoctorTabs";
 
 import PatientDoctorInfo from "./PatientDoctorInfo";
 
@@ -9,7 +7,6 @@ const MyPatientsInfo = () => {
     <>
       {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
-        {/* <DoctorTabs /> */}
         {/*
           <header className="header__Box">
           <div className="header__Box--Heading">

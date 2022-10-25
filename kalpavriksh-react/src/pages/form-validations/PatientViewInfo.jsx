@@ -3,12 +3,27 @@ import Navbar from "../shared/Navbar";
 
 import { PaperClipIcon } from "@heroicons/react/outline";
 
+const attachments = [
+  {
+    name: "Appointment",
+    link: "Download",
+  },
+  {
+    name: "Medical Form Data",
+    link: "View",
+  },
+  {
+    name: "Add Prescription",
+    link: "Click Here",
+  },
+];
+
 const PatientViewInfo = () => {
   return (
     <>
       {/* Dashboard Container Starts Here */}
       <div className="dashboard__Container">
-        <Navbar />        
+        <Navbar />
         {/*
               <header className="header__Box">
               <div className="header__Box--Heading">
@@ -116,63 +131,27 @@ const PatientViewInfo = () => {
                           role="list"
                           className="patient__ViewBox--Attachments_ListItems"
                         >
-                          <li className="patient__ViewBox--Attachments_ListItemBox">
-                            <div className="patient__ViewBox--Attachments_ListItem">
-                              <PaperClipIcon
-                                className="patient__ViewBox--Attachments_ListItem-Button"
-                                aria-hidden="true"
-                              />
-                              <span className="patient__ViewBox--Attachments_ListItem-ButtonTxt">
-                                Appointment 
-                              </span>
-                            </div>
-                            <div className="patient__ViewBox--Attachments_ListItem-Text">
-                              <a
-                                href="/"
-                                className="patient__ViewBox--Attachments_ListItem-Anchor"
-                              >
-                                Download
-                              </a>
-                            </div>
-                          </li>
-                          <li className="patient__ViewBox--Attachments_ListItemBox">
-                            <div className="patient__ViewBox--Attachments_ListItem">
-                              <PaperClipIcon
-                                className="patient__ViewBox--Attachments_ListItem-Button"
-                                aria-hidden="true"
-                              />
-                              <span className="patient__ViewBox--Attachments_ListItem-ButtonTxt">
-                                Medical Form Data
-                              </span>
-                            </div>
-                            <div className="patient__ViewBox--Attachments_ListItem-Text">
-                              <a
-                                href="/"
-                                className="patient__ViewBox--Attachments_ListItem-Anchor"
-                              >
-                                View
-                              </a>
-                            </div>
-                          </li>
-                          <li className="patient__ViewBox--Attachments_ListItemBox">
-                            <div className="patient__ViewBox--Attachments_ListItem">
-                              <PaperClipIcon
-                                className="patient__ViewBox--Attachments_ListItem-Button"
-                                aria-hidden="true"
-                              />
-                              <span className="patient__ViewBox--Attachments_ListItem-ButtonTxt">
-                                Add Prescription 
-                              </span>
-                            </div>
-                            <div className="patient__ViewBox--Attachments_ListItem-Text">
-                              <a
-                                href="/"
-                                className="patient__ViewBox--Attachments_ListItem-Anchor"
-                              >
-                                Click Here
-                              </a>
-                            </div>
-                          </li>
+                          {attachments.map((attach) => (
+                            <li key={attach.name} className="patient__ViewBox--Attachments_ListItemBox">
+                              <div className="patient__ViewBox--Attachments_ListItem">
+                                <PaperClipIcon
+                                  className="patient__ViewBox--Attachments_ListItem-Button"
+                                  aria-hidden="true"
+                                />
+                                <span className="patient__ViewBox--Attachments_ListItem-ButtonTxt">
+                                  {attach.name}
+                                </span>
+                              </div>
+                              <div className="patient__ViewBox--Attachments_ListItem-Text">
+                                <a
+                                  href="/"
+                                  className="patient__ViewBox--Attachments_ListItem-Anchor"
+                                >
+                                  {attach.link}
+                                </a>
+                              </div>
+                            </li>
+                          ))}
                         </ul>
                       </dd>
                     </div>
