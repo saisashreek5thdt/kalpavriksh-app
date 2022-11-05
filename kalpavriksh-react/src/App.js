@@ -26,6 +26,8 @@ import PatientForm from "./pages/form-validations/patient/Patient-Forms";
 import Prescriptions from "./pages/form-validations/patient/Prescriptions";
 import Appointments from "./pages/form-validations/patient/Appointments";
 
+import Admin from "./admin/UI/AdminDashboard";
+
 const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -86,6 +88,10 @@ const App = () => {
 
           <Route path="/userrole/:roleid/form/appointments/" exact>
             <Appointments />
+          </Route>
+
+          <Route path="/admin/">
+            <Admin />
           </Route>
 
           <Redirect to="/" />
