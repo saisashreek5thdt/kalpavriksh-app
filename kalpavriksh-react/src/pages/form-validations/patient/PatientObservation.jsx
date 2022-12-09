@@ -24,7 +24,7 @@ const PatientObservation = () => {
           <div
             className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
             id="createObservations"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="createObservationsLabel"
             aria-hidden="true"
           >
@@ -32,7 +32,7 @@ const PatientObservation = () => {
               <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                 <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                   <h5
-                    class="text-xl font-medium leading-normal text-gray-800"
+                    className="text-xl font-medium leading-normal text-gray-800"
                     id="createAppointmentLabel"
                   >
                     Modal title

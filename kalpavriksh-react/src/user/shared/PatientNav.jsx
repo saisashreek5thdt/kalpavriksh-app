@@ -19,17 +19,17 @@ const user = {
     },
     {
       name: "MyData",
-      href: "/userrole/:roleid/dashboard/patient/",
+      href: "/userrole/:roleid/dashboard/patient/mydata/",
       current: true,
     },
     {
       name: "Prescriptions",
-      href: "/userrole/:roleid/dashboard/patient/",
+      href: "/userrole/:roleid/dashboard/patient/prescriptions/",
       current: true,
     },
     {
       name: "Chat",
-      href: "/userrole/:roleid/dashboard/patient/",
+      href: "/userrole/:roleid/dashboard/common/chat/",
       current: true,
     },
   ];

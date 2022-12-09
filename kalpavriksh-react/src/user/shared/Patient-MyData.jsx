@@ -7,24 +7,24 @@ import { Form1, Form2, Form3 } from "../../pages/shared/MultiForms";
 const PatientMyData = () => {
   return (
     <>
-      <div className="min-h-full">
+      <div className="dashboard__Container">
         <PatientNav />
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <div className="dashboard__Main-Content">
             {/* Replace with your content */}
-            <div className="px-4 py-6 sm:px-0">
+            <div className="dashboard__Main-Inner-Content">
               <ul
-                className="nav nav-tabs nav-justified flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4"
+                className="nav tabs__List-Container"
                 id="tabs-tabJustify"
                 role="tablist"
               >
                 <li
-                  className="nav-item flex-grow text-center"
+                  className="tabs__List-Item"
                   role="presentation"
                 >
                   <a
                     href="#tabs-appointmentJustify"
-                    className="nav-link w-full block font-medium text-md leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent active"
+                    className="tabs__List-Link"
                     id="tabs-appointment-tabJustify"
                     data-bs-toggle="pill"
                     data-bs-target="#tabs-appointmentJustify"
@@ -36,12 +36,12 @@ const PatientMyData = () => {
                   </a>
                 </li>
                 <li
-                  className="nav-item flex-grow text-center"
+                  className="tabs__List-Item"
                   role="presentation"
                 >
                   <a
                     href="#tabs-mypatientsJustify"
-                    className="nav-link w-full block font-medium text-md leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+                    className="tabs__List-Link"
                     id="tabs-mypatients-tabJustify"
                     data-bs-toggle="pill"
                     data-bs-target="#tabs-mypatientsJustify"
@@ -53,12 +53,12 @@ const PatientMyData = () => {
                   </a>
                 </li>
                 <li
-                  className="nav-item flex-grow text-center"
+                  className="tabs__List-Item"
                   role="presentation"
                 >
                   <a
                     href="#tabs-chatJustify"
-                    className="nav-link w-full block font-medium text-md leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 hover:border-transparent hover:bg-gray-100 focus:border-transparent"
+                    className="tabs__List-Link"
                     id="tabs-chat-tabJustify"
                     data-bs-toggle="pill"
                     data-bs-target="#tabs-chatJustify"
@@ -79,9 +79,9 @@ const PatientMyData = () => {
                 >
                   {Form1()}
                   <br />
-                  {Form2()}
+                  {/* {Form2()} */}
                   <br />
-                  {Form3()}
+                  {/* {Form3()} */}
                 </div>
                 <div
                   className="tab-pane fade"
@@ -91,9 +91,9 @@ const PatientMyData = () => {
                 >
                   {Form1()}
                   <br />
-                  {Form2()}
+                  {/* {Form2()} */}
                   <br />
-                  {Form3()}
+                  {/* {Form3()} */}
                 </div>
                 <div
                   className="tab-pane fade"
@@ -103,9 +103,9 @@ const PatientMyData = () => {
                 >
                   {Form1()}
                   <br />
-                  {Form2()}
+                  {/* {Form2()} */}
                   <br />
-                  {Form3()}
+                  {/* {Form3()} */}
                 </div>
               </div>              
             </div>            

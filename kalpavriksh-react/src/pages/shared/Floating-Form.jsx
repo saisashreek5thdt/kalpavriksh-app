@@ -24,7 +24,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 Daily
               </Link>
@@ -32,7 +32,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 Weekly
               </Link>
@@ -40,7 +40,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 Bi Weekly
               </Link>
@@ -48,7 +48,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 Monthly
               </Link>
@@ -56,7 +56,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 Quarterly
               </Link>
@@ -64,7 +64,7 @@ const FloatingForm = () => {
             <li>
               <Link
                 className="dropdown-item text-sm py-2 px-4 font-medium block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                to="/userrole/:roleid/dashboard/patient/mydata/forms/"
+                to="/userrole/:roleid/dashboard/patient/mydata/"
               >
                 One Time
               </Link>

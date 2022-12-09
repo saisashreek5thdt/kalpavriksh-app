@@ -1,25 +1,24 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 
 import InputLog from "../../Components/InputLog";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../utils/validators";
-import { useForm} from "../../hooks/form-hooks";
+import { useForm } from "../../hooks/form-hooks";
 
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 
 const LoginForm = () => {
-
   const navigate = useNavigate();
 
   const googleSignIn = () => {
-    const provider = new GoogleAuthProvider()
-    signInWithRedirect(auth, provider)
-}
-const [user] = useAuthState(auth);
-   console.log(user,'user')
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider);
+  };
+  const [user] = useAuthState(auth);
+  console.log(user, "user");
 
   const [isLogged, setIsLogged] = useState(false);
 
@@ -42,31 +41,36 @@ const [user] = useAuthState(auth);
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
         },
-        formState.inputs.emailAddress.isValid && formState.inputs.password.isValid
+        formState.inputs.emailAddress.isValid &&
+          formState.inputs.password.isValid
       );
-      navigate('/userrole/:roleid/dashboard/doctor/');
-    }
-    else {
+      navigate("/userrole/:roleid/dashboard/doctor/");
+    } else {
       setFormData(
         {
           ...formState.inputs,
           name: {
             value: "",
-            isValid: false
-          }
+            isValid: false,
+          },
         },
         false
       );
-      navigate('/userrole/:roleid/dashboard/doctor/');
+      navigate("/userrole/:roleid/dashboard/doctor/");
     }
-    setIsLogged((prevLogg) => (!prevLogg));
+    setIsLogged((prevLogg) => !prevLogg);
   };
 
   const signOut = () => {
-    signOut(auth)
-}
+    signOut(auth);
+  };
+
+  const testPatientLoginHandler = () => {
+    navigate("/userrole/:roleid/dashboard/patient/mydata/");
+  };
+
   return (
     <>
       <form
@@ -86,7 +90,7 @@ const [user] = useAuthState(auth);
               validators={[VALIDATOR_EMAIL()]}
               errorText="Please Enter Valid Email Address"
               onInput={inputHandler}
-             />
+            />
             {/*
             <label htmlFor="email-address" className="login__Form-Input--Label">
               Email address
@@ -103,7 +107,7 @@ const [user] = useAuthState(auth);
             */}
           </div>
           <div>
-          <InputLog
+            <InputLog
               element="input"
               id="pasword"
               type="password"
@@ -112,8 +116,8 @@ const [user] = useAuthState(auth);
               validators={[VALIDATOR_MINLENGTH(8)]}
               errorText="Please Enter Valid Password"
               onInput={inputHandler}
-             />
-             {/*
+            />
+            {/*
             <label htmlFor="password" className="login__Form-Input--Label">
               Password
             </label>
@@ -148,38 +152,42 @@ const [user] = useAuthState(auth);
         </div>
 
         <div>
-          <button
-            type="submit"
-            className="group login__Button--Container-Btn"
-          >
+          <button type="submit" className="group login__Button--Container-Btn">
             <span className="login__Button--Container-BtnSpan"></span>
             Sign in
           </button>
         </div>
-
         <div className="login__Divider--Box">
           <p className="login__Divider--Text">Or</p>
         </div>
-        </form>
+      </form>
 
-        {user ? (
-           <div>
-           {user !==null && (
-           <button onClick={()=>auth.signOut()}>Signout</button>
- 
-           )}
-         </div>
+      <div>
+        <button
+          type="submit"
+          className="group login__Button--Container-Btn"
+          onClick={testPatientLoginHandler}
+        >
+          <span className="login__Button--Container-BtnSpan"></span>
+          Patient LogIn
+        </button>
+      </div>
 
-        ):(
-          <div>
+      {user ? (
+        <div>
+          {user !== null && (
+            <button onClick={() => auth.signOut()}>Signout</button>
+          )}
+        </div>
+      ) : (
+        <div>
           <button
             type="submit"
             className="group login__Social--Btn"
             onClick={googleSignIn}
           >
             <span className="login__Social--Span">
-              <FaGoogle 
-           
+              <FaGoogle
                 className="login__Social--Span-Icon"
                 aria-hidden="true"
               />
@@ -187,11 +195,7 @@ const [user] = useAuthState(auth);
             Sign in with Google
           </button>
         </div>
-        )}
-    
-
-       
-
+      )}
     </>
   );
 };

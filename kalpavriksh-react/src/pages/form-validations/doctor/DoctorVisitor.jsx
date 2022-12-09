@@ -10,17 +10,13 @@ const DoctorVisitor = () => {
   const patientList = useSelector((state) => state.patientList);
   const { loading, error, patients } = patientList;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(listPatients());
+  }, [dispatch]);
 
-  useEffect(()=>{
-      dispatch(listPatients())
-  },[dispatch])
-  if(patients){
-    console.log(patients.data)
-  }
- 
-    let navigate = useNavigate();
+  let navigate = useNavigate();
   return (
     <>
       <div className="flex justify-evenly">
@@ -102,13 +98,16 @@ const DoctorVisitor = () => {
             </tr>
           </thead>
           <tbody>
-          {loading ? <LoadingBox></LoadingBox>:
-                error? <MessageBox>{error}</MessageBox>:
-                patients.data && patients.data.map((itm,i)=>(
-            
-                  <tr key={itm._id} className="bg-white border-b">
+            {loading ? (
+              <LoadingBox></LoadingBox>
+            ) : error ? (
+              <MessageBox>{error}</MessageBox>
+            ) : (
+              patients.data &&
+              patients.data.map((itm, i) => (
+                <tr key={itm._id} className="bg-white border-b">
                   <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                    {i+1}
+                    {i + 1}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
                     {itm.team}
@@ -126,7 +125,8 @@ const DoctorVisitor = () => {
                           className="h-6 w-6 hover:text-green-500"
                           onClick={() =>
                             navigate(
-                              "/userrole/:roleid/dashboard/doctor/meeting/info/",{state:{id:itm._id}}
+                              "/userrole/:roleid/dashboard/doctor/meeting/info/",
+                              { state: { id: itm._id } }
                             )
                           }
                         />
@@ -137,8 +137,8 @@ const DoctorVisitor = () => {
                     </div>
                   </td>
                 </tr>
-       
-       ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,9 +1,35 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEdit } from "react-icons/fi";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createAppointment, getAppointments } from "../../../action/PatientAction";
+import { useEffect } from "react";
+import { CREATE_APPOINTMENT_RESET } from "../../../constant.js/PatientConstant";
+import LoadingBox from "../../../Components/LoadingBox";
+import MessageBox from "../../../Components/MessageBox";
 
 const PatientAppointmentInfo = () => {
+  const [staff,setStaff]=useState('')
+  const [date, setDate] = useState('')
+  const dispatch=useDispatch()
   let navigate = useNavigate();
+  const appointmentCreate=useSelector(state=>state.appointmentCreate)
+  const {success}=appointmentCreate
+  const appointmentList=useSelector(state=>state.appointmentList)
+  const {loading,error,appointment}=appointmentList
+
+  const save=()=>{
+    console.log('heyy');
+    dispatch(createAppointment(staff,date))
+  }
+
+  useEffect(()=>{
+    dispatch(getAppointments())
+      if(success){
+        dispatch({type:CREATE_APPOINTMENT_RESET})
+      }
+  },[success])
   return (
     <>
       <div className="flex justify-start my-5">
@@ -21,12 +47,12 @@ const PatientAppointmentInfo = () => {
             data-bs-toggle="modal"
             data-bs-target="#createAppointment"
           >
-            Create Appointment
+            Create Appointments
           </button>
           <div
             className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
             id="createAppointment"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="createAppointmentLabel"
             aria-hidden="true"
           >
@@ -34,7 +60,7 @@ const PatientAppointmentInfo = () => {
               <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                 <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                   <h5
-                    class="text-xl font-medium leading-normal text-gray-800"
+                    className="text-xl font-medium leading-normal text-gray-800"
                     id="createAppointmentLabel"
                   >
                     Modal title
@@ -57,12 +83,13 @@ const PatientAppointmentInfo = () => {
                         name="staff"
                         autoComplete="staff-name"
                         className="form__Select"
+                        onChange={(e)=>setStaff(e.target.value)}
                       >
                         <option>Select Staff</option>
-                        <option>Staff 1</option>
-                        <option>Staff 2</option>
-                        <option>Staff 3</option>
-                        <option>Staff 4</option>
+                        <option value='staf1'>Staff 1</option>
+                        <option value='staf2'>Staff 2</option>
+                        <option value='staf3'>Staff 3</option>
+                        <option value='staf4'>Staff 4</option>
                       </select>
                     </div>
                     <div className="form__Cols--Span-6">
@@ -73,6 +100,8 @@ const PatientAppointmentInfo = () => {
                         Select Appointment Date
                       </label>
                       <input
+                        onChange={(e)=>setDate(e.target.value)}
+
                         type="date"
                         name="appointment-date"
                         id="appointment-date"
@@ -91,6 +120,7 @@ const PatientAppointmentInfo = () => {
                     Cancel
                   </button>
                   <button
+                  onClick={save}
                     type="button"
                     className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                   >
@@ -124,18 +154,23 @@ const PatientAppointmentInfo = () => {
             </tr>
           </thead>
           <tbody>
+            {loading ? <LoadingBox></LoadingBox>:
+            error ? <MessageBox>{error}</MessageBox>:
+            appointment.length>0 ? appointment.map((ap,i)=>(
+
+            
             <tr className="bg-white border-b">
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                1
+                {i+1}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Dr. Rajiv Singla
+                {ap.doctorId}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Krithi Shetty
+                {ap.patientId}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                11-10-2022
+                {ap.date}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
                 <div className="flex flex-row justify-center">
@@ -151,58 +186,11 @@ const PatientAppointmentInfo = () => {
                 </div>
               </td>
             </tr>
-            <tr className="bg-white border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                2
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Dr. Rajiv Singla
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Krithi Shetty
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                11-10-2022
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                <div className="flex flex-row justify-center">
-                  <div className="inline-block p-6">
-                    <FiEye className="h-6 w-6 hover:text-green-500" 
-                      onClick={() => navigate('/userrole/:roleid/dashboard/patient/meeting/info/')}
-                    />
-                  </div>
-                  <div className="inline-block p-6">
-                    <FiEdit className="h-6 w-6 hover:text-blue-500" />
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr className="bg-white border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                3
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Dr. Rajiv Singla
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                Krithi Shetty
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                11-10-2022
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
-                <div className="flex flex-row justify-center">
-                  <div className="inline-block p-6">
-                    <FiEye className="h-6 w-6 hover:text-green-500"
-                      onClick={() => navigate('/userrole/:roleid/dashboard/patient/meeting/info/')}
-                     />
-                  </div>
-                  <div className="inline-block p-6">
-                    <FiEdit className="h-6 w-6 hover:text-blue-500" />
-                  </div>
-                </div>
-              </td>
-            </tr>
+           )):
+           
+           <MessageBox>No Appointments</MessageBox>
+           }
+           
           </tbody>
         </table>
       </div>

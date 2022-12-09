@@ -50,7 +50,7 @@ const DoctorDashboard = () => {
                     aria-controls="tabs-mypatientsJustify"
                     aria-selected="false"
                   >
-                    My Patients
+                    MyPatients
                   </a>
                 </li>
                 <li className="tabs__List-Item" role="presentation">
