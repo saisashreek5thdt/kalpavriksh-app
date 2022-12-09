@@ -1,4 +1,7 @@
-const Patient = require('../../models/Patient')
+const Patient = require('../../models/Patient');
+const Doctor = require('../../models/Doctor')
+
+const { getPatientId } = require('../../utils/getPatientId');
 
 module.exports.addPatient = async (req, res) => {
    
@@ -12,6 +15,7 @@ module.exports.addPatient = async (req, res) => {
         }
         const newPatient = new Patient({
             doctorId: "dinesh",
+            patientId: "DA-"+ await getPatientId(),
             ...req.body
         });
 

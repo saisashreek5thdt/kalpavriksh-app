@@ -26,12 +26,18 @@ const connectDB = require('./db')
 
 connectDB();
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+// api documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.get('/', (req, res, ) => {
     res.send('Backend of Health app is Working Fine.');
 });
 
 //Auth routes
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/v1/auth', require('./routes/auth'));
 
 app.use('/api/v1', require('./routes/index'))
 
