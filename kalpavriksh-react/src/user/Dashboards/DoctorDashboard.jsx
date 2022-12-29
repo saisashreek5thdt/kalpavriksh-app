@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { listPatients } from "../../action/PatientAction";
 
+import DoctorTabs from "../../pages/form-validations/doctor/DocTabs";
+
 const DoctorDashboard = () => {
 
 
@@ -20,7 +22,7 @@ const DoctorDashboard = () => {
           <div className="dashboard__Main-Content">
             {/* Replace with your content */}
             <div className="dashboard__Main-Inner-Content">
-              <ul
+              {/* <ul
                 className="nav tabs__List-Container"
                 id="tabs-tabJustify"
                 role="tablist"
@@ -93,7 +95,8 @@ const DoctorDashboard = () => {
                 >
                   <ChatUI />
                 </div>
-              </div>
+              </div> */}
+              <DoctorTabs />
             </div>
             {/* /End replace */}
             <FloatingButton />

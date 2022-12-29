@@ -10,8 +10,8 @@ const DataCollection = () => {
             <span className="card__Heading--Span card__Bg--Teal">Active</span>
           </h5>
           <p className="card__Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <div className="form__Grid--Rows-none">
             <div className="form__Cols--Span-6">
@@ -40,8 +40,8 @@ const DataCollection = () => {
             <span className="card__Heading--Span card__Bg--Sky">Active</span>
           </h5>
           <p className="card__Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <div className="form__Grid--Rows-none">
             <div className="form__Cols--Span-6">
@@ -76,8 +76,8 @@ const DataCollection = () => {
             <span className="card__Heading--Span card__Bg--Cyan">Active</span>
           </h5>
           <p className="card__Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <div className="form__Grid--Cols-2">
             <div className="form__Cols--Span-6">

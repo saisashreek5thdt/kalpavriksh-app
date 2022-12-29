@@ -1,4 +1,4 @@
-import { CREATE_APPOINTMENT_FAIL, CREATE_APPOINTMENT_REQUEST, CREATE_APPOINTMENT_SUCCESS, ENROLMENT_PATIENT_FAIL, ENROLMENT_PATIENT_REQUEST, ENROLMENT_PATIENT_SUCCESS, GET_ALL_PATIENT_FAIL, GET_ALL_PATIENT_FORMS_FAIL, GET_ALL_PATIENT_FORMS_REQUEST, GET_ALL_PATIENT_FORMS_SUCCESS, GET_ALL_PATIENT_REQUEST, GET_ALL_PATIENT_SUCCESS, GET_APPOINTMENT_FAIL, GET_APPOINTMENT_REQUEST, GET_APPOINTMENT_SUCCESS, GET_PATIENT_DETAILS_FAIL, GET_PATIENT_DETAILS_REQUEST, GET_PATIENT_DETAILS_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, Url } from "../constant.js/PatientConstant";
+import { CREATE_APPOINTMENT_FAIL, CREATE_APPOINTMENT_REQUEST, CREATE_APPOINTMENT_SUCCESS, ENROLMENT_PATIENT_FAIL, ENROLMENT_PATIENT_REQUEST, ENROLMENT_PATIENT_SUCCESS, GET_ALL_PATIENT_FAIL, GET_ALL_PATIENT_FORMS_FAIL, GET_ALL_PATIENT_FORMS_REQUEST, GET_ALL_PATIENT_FORMS_SUCCESS, GET_ALL_PATIENT_REQUEST, GET_ALL_PATIENT_SUCCESS, GET_APPOINTMENT_FAIL, GET_APPOINTMENT_REQUEST, GET_APPOINTMENT_SUCCESS, GET_PATIENT_DETAILS_FAIL, GET_PATIENT_DETAILS_REQUEST, GET_PATIENT_DETAILS_SUCCESS, GET_PRESCRIPTIONT_FAIL, GET_PRESCRIPTION_REQUEST, GET_PRESCRIPTION_SUCCESS, PATIENT_LOGIN_FAIL, PATIENT_LOGIN_REQUEST, PATIENT_LOGIN_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, SENDOTP_FAIL, SENDOTP_REQUEST, SENDOTP_SUCCESS, Url } from "../constant.js/PatientConstant";
 import axios from 'axios'
 
 
@@ -103,3 +103,52 @@ export const getAppointments = () => async (dispatch) => {
 
   }
 };
+
+
+export const getPrescriptions = () => async (dispatch) => {
+  dispatch({ type: GET_PRESCRIPTION_REQUEST });
+  try {    
+    const { data } = await axios.get(`${Url}/presc/get-all`)      
+    dispatch({ type: GET_PRESCRIPTION_SUCCESS, payload: data }); 
+
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: GET_PRESCRIPTIONT_FAIL, payload: message });
+
+  }
+};
+
+
+export const patientOtp =(email,user)=>async(dispatch)=>{
+  dispatch({type:SENDOTP_REQUEST,payload:{email}});
+  try{
+    const {data}= await axios.post(`${Url}/auth/login`,{email,user})
+    dispatch({type:SENDOTP_SUCCESS,payload:data});
+    // localStorage.setItem('adminInfo', JSON.stringify(data));
+  }catch(error){
+    const message =
+    error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+     dispatch({ type: SENDOTP_FAIL, payload: message })
+  }
+}
+
+export const patientLogin =(email,user,otp)=>async(dispatch)=>{
+  dispatch({type:PATIENT_LOGIN_REQUEST,payload:{email}});
+  try{
+    const {data}= await axios.post(`${Url}/auth/submit-otp`,{email,user,otp})
+    dispatch({type:PATIENT_LOGIN_SUCCESS,payload:data});
+    console.log(data.token,'dt');
+    // localStorage.setItem('patientInfo', JSON.stringify(data));
+  }catch(error){
+    const message =
+    error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+     dispatch({ type: PATIENT_LOGIN_FAIL, payload: message })
+  }
+}

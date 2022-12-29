@@ -20,8 +20,8 @@ import DoctorMeetingInfo from './pages/form-validations/doctor/DoctorMeetingInfo
 
 // Patient Dashboard Page Imports
 import PatientDashboard from './user/Dashboards/PatientDashboard';
-import PatientMyData from './user/shared/Patient-MyData';
-import PatientPrescriptions from './user/shared/Patient-Prescriptions';
+import PatientDataTab from './user/shared/PatientDataTab';
+import PatientPrescription from './user/shared/PatientPrescription';
 import PatientForm from './pages/form-validations/patient/PatientForm';
 import PatientMeetingInfo from './pages/form-validations/patient/PatientMeetingInfo';
 
@@ -41,6 +41,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path='/userrole/:roleid/dashboard/doctor/' element={<DoctorDashboard />} />
+        <Route path='/patient' element={<DoctorMeetingInfo />} />
+
         <Route path='/userrole/:roleid/dashboard/doctor/multistep/' element={<MultistepForm />} />
         <Route path="/userrole/:roleid/dashboard/doctor/enrol/patient/" element={<CreatePatient />} />
         <Route path='/userrole/:roleid/dashboard/doctor/enrol/healthinfo/' element={<PatientHealthInfo />} />
@@ -49,9 +51,9 @@ const App = () => {
         <Route path='/userrole/:roleid/dashboard/doctor/create/dietchart/' element={<UploadDietChart />} />
         <Route path='/userrole/:roleid/dashboard/doctor/meeting/info/' element={<DoctorMeetingInfo />} />
         <Route path='/userrole/:roleid/dashboard/patient/' element={<PatientDashboard />} />
-        <Route path='/userrole/:roleid/dashboard/patient/mydata/' element={<PatientMyData />} />
+        <Route path='/userrole/:roleid/dashboard/patient/mydata/' element={<PatientDataTab />} />
         <Route path='/userrole/:roleid/dashboard/patient/mydata/forms/' element={<PatientForm />} />
-        <Route path='/userrole/:roleid/dashboard/patient/prescriptions/' element={<PatientPrescriptions />} />
+        <Route path='/userrole/:roleid/dashboard/patient/prescriptions/' element={<PatientPrescription />} />
         <Route path='/userrole/:roleid/dashboard/patient/meeting/info/' element={<PatientMeetingInfo />} />
         <Route path='/userrole/:roleid/dashboard/common/chat/' element={<UserChat />} />
         <Route path='/userrole/:roleid/dashboard/admin/' element={<Admin />} />

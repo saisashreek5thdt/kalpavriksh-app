@@ -3,14 +3,55 @@ import { useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 
 import InputLog from "../../Components/InputLog";
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../../utils/validators";
+import Select from "../../Components/Select";
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE,
+} from "../../utils/validators";
 import { useForm } from "../../hooks/form-hooks";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { patientLogin, patientOtp } from "../../action/PatientAction";
+import { useEffect } from "react";
+import { SENDOTP_RESET } from "../../constant.js/PatientConstant";
 
 const LoginForm = () => {
+  const patientOtps = useSelector((state) => state.patientOtp);
+  const { loading, error, success } = patientOtps;
+
+  const dispatch = useDispatch();
+
+  const patientOtpHandler = (e) => {
+    e.preventDefault();
+    console.log("hey");
+    dispatch(
+      patientOtp(
+        formState.inputs.emailAddress.value,
+        formState.inputs.role.value
+      )
+    );
+  };
+
+  useEffect(() => {
+    document.getElementById("element").style.display = "none";
+  }, []);
+  useEffect(() => {
+    if (success) {
+      document.getElementById("element").style.display = "block";
+      dispatch({ type: SENDOTP_RESET });
+    }
+  }, [success]);
+  const roleOptions = [
+    { value: "Please Select a Role" },
+    { value: "Admin" },
+    { value: "doctor" },
+    { value: "patient" },
+  ];
+
   const navigate = useNavigate();
 
   const googleSignIn = () => {
@@ -18,7 +59,7 @@ const LoginForm = () => {
     signInWithRedirect(auth, provider);
   };
   const [user] = useAuthState(auth);
-  console.log(user, "user");
+  // console.log(user, "user");
 
   const [isLogged, setIsLogged] = useState(false);
 
@@ -32,9 +73,19 @@ const LoginForm = () => {
         value: "",
         isValid: false,
       },
+      role: {
+        value: "",
+        isValid: false,
+      },
+      element: {
+        value: "",
+        isValid: false,
+      },
     },
     false
   );
+
+  console.log(formState.inputs.element.value, "frm");
 
   const loggedHandler = () => {
     if (!isLogged) {
@@ -67,19 +118,51 @@ const LoginForm = () => {
     signOut(auth);
   };
 
+  const submitOtp = (e) => {
+    e.preventDefault();
+    dispatch(
+      patientLogin(
+        formState.inputs.emailAddress.value,
+        formState.inputs.role.value,
+        formState.inputs.element.value
+      )
+    );
+  };
+
   const testPatientLoginHandler = () => {
     navigate("/userrole/:roleid/dashboard/patient/mydata/");
   };
+
+  useEffect(()=>{
+      if(formState.inputs.role.value === 'patient'){
+        navigate('/userrole/:roleid/dashboard/patient/mydata/')
+      }else if(formState.inputs.role.value === 'doctor'){
+        navigate('/userrole/:roleid/dashboard/doctor/')
+      }else if(formState.inputs.role.value === 'Admin'){
+        navigate('/userrole/:roleid/dashboard/admin/')
+      }
+  },[formState])
 
   return (
     <>
       <form
         className="login__Form-Box"
         // method="POST"
-        onClick={loggedHandler}
+        // onClick={loggedHandler}
       >
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="login__Form-Input">
+          <div>
+            <Select
+              element="select"
+              id="role"
+              label="Select Role"
+              options={roleOptions}
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please Select Role"
+              onInput={inputHandler}
+            />
+          </div>
           <div>
             <InputLog
               element="input"
@@ -106,7 +189,56 @@ const LoginForm = () => {
             />
             */}
           </div>
+          {formState.inputs.role.value === "doctor" ? (
+            <div>
+              <button
+                type="submit"
+                className="group login__Button--Container-Btn"
+              >
+                <span className="login__Button--Container-BtnSpan"></span>
+                Generate OTP
+              </button>
+            </div>
+          ) : formState.inputs.role.value === "patient" ? (
+            <div>
+              <button
+                onClick={patientOtpHandler}
+                // type="submit"
+                className="group login__Button--Container-Btn"
+              >
+                <span className="login__Button--Container-BtnSpan"></span>
+                Generate OTP
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+
           <div>
+            <InputLog
+              element="input"
+              id="element"
+              type="password"
+              label="otp"
+              placeholder="Enter OTP"
+              validators={[VALIDATOR_MINLENGTH(8)]}
+              errorText="Please Enter Valid Password"
+              onInput={inputHandler}
+            />
+          </div>
+
+          <div id="element">
+            <button
+              onClick={submitOtp}
+              className="group login__Button--Container-Btn"
+            >
+              <span className="login__Button--Container-BtnSpan"></span>
+              Sign in
+            </button>
+          </div>
+
+          {/* {success ? ( */}
+          {/* <div>
             <InputLog
               element="input"
               id="pasword"
@@ -117,21 +249,8 @@ const LoginForm = () => {
               errorText="Please Enter Valid Password"
               onInput={inputHandler}
             />
-            {/*
-            <label htmlFor="password" className="login__Form-Input--Label">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="login__Form-Input--Password"
-              placeholder="Password"
-            />
-            */}
-          </div>
+            </div> */}
+          {/* ):''} */}
         </div>
 
         <div className="login__Checkbox-Container">
@@ -162,7 +281,7 @@ const LoginForm = () => {
         </div>
       </form>
 
-      <div>
+      {/* <div>
         <button
           type="submit"
           className="group login__Button--Container-Btn"
@@ -171,7 +290,7 @@ const LoginForm = () => {
           <span className="login__Button--Container-BtnSpan"></span>
           Patient LogIn
         </button>
-      </div>
+      </div> */}
 
       {user ? (
         <div>

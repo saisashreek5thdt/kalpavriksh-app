@@ -6,6 +6,9 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import 'tw-elements';
 import store from './store';
 import { Provider } from 'react-redux';
+import { registerLicense } from '@syncfusion/ej2-base';
+
+registerLicense("ORg4AjUWIQA/Gnt2VVhjQlFaclhJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxRd0diX39acHJRRGNdVEw=");
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -83,13 +83,13 @@ const CreatePatient = () => {
     const dob=formState.inputs.dob.value
     const gender=formState.inputs.gender.value
 
-    if(name ==='' ||phone ==='' || email ==='' || dob ==='' || gender ==='' ){
-      alert('please fill all the fields')
-    }else{
+    // if(name ==='' ||phone ==='' || email ==='' || dob ==='' || gender ==='' ){
+    //   alert('please fill all the fields')
+    // }else{
       navigate("/userrole/:roleid/dashboard/doctor/enrol/healthinfo/", {
         state: {name,phone,email,dob,gender},
       });
-    }
+    // }
 
   
   };

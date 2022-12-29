@@ -9,6 +9,8 @@ import { CREATE_APPOINTMENT_RESET } from "../../../constant.js/PatientConstant";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 
+import PatientAppointmentTable from "./PatientAppointmentTable";
+
 const PatientAppointmentInfo = () => {
   const [staff,setStaff]=useState('')
   const [date, setDate] = useState('')
@@ -38,8 +40,8 @@ const PatientAppointmentInfo = () => {
             Create Appointment's
           </h5>
           <p className="text-gray-700 text-base mb-4">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <button
             type="button"
@@ -133,7 +135,7 @@ const PatientAppointmentInfo = () => {
         </div>
       </div>
       <div className="my-10">
-        <table className="min-w-full table-auto">
+        {/* <table className="min-w-full table-auto">
           <thead className="bg-gray-200">
             <tr>
               <th className="text-lg font-bold text-gray-900 px-2 py-4">
@@ -192,7 +194,8 @@ const PatientAppointmentInfo = () => {
            }
            
           </tbody>
-        </table>
+        </table> */}
+        <PatientAppointmentTable />
       </div>
     </>
   );

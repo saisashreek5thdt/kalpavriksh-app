@@ -81,3 +81,39 @@ border-color: rgb(209 213 219 / var(--tw-border-opacity));
 --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.tabs__List-Container{
+  flex-direction: inherit !important;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .tab__Card--Container{
+    display: block;
+    padding: 16px;
+  }
+  .tab__Card--Block{
+    margin-bottom: 20px;
+  }
+  .card__Container--Evenly{
+    display: block !important;
+
+    /* margin-bottom: 30px; */
+  
+  }
+  .card__Block{
+    margin-bottom: 25px;
+    /* padding: 11px; */
+  }
+  .card__Container--Around{
+    display: block;
+    padding: 14px 25px 18px 25px;
+  }
+  .form__Select{
+    width: auto;
+    padding-right:auto !important;
+  }
+}
+.my-10{
+  width: 100%;
+  overflow-x: auto;
+}

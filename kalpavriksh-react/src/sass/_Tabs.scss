@@ -42,3 +42,29 @@
     }
 
 }
+
+//Syncfusion Tabs SCSS
+.e-tab .e-tab-header .e-toolbar-item .e-tab-text  {
+    font-family: "Quicksand", sans-serif;
+    font-size: 20px;
+    color: #134e4a;
+  }
+  
+  .e-tab .e-tab-header .e-toolbar-item .e-tab-icon {
+    font-family: "Quicksand", sans-serif;
+    font-size: 20px;
+    color: #134e4a;
+  }
+  
+  .e-tab .e-tab-header .e-toolbar-item.e-active .e-tab-text,
+  .e-tab .e-tab-header .e-toolbar-item.e-active .e-tab-icon,
+  .e-toolbar-item .e-template {
+    font-family: "Quicksand", sans-serif;
+    font-size: 20px;
+    color: #064e3b;
+  }
+  
+  .e-tab .e-content .e-item {
+    font-family: "Quicksand", sans-serif;
+    font-size: 18px;
+  }

@@ -116,9 +116,9 @@ const PatientPersonalInfo = () => {
        setRefId(formState.inputs.refId.value)
     
     console.log(amount,paymentMode,paymentDate,refId,paymentNextDate,'iss')
-    if(amount === '' || paymentMode === '' || paymentDate === '' || paymentNextDate === '' || refId === ''){
-        alert('please enter full fields')
-    }else{
+    // if(amount === '' || paymentMode === '' || paymentDate === '' || paymentNextDate === '' || refId === ''){
+    //     alert('please enter full fields')
+    // }else{
       dispatch(
         patientEnrollment(
           phone,
@@ -142,7 +142,7 @@ const PatientPersonalInfo = () => {
           paymentNextDate
         )
       );
-    }  
+    // }  
 
 
 

@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiEdit } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { addDoctore } from "../../../action/AdminAction";
 
 const AccessControl = () => {
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+  const [email, setEmail] = useState('')
+  const [number, setNumber] = useState('')
+  const [regId, setRegId] = useState('')
+  const dispatch=useDispatch()
+
+  const submitHandler=(e)=>{
+    e.preventDefault()
+    dispatch(addDoctore(name,role,email,number,regId))
+  }
+
   return (
     <>
       <div className="card__Container--Start">
@@ -13,8 +27,8 @@ const AccessControl = () => {
             </span>
           </h5>
           <p className="card__Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <button
             type="button"
@@ -33,6 +47,7 @@ const AccessControl = () => {
         aria-labelledby="createEmployeeLabel"
         aria-hidden="true"
       >
+        <form onSubmit={submitHandler}>
         <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
           <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
             <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
@@ -59,6 +74,8 @@ const AccessControl = () => {
                     Enter Employee Name
                   </label>
                   <input
+                    required
+                    onChange={(e)=>setName(e.target.value)}  
                     type="text"
                     name="employee-name"
                     id="employee-name"
@@ -71,13 +88,15 @@ const AccessControl = () => {
                     Select Role
                   </label>
                   <select
+                    required
+                    onChange={(e)=>setRole(e.target.value)} 
                     id="role"
                     name="role"
                     autoComplete="role-name"
                     className="form__Select"
                   >
                     <option>Select Role</option>
-                    <option>Role 1</option>
+                    <option value='role1'>Role 1</option>
                     <option>Role 2</option>
                     <option>Role 3</option>
                     <option>Role 4</option>
@@ -91,6 +110,8 @@ const AccessControl = () => {
                     Enter Employee Email
                   </label>
                   <input
+                    required
+                     onChange={(e)=>setEmail(e.target.value)} 
                     type="email"
                     name="employee-email"
                     id="employee-email"
@@ -106,6 +127,8 @@ const AccessControl = () => {
                     Enter Employee Phone Number
                   </label>
                   <input
+                  required
+                  onChange={(e)=>setNumber(e.target.value)} 
                     type="tel"
                     name="employee-phone"
                     id="employee-phone"
@@ -121,6 +144,8 @@ const AccessControl = () => {
                     Enter Employee Registration No. (Optional)
                   </label>
                   <input
+                    required
+                    onChange={(e)=>setRegId(e.target.value)} 
                     type="text"
                     name="employee-regno"
                     id="employee-regno"
@@ -154,7 +179,7 @@ const AccessControl = () => {
                 Cancel
               </button>
               <button
-                type="button"
+                type="submit"
                 className="modal__Btn--Teal"
               >
                 Create &amp; Save Employee
@@ -162,6 +187,7 @@ const AccessControl = () => {
             </div>
           </div>
         </div>
+        </form>
       </div>
 
       <div className="my-10">

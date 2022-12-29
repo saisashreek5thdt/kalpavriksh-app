@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { getPrescriptions } from "../../../action/PatientAction";
 
 const PatienPrescriptionsInfo = () => {
+  const dispatch =useDispatch()
+  const [filterd, setFilterd] = useState([])
+  const presctList=useSelector(state=>state.presctList)
+  const {loading,error,presc}=presctList
+
+  useEffect(()=>{
+ dispatch(getPrescriptions())
+  },[])
+ 
+
+  useEffect(()=>{
+    if(presc){
+      setFilterd(presc[0])
+    }
+  })
+  if(filterd){
+    console.log(filterd);
+  }
+
   return (
     <>
       <div className="tab__Card--Container">
@@ -13,8 +35,8 @@ const PatienPrescriptionsInfo = () => {
             </span>
           </h5>
           <p className="tab__Card--Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <button
             type="button"
@@ -33,8 +55,8 @@ const PatienPrescriptionsInfo = () => {
             </span>
           </h5>
           <p className="tab__Card--Info">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {/* Some quick example text to build on the card title and make up the
+            bulk of the card's content. */}
           </p>
           <button
             type="button"
@@ -69,13 +91,14 @@ const PatienPrescriptionsInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
+          {!loading && !error && filterd && (
             <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  <p className="form__Heading">Rajiv Singla</p>
+                  <p className="form__Heading">{filterd.doctorId}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -90,13 +113,13 @@ const PatienPrescriptionsInfo = () => {
                   <label htmlFor="medicineType" className="form__Label-Heading">
                     Medicine Type
                   </label>
-                  <p className="form__Heading">Tablet</p>
+                  <p className="form__Heading">{filterd.medicine_type}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineName" className="form__Label-Heading">
                     Medicine Name
                   </label>
-                  <p className="form__Heading">Coldact</p>
+                  <p className="form__Heading">{filterd.medicine_name}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -105,7 +128,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Morning Dose
                   </label>
-                  <p className="form__Heading">2 Tabs</p>
+                  <p className="form__Heading">{filterd.morning_dose}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -132,7 +155,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Frequency
                   </label>
-                  <p className="form__Heading">Every two hours</p>
+                  <p className="form__Heading">{filterd.frequency}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -141,7 +164,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Duration (Number / Days / Weeks)
                   </label>
-                  <p className="form__Heading">3 / Weeks</p>
+                  <p className="form__Heading">{filterd.duration_days}/ days</p>
                 </div>
               </div>
               <div className="form__Grid--Rows-none">
@@ -153,11 +176,13 @@ const PatienPrescriptionsInfo = () => {
                     Medicine Special Instructions
                   </label>
                   <p className="form__Heading">
-                    Special Instructions for useage of Medicines
+                    {filterd.special_inst}
                   </p>
                 </div>
               </div>
             </div>
+          )}
+            
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
                 type="button"

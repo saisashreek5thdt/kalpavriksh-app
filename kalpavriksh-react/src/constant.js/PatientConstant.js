@@ -1,5 +1,6 @@
 // export const Url = 'https://mydoctor-app.herokuapp.com/api/v1'
-export const Url = 'https://doctor-app-backend-production.up.railway.app/api/v1'
+// export const Url = 'https://doctor-app-backend-production.up.railway.app/api/v1'
+export const Url='https://doctor-app-backend-production-ffc1.up.railway.app/api/v1'
 
 
 export const REGISTER_USER_REQUEST ='REGISTER_USER_REQUEST'
@@ -33,3 +34,17 @@ export const CREATE_APPOINTMENT_RESET ='CREATE_APPOINTMENT_RESET'
 export const GET_APPOINTMENT_REQUEST ='GET_APPOINTMENT_REQUEST'
 export const GET_APPOINTMENT_SUCCESS ='GET_APPOINTMENT_SUCCESS'
 export const GET_APPOINTMENT_FAIL ='GET_APPOINTMENT_FAIL'
+
+export const PATIENT_LOGIN_REQUEST ='PATIENT_LOGIN_REQUEST'
+export const PATIENT_LOGIN_SUCCESS ='PATIENT_LOGIN_SUCCESS'
+export const PATIENT_LOGIN_FAIL ='PATIENT_LOGIN_FAIL'
+
+export const SENDOTP_REQUEST ='SENDOTP_REQUEST'
+export const SENDOTP_SUCCESS ='SENDOTP_SUCCESS'
+export const SENDOTP_FAIL ='SENDOTP_FAIL'
+export const SENDOTP_RESET ='SENDOTP_RESET'
+
+
+export const GET_PRESCRIPTION_REQUEST ='GET_PRESCRIPTION_REQUEST'
+export const GET_PRESCRIPTION_SUCCESS ='GET_PRESCRIPTION_SUCCESS'
+export const GET_PRESCRIPTIONT_FAIL ='GET_PRESCRIPTION_FAIL'

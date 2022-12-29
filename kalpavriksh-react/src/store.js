@@ -1,10 +1,17 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
 import thunk from 'redux-thunk';
+import { doctorCreateReducer } from './reducer/AdminReducer';
 import { dietChartUploadReducer, formCreateReducer, prescriptionCreateReducer } from './reducer/DoctoreReducer';
-import { appointmentCreateReducer, appointmentListReducer, enrollmentPatientReducer, patientDetailsReducer, patientFormListReducer, patientListReducer } from './reducer/Patientreducer';
+import { appointmentCreateReducer, appointmentListReducer, enrollmentPatientReducer, patientDetailsReducer, patientFormListReducer, patientListReducer, patientOtpReducer, presctListReducer } from './reducer/Patientreducer';
 
 
-const initialState={}
+const initialState = {
+    patientSignin: {
+      patientInfo: localStorage.getItem('patientInfo')
+        ? JSON.parse(localStorage.getItem('patientInfo'))
+        : null,
+    },
+  };
 
 const reducer =combineReducers({
     enrollmentPatient:enrollmentPatientReducer,
@@ -16,8 +23,9 @@ const reducer =combineReducers({
     appointmentCreate:appointmentCreateReducer,
     appointmentList:appointmentListReducer,
     prescriptionCreate:prescriptionCreateReducer,
-    // registerPatient:registerPatientreducer,
-    // googleSignin:googleSigninReducer,
+    doctorCreate:doctorCreateReducer,
+    presctList:presctListReducer,
+    patientOtp:patientOtpReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

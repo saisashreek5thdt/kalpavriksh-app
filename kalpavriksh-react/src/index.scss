@@ -23,3 +23,9 @@ body {
 @tailwind utilities;
 
 @import "sass/main.scss";
+
+/* Syncfusion Import*/
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-react-navigations/styles/material.css';

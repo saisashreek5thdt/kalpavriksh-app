@@ -1,4 +1,5 @@
 import React from "react";
+import PatientFooter from "../shared/PatientFooter";
 import PatientNav from "../shared/PatientNav";
 
 const PatientDashboard = () => {
@@ -16,24 +17,7 @@ const PatientDashboard = () => {
           </div>
         </main>
       </div>
-      <footer className="relative text-center text-white">
-        <div className="container w-full pt-9 bg-gray-600 fixed bottom-0 left-0 right-0">
-          <div className="flex justify-center mb-9">
-            <a
-              href="/userrole/:roleid/dashboard/patient/mydata/"
-              className="mr-9 text-white"
-            >
-              My Data
-            </a>
-            <a href="/userrole/:roleid/dashboard/patient/prescriptions/" className="mr-9 text-white">
-              Prescriptions
-            </a>
-            <a href="/userrole/:roleid/dashboard/common/chat/" className="mr-9 text-white">
-              Chat
-            </a>
-          </div>
-        </div>
-      </footer>
+      <PatientFooter />
     </>
   );
 };
