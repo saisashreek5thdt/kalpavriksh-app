@@ -6,12 +6,18 @@ import Navbar from "../../../user/shared/Navbar";
 import Input from "../../../Components/Input";
 import Select from "../../../Components/Select";
 import Selects from 'react-select'
+import AsyncSelect from 'react-select/async';
 import { useForm } from "../../../hooks/form-hooks";
 import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../../utils/validators";
-
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllDoctors } from "../../../action/AdminAction";
+import { Url } from "../../../constant.js/PatientConstant";
+import axios from "axios";
+import Creatable from 'react-select/creatable';
 const PatientHealthInfo = () => {
   // const [height, setHeight] = useState("");
   // const [weight, setWeight] = useState("");
@@ -21,12 +27,19 @@ const PatientHealthInfo = () => {
   // const [caretakerTime, setCaretakerTime] = useState("");
   const [healthPlans, setHealthPlans] = useState([]);
   // const [planDate, setPlanDate] = useState("");
-  // const [patientTeam, setPatientTeam] = useState("");
+  const [options, setOptions] = useState([""]);
   const location = useLocation();
   const { phone, name, email, dob, gender } = location.state;
-  console.log(healthPlans,'pl');
+  const doctorList = useSelector((state) => state.doctorList);
+  const { loading, error, doctors } = doctorList;
+  const doctorSignin = useSelector((state) => state.doctorSignin);
+  const {doctorInfo } = doctorSignin;
+  // console.log(doctorInfo,'info');
+  // console.log(healthPlans,'pl');
  const  handleChange = (selectedOptions) => {
+  const value=  selectedOptions.filter((e)=>e.id)
     setHealthPlans({ selectedOptions });
+    // console.log(selectedOptions,'hea');
   }
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -152,7 +165,7 @@ const PatientHealthInfo = () => {
       false
     );
 
-    console.log(formState,'form')
+
 
     
     const height = formState.inputs.height.value
@@ -161,10 +174,10 @@ const PatientHealthInfo = () => {
     const relation = formState.inputs.relation.value
     const caretakerNumber = formState.inputs.caretakerNumber.value
     const caretakerTime = formState.inputs.caretakerTime.value
-    const healthPlan = formState.inputs.healthPlan.value
+    const healthPlan = healthPlans
     const planDate = formState.inputs.planDate.value
     const patientTeam = formState.inputs.patientTeam.value
-    console.log(formState)
+    // console.log(formState)
     // if(height === '' || weight === '' || caretakerName === '' || relation === '' || caretakerNumber === '' || caretakerTime === '' || healthPlan === '' || planDate === '' || patientTeam === ''  ){
     //   alert('please fill all the fields')
     // }else{
@@ -188,6 +201,50 @@ const PatientHealthInfo = () => {
       });
     // }  
   };
+ 
+  
+const dispatch=useDispatch()
+  useEffect(()=>{
+    const user='doctor'
+    dispatch(getAllDoctors(user))
+  },[])
+  // const handleInputChange = value => {
+  //   console.log(value,'vl');
+  // };
+ 
+
+  const fetchUsers = () => {
+    return  axios.get(`${Url}/doctors/get-all`, {
+     headers: {
+       Authorization: `Bearer ${doctorInfo}`,
+     },
+   }).then(function (response) {
+     const res =  response.data.data;
+     return res;
+   
+   })    
+       
+   }
+
+  //  useEffect(() => {
+  //   const getData = async () => {
+  //     const arr = [];
+  //     await axios.get(`${Url}/doctors/get-all`,{
+  //       headers: {
+  //         Authorization: `Bearer ${doctorInfo}`,
+  //       }
+  //     }).then((res) => {
+  //       let result = res.data.data;
+  //       result.map((user) => {
+  //         return arr.push({value: user._id, label: user.name});
+  //       });
+  //       setOptions(arr)
+  //       console.log(arr,'arr');
+  //     });
+  //   };
+  //   getData();
+
+  // }, []);
 
   return (
     <>
@@ -299,32 +356,7 @@ const PatientHealthInfo = () => {
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                            {/*
-                            <label
-                              htmlFor="relation"
-                              className="form__Label-Heading"
-                            >
-                              Caretakers Relation
-                            </label>
-                            <select
-                              required
-                              onChange={(e) => setRelation(e.target.value)}
-                              id="relation"
-                              name="relation"
-                              autoComplete="relation-name"
-                              className="form__Select"
-                            >
-                              <option>Select Caretakers Relation</option>
-                              <option value="Father">Father</option>
-                              <option value="Mother">Mother</option>
-                              <option value="Son">Son</option>
-                              <option value="Daughter">Daughter</option>
-                              <option value="Son-In-Law">Son-In-Law</option>
-                              <option value="Daughter-In-Law">
-                                Daughter-In-Law
-                              </option>
-                            </select>
-                            */}
+                        
                             <Select
                               element="select"
                               id="relation"
@@ -336,25 +368,7 @@ const PatientHealthInfo = () => {
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                            {/*
-                            <label
-                              htmlFor="caretaker-number"
-                              className="form__Label-Heading"
-                            >
-                              Caretakers Phone Number
-                            </label>
-                            <input
-                              required
-                              onChange={(e) =>
-                                setCaretakerNumber(e.target.value)
-                              }
-                              type="tel"
-                              name="caretaker-number"
-                              id="caretaker-number"
-                              autoComplete="given-name"
-                              className="form__Input"
-                            />
-                            */}
+                          
                             <Input
                               element="input"
                               type="text"
@@ -367,23 +381,7 @@ const PatientHealthInfo = () => {
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                            {/*
-                            <label
-                              htmlFor="pref-time"
-                              className="form__Label-Heading"
-                            >
-                              Caretakers Preferred Time
-                            </label>
-                            <input
-                              required
-                              onChange={(e) => setCaretakerTime(e.target.value)}
-                              type="time"
-                              name="pref-time"
-                              id="pref-time"
-                              autoComplete="given-name"
-                              className="form__Input"
-                            />
-                            */}
+                     
                             <Input
                             
                               element="input"
@@ -449,9 +447,36 @@ const PatientHealthInfo = () => {
                               className="form__Input"
                             />
                             */}
-                       
-                               <label>Select Health Team</label>
-                            <Selects onChange={handleChange} isMulti isClearable options={healthTeamOptions} />
+                           {/* {!loading && !error && doctors &&( */}
+                            <>
+                            <label>Select Health Team</label>
+                            {/* <Creatable
+                              placeholder= "Select an individual"
+                              options={options}
+                              isMulti
+                              handleChange={handleChange}
+                              onInputChange={handleInputChange}
+                              noOptionsMessage={() => "name not found"}
+                            ></Creatable> */}
+                            {/* <Select onChange={handleChange} isMulti isClearable 
+                     
+                            options={options}
+                          
+                            /> */}
+                               <AsyncSelect
+                                cacheOptions
+                                defaultOptions
+                              // value={selectedValue}
+                              getOptionLabel={e => e.name}
+                              getOptionValue={e => e._id}
+                              loadOptions={fetchUsers}
+                              // onInputChange={handleInputChange}
+                              onChange={handleChange}
+                              isMulti
+                            />
+                            </>
+                           {/* )} */}
+                          
                           </div>
                           <div className="form__Cols--Span-6">
                             {/*

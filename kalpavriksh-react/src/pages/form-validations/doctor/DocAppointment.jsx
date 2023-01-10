@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppointmentOnDate } from "../../../action/DoctorAction";
 import DocAppointmentTable from "./DocAppointmentTable";
 
 const DocAppointment = () => {
+
+  const dispatch= useDispatch()
+  // const [date,setDate]=useState()
+  const appointmentDate=useSelector((state)=>state.appointmentDate)
+  const {loading,error,count}=appointmentDate
+
+  useEffect(()=>{
+
+     
+  },[])
+  // if(count){
+  //   console.log(count);
+  // }
+
+  const handleChange=(e)=>{
+  //  console.log(e.target.value,'e');
+   const dates=e.target.value
+    dispatch(getAppointmentOnDate(dates))
+  }
   return (
     <>
       <div className="max-w-sm w-full lg:max-w-full lg:flex">
@@ -12,8 +34,9 @@ const DocAppointment = () => {
             </div>
             <div className="px-6 pb-2">
               <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                {" "}
-                # 12{" "}
+              {count >= 0 ? count : '0'}  
+              {/* {count && count} */}
+         
               </span>
             </div>
             <div className="flex items-center">
@@ -24,6 +47,8 @@ const DocAppointment = () => {
                   id="appointment"
                   autoComplete="given-name"
                   className="form__Input"
+      
+                  onChange={handleChange}
                 />
               </div>
             </div>

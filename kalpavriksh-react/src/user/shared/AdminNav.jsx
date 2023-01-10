@@ -4,6 +4,8 @@ import { FiBell, FiX, FiMenu } from "react-icons/fi";
 
 import Logo from "../../Assets/img/logo-login.svg";
 import User from "../../Assets/user/user.jpg";
+import { adminSignout } from "../../action/AdminAction";
+import { useDispatch } from "react-redux";
 
 const user = {
   name: "Tom Cook",
@@ -19,17 +21,28 @@ const navigation = [
   },
 ];
 
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "/" },
-];
+
+
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const AdminNav = () => {
+  const dispatch=useDispatch()
+  const hello=()=>{
+    // console.log('helloo');
+    dispatch(adminSignout())
+  }
+
+  const userNavigation = [
+    { name: "Your Profile", href: "#" },
+    { name: "Settings", href: "#" },
+    { name: "Sign out", fun:hello },
+  ];
+
   return (
     <>
       <Disclosure as="nav" className="navbar__BG">
@@ -105,6 +118,7 @@ const AdminNav = () => {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <a
+                                  onClick={item.fun}
                                   href={item.href}
                                   className={classNames(
                                     active

@@ -2,27 +2,28 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { getPrescriptions } from "../../../action/PatientAction";
+import { getLatesPrescription, getPrescriptions } from "../../../action/PatientAction";
+import LoadingBox from "../../../Components/LoadingBox";
+import MessageBox from "../../../Components/MessageBox";
 
 const PatienPrescriptionsInfo = () => {
   const dispatch =useDispatch()
   const [filterd, setFilterd] = useState([])
   const presctList=useSelector(state=>state.presctList)
   const {loading,error,presc}=presctList
+  const latestPrescription=useSelector((state)=>state.latestPrescription)
+  const {loading:loadingLatest,error:errorLatest,prescLatest}=latestPrescription
 
   useEffect(()=>{
  dispatch(getPrescriptions())
+ dispatch(getLatesPrescription())
   },[])
  
 
-  useEffect(()=>{
-    if(presc){
-      setFilterd(presc[0])
-    }
-  })
-  if(filterd){
-    console.log(filterd);
-  }
+
+  const truncate = (str, n) => {
+    return str.length > n ? str.substr(0, n - 1) : str;
+  };
 
   return (
     <>
@@ -44,7 +45,7 @@ const PatienPrescriptionsInfo = () => {
             data-bs-toggle="modal"
             data-bs-target="#modalPrescription"
           >
-            View
+            Views
           </button>
         </div>
         <div className="tab__Card--Block">
@@ -91,14 +92,14 @@ const PatienPrescriptionsInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
-          {!loading && !error && filterd && (
+          {!loadingLatest && !errorLatest && prescLatest && (
             <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  <p className="form__Heading">{filterd.doctorId}</p>
+                  <p className="form__Heading">{prescLatest.doctorId}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -107,19 +108,19 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Prescribed Date
                   </label>
-                  <p className="form__Heading">24-11-2022</p>
+                  <p className="form__Heading">{truncate(prescLatest.createdOn,11)}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineType" className="form__Label-Heading">
                     Medicine Type
                   </label>
-                  <p className="form__Heading">{filterd.medicine_type}</p>
+                  <p className="form__Heading">{prescLatest.medicine_type}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineName" className="form__Label-Heading">
                     Medicine Name
                   </label>
-                  <p className="form__Heading">{filterd.medicine_name}</p>
+                  <p className="form__Heading">{prescLatest.medicine_name}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -128,7 +129,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Morning Dose
                   </label>
-                  <p className="form__Heading">{filterd.morning_dose}</p>
+                  <p className="form__Heading">{prescLatest.morning_dose}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -137,7 +138,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Afternoon Dose
                   </label>
-                  <p className="form__Heading">1 Tab</p>
+                  <p className="form__Heading">{prescLatest.afternoon_dose}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -146,7 +147,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Evening Dose
                   </label>
-                  <p className="form__Heading">1/2 Tab</p>
+                  <p className="form__Heading">{prescLatest.evening_dose}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -155,7 +156,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Frequency
                   </label>
-                  <p className="form__Heading">{filterd.frequency}</p>
+                  <p className="form__Heading">{prescLatest.frequency}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -164,7 +165,7 @@ const PatienPrescriptionsInfo = () => {
                   >
                     Medicine Duration (Number / Days / Weeks)
                   </label>
-                  <p className="form__Heading">{filterd.duration_days}/ days</p>
+                  <p className="form__Heading">{prescLatest.duration_days}/ days</p>
                 </div>
               </div>
               <div className="form__Grid--Rows-none">
@@ -176,7 +177,7 @@ const PatienPrescriptionsInfo = () => {
                     Medicine Special Instructions
                   </label>
                   <p className="form__Heading">
-                    {filterd.special_inst}
+                    {prescLatest.special_inst}
                   </p>
                 </div>
               </div>
@@ -220,14 +221,17 @@ const PatienPrescriptionsInfo = () => {
             </div>
             <div className="modal-body relative p-4">
               <div className="p-2">
-                <div className="relative w-full overflow-hidden">
+                {loading ? <LoadingBox></LoadingBox>:
+                error ? <MessageBox>{error}</MessageBox>:
+                presc.length> 0 ? presc.map((pres)=>(
+                  <div key={pres._id} className="relative w-full overflow-hidden">
                   <input
                     type="checkbox"
                     className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singla /20-11-2022
+                      Rajiv Singlashh / {truncate(pres.createdOn,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -254,7 +258,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Prescribed Date
                           </label>
-                          <p className="form__Heading">20-11-2022</p>
+                          <p className="form__Heading">{truncate(pres.createdOn,11)}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -263,7 +267,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Type
                           </label>
-                          <p className="form__Heading">Tablet</p>
+                          <p className="form__Heading">{pres.medicine_type}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -272,7 +276,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Name
                           </label>
-                          <p className="form__Heading">Coldact</p>
+                          <p className="form__Heading">{pres.medicine_name}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -281,7 +285,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Morning Dose
                           </label>
-                          <p className="form__Heading">2 Tabs</p>
+                          <p className="form__Heading">{pres.morning_dose}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -290,7 +294,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Afternoon Dose
                           </label>
-                          <p className="form__Heading">1 Tab</p>
+                          <p className="form__Heading">{pres.afternoon_dose}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -299,7 +303,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Evening Dose
                           </label>
-                          <p className="form__Heading">1/2 Tab</p>
+                          <p className="form__Heading">{pres.evening_dose}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -308,7 +312,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Frequency
                           </label>
-                          <p className="form__Heading">Every two hours</p>
+                          <p className="form__Heading">{pres.frequency}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -317,7 +321,7 @@ const PatienPrescriptionsInfo = () => {
                           >
                             Medicine Duration (Number / Days / Weeks)
                           </label>
-                          <p className="form__Heading">3 / Weeks</p>
+                          <p className="form__Heading">{pres.duration_days}</p>
                         </div>
                       </div>
                       <div className="form__Grid--Rows-none">
@@ -329,132 +333,19 @@ const PatienPrescriptionsInfo = () => {
                             Medicine Special Instructions
                           </label>
                           <p className="form__Heading">
-                            Special Instructions for useage of Medicines
+                           {pres.special_inst}
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                )):
+                <MessageBox>No prescriptions </MessageBox>
+                }
+               
               </div>
-              <div className="p-2">
-                <div className="relative w-full overflow-hidden">
-                  <input
-                    type="checkbox"
-                    className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                  />
-                  <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                    <h1 className="text-lg font-semibold text-gray-600">
-                      Suha / 15-10-2022
-                    </h1>
-                  </div>
-                  {/* Down Arrow Icon */}
-                  <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                    <FiChevronDown className="w-6 h-6" />
-                  </div>
-                  {/* Content */}
-                  <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                    <div className="p-4">
-                      <div className="form__Grid--Cols-6">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedBy"
-                            className="form__Label-Heading"
-                          >
-                            Doctor Name
-                          </label>
-                          <p className="form__Heading">Suha</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedDate"
-                            className="form__Label-Heading"
-                          >
-                            Prescribed Date
-                          </label>
-                          <p className="form__Heading">15-10-2022</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineType"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Type
-                          </label>
-                          <p className="form__Heading">Tablet</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineName"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Name
-                          </label>
-                          <p className="form__Heading">Coldact</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineMorningDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Morning Dose
-                          </label>
-                          <p className="form__Heading">2 Tabs</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineAfternoonDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Afternoon Dose
-                          </label>
-                          <p className="form__Heading">1 Tab</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineEveningDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Evening Dose
-                          </label>
-                          <p className="form__Heading">1/2 Tab</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineFrequency"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Frequency
-                          </label>
-                          <p className="form__Heading">Every two hours</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineDuration"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Duration (Number / Days / Weeks)
-                          </label>
-                          <p className="form__Heading">3 / Weeks</p>
-                        </div>
-                      </div>
-                      <div className="form__Grid--Rows-none">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineSplInstructions"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Special Instructions
-                          </label>
-                          <p className="form__Heading">
-                            Special Instructions for useage of Medicines
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+         
             </div>
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button

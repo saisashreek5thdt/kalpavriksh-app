@@ -1,7 +1,26 @@
 import React from "react";
+import { useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllDietChart } from "../../../action/AdminAction";
+import { getLatesDietChart, getLatesPrescription } from "../../../action/PatientAction";
+import LoadingBox from "../../../Components/LoadingBox";
+import MessageBox from "../../../Components/MessageBox";
 
 const PatientUploadDietChart = () => {
+  const latestDietChart=useSelector((state)=>state.latestDietChart)
+  const {loading,error,deitChartLatest}=latestDietChart
+  const deitChartList=useSelector((state)=>state.deitChartList)
+  const {loading:loadingDiet,error:errorDiet,dietchart}=deitChartList
+  const dispatch=useDispatch()
+  useEffect(()=>{
+   const user='patient'
+  dispatch(getLatesDietChart())
+  dispatch(getAllDietChart(user))
+  },[dispatch])
+  // if(dietchart){
+  //   console.log(dietchart,'dttt');
+  // }
   return (
     <>
       <div className="tab__Card--Container tab__Card--Gap-1">
@@ -60,7 +79,7 @@ const PatientUploadDietChart = () => {
                 className="text-xl font-medium leading-normal text-gray-800"
                 id="modalDietChartLabel"
               >
-                DietChart
+                DietCharts
               </h5>
               <button
                 type="button"
@@ -69,7 +88,10 @@ const PatientUploadDietChart = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body relative p-4">
+            {loading ? <LoadingBox></LoadingBox>:
+            error ? <MessageBox>{error}</MessageBox>:
+            deitChartLatest &&  (
+              <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
@@ -93,13 +115,13 @@ const PatientUploadDietChart = () => {
                   >
                     Low Calories Range
                   </label>
-                  <p className="form__Heading">23</p>
+                  <p className="form__Heading">{deitChartLatest.calorie_lower}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="highCalories" className="form__Label-Heading">
                     High Clories Range
                   </label>
-                  <p className="form__Heading">55</p>
+                  <p className="form__Heading">{deitChartLatest.calorie_upper}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -108,7 +130,7 @@ const PatientUploadDietChart = () => {
                   >
                     Low Carbohydrates Range
                   </label>
-                  <p className="form__Heading">23</p>
+                  <p className="form__Heading">{deitChartLatest.ch_lower}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -117,19 +139,19 @@ const PatientUploadDietChart = () => {
                   >
                     High Carbohydrates Range
                   </label>
-                  <p className="form__Heading">55</p>
+                  <p className="form__Heading">{deitChartLatest.ch_upper}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="proties" className="form__Label-Heading">
                     Protiens Range
                   </label>
-                  <p className="form__Heading">68</p>
+                  <p className="form__Heading">{deitChartLatest.protiens}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="fats" className="form__Label-Heading">
                     Fats Range
                   </label>
-                  <p className="form__Heading">35</p>
+                  <p className="form__Heading">{deitChartLatest.fats}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="foodType" className="form__Label-Heading">
@@ -141,7 +163,7 @@ const PatientUploadDietChart = () => {
                   <label htmlFor="foodCusine" className="form__Label-Heading">
                     Food Cusine
                   </label>
-                  <p className="form__Heading">Home Cooked Food</p>
+                  <p className="form__Heading">{deitChartLatest.cuisine_type}</p>
                 </div>
               </div>
               <div className="form__Grid--Rows-none">
@@ -163,6 +185,8 @@ const PatientUploadDietChart = () => {
                 </div>
               </div>
             </div>
+          )}
+           
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
                 type="button"
@@ -199,7 +223,10 @@ const PatientUploadDietChart = () => {
               ></button>
             </div>
             <div className="modal-body relative p-4">
-              <div className="p-2">
+              {loadingDiet ? <LoadingBox></LoadingBox>:
+              errorDiet ? <MessageBox>{error}</MessageBox>:
+              dietchart.length > 0 ? dietchart.map((dt)=>(
+               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input
                     type="checkbox"
@@ -207,7 +234,7 @@ const PatientUploadDietChart = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singla /20-11-2022
+                      Rajiv Singlashh /20-11-2022
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -241,7 +268,7 @@ const PatientUploadDietChart = () => {
                             htmlFor="lowerCalories"
                             className="form__Label-Heading"
                           >
-                            Low Calories Range
+                           {dt.calorie_lower}
                           </label>
                           <p className="form__Heading">23</p>
                         </div>
@@ -252,7 +279,7 @@ const PatientUploadDietChart = () => {
                           >
                             High Clories Range
                           </label>
-                          <p className="form__Heading">55</p>
+                          <p className="form__Heading">{dt.calorie_upper}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -261,7 +288,7 @@ const PatientUploadDietChart = () => {
                           >
                             Low Carbohydrates Range
                           </label>
-                          <p className="form__Heading">23</p>
+                          <p className="form__Heading">{dt.ch_lower}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -270,7 +297,7 @@ const PatientUploadDietChart = () => {
                           >
                             High Carbohydrates Range
                           </label>
-                          <p className="form__Heading">55</p>
+                          <p className="form__Heading">{dt.ch_upper}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -279,13 +306,13 @@ const PatientUploadDietChart = () => {
                           >
                             Protiens Range
                           </label>
-                          <p className="form__Heading">68</p>
+                          <p className="form__Heading">{dt.protiens}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label htmlFor="fats" className="form__Label-Heading">
                             Fats Range
                           </label>
-                          <p className="form__Heading">35</p>
+                          <p className="form__Heading">{dt.fats}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -303,7 +330,7 @@ const PatientUploadDietChart = () => {
                           >
                             Food Cusine
                           </label>
-                          <p className="form__Heading">Home Cooked Food</p>
+                          <p className="form__Heading">{dt.cuisine_type}</p>
                         </div>
                       </div>
                       <div className="form__Grid--Rows-none">
@@ -328,135 +355,11 @@ const PatientUploadDietChart = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-2">
-                <div className="relative w-full overflow-hidden">
-                  <input
-                    type="checkbox"
-                    className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                  />
-                  <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                    <h1 className="text-lg font-semibold text-gray-600">
-                      Suha / 15-10-2022
-                    </h1>
-                  </div>
-                  {/* Down Arrow Icon */}
-                  <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                    <FiChevronDown className="w-6 h-6" />
-                  </div>
-                  {/* Content */}
-                  <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                    <div className="p-4">
-                      <div className="form__Grid--Cols-6">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedBy"
-                            className="form__Label-Heading"
-                          >
-                            Doctor Name
-                          </label>
-                          <p className="form__Heading">Suha</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedDate"
-                            className="form__Label-Heading"
-                          >
-                            Prescribed Date
-                          </label>
-                          <p className="form__Heading">15-10-2022</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="lowerCalories"
-                            className="form__Label-Heading"
-                          >
-                            Low Calories Range
-                          </label>
-                          <p className="form__Heading">23</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="highCalories"
-                            className="form__Label-Heading"
-                          >
-                            High Clories Range
-                          </label>
-                          <p className="form__Heading">55</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="lowerCarbohydrates"
-                            className="form__Label-Heading"
-                          >
-                            Low Carbohydrates Range
-                          </label>
-                          <p className="form__Heading">23</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="highCarbohydrates"
-                            className="form__Label-Heading"
-                          >
-                            High Carbohydrates Range
-                          </label>
-                          <p className="form__Heading">55</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="proties"
-                            className="form__Label-Heading"
-                          >
-                            Protiens Range
-                          </label>
-                          <p className="form__Heading">68</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label htmlFor="fats" className="form__Label-Heading">
-                            Fats Range
-                          </label>
-                          <p className="form__Heading">35</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="foodType"
-                            className="form__Label-Heading"
-                          >
-                            Food Type (Veg / Nonveg / Egg)
-                          </label>
-                          <p className="form__Heading">Veg</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="foodCusine"
-                            className="form__Label-Heading"
-                          >
-                            Food Cusine
-                          </label>
-                          <p className="form__Heading">Home Cooked Food</p>
-                        </div>
-                      </div>
-                      <div className="form__Grid--Rows-none">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="downloadDietChart"
-                            className="form__Label-Heading"
-                          >
-                            Download Diet Chart
-                          </label>
-                          <p className="form__Heading">
-                            <button
-                              type="button"
-                              className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                            >
-                              Download Diet Chart
-                            </button>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )):
+              <MessageBox>No diet chart</MessageBox>
+              }
+              
+          
             </div>
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button

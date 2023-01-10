@@ -24,17 +24,22 @@ const DocPatientTable = () => {
   const { loading, error, patients } = patientList;
   const navigate=useNavigate()
   const dispatch=useDispatch()
+  const doctorSignin = useSelector((state) => state.doctorSignin);
+  const {  doctorInfo } = doctorSignin;
   useEffect(() => {
     updateSampleSection();
+    if(doctorInfo){
     dispatch(listPatients())
-  },[]);
-  console.log(patients,'pt');
+
+    }
+  },[dispatch,doctorInfo]);
+  // console.log(patients,'pt');
 
   const selectionsettings = { persistSelection: false };
   const toolbarOptions = ["Delete"];
   const editing = { allowDeleting: false, allowEditing: false };
   const rowSelected=(args)=>{
-    console.log(args.data._id,'arg');
+    // console.log(args.data._id,'arg');
     navigate('/patient',{state:{id:args.data._id}})
   }
 

@@ -13,11 +13,21 @@ import {
 } from "@syncfusion/ej2-react-grids";
 import { ObservedInfo, ObservationGrid } from "../../../Data/Data_Info";
 import { updateSampleSection } from "../../shared/SampleBase";
+import { useDispatch, useSelector } from "react-redux";
+import { listObservation } from "../../../action/PatientAction";
+import LoadingBox from "../../../Components/LoadingBox";
+import MessageBox from "../../../Components/MessageBox";
 
 const PatientObservedTable = () => {
+  const observationList=useSelector(state=>state.observationList)
+  const {loading,error,observation}=observationList
+  const dispatch=useDispatch()
   useEffect(() => {
     updateSampleSection();
-  });
+    const id='63ac1dca0a5214a53cfa87f1'
+    dispatch(listObservation(id))
+
+  },[]);
 
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ["Delete"];
@@ -26,8 +36,10 @@ const PatientObservedTable = () => {
   return (
     <>
       <div className="py-16 bg-white rounded-3xl">
-        <GridComponent
-          dataSource={ObservedInfo}
+        {loading ? <LoadingBox></LoadingBox>:
+        error ? <MessageBox>{error}</MessageBox>:(
+          <GridComponent
+          dataSource={observation}
           enableHover={false}
           allowPaging
           pageSettings={{ pageCount: 10 }}
@@ -43,6 +55,8 @@ const PatientObservedTable = () => {
           </ColumnsDirective>
           <Inject services={[Page, Selection, Edit, Toolbar, Sort, Filter]} />
         </GridComponent>
+        )}
+       
       </div>
     </>
   );

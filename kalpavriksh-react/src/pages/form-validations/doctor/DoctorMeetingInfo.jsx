@@ -132,7 +132,7 @@ const DoctorMeetingInfo = () => {
         specinst
       )
     );
-    console.log(formState.inputs);
+    // console.log(formState.inputs);
     // setFormData({
     //   ...formState.inputs,
     //   medicineType: {

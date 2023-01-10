@@ -1,7 +1,7 @@
 import React from "react";
 import PatientNav from "./PatientNav";
 
-import ChatUI from "../../pages/shared/ChatUI";
+import ChatBox from "../../pages/shared/ChatBox";
 import PatientFooter from "./PatientFooter";
 
 const UserChat = () => {
@@ -17,7 +17,7 @@ const UserChat = () => {
         <main>
           <div className="dashboard__Main-Content">
             {/* Replace with your content */}
-            <ChatUI />
+            <ChatBox />
             {/* /End replace */}
           </div>
         </main>

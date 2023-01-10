@@ -35,13 +35,16 @@ const PatientPersonalInfo = () => {
     planDate,
     patientTeam,
   } = location.state;
-  console.log(phone)
+  // console.log(healthPlan,'pln')
+
+
   let navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
   const [paymentNextDate, setPaymentNextDate] = useState("");
   const [refId, setRefId] = useState("");
+  const [healthPlanId, setHealthPlanId] = useState([])
   // console.log(location.state)
   const dispatch = useDispatch();
   const enrolmentpatient = useSelector((state) => state.enrollmentPatient);
@@ -81,7 +84,15 @@ const PatientPersonalInfo = () => {
     false
   );
 
+
   useEffect(()=>{
+    const arr=[]
+    for(let i=0;i<healthPlan.selectedOptions.length;i++){
+      // console.log(healthPlan.selectedOptions[i]._id,'id');
+      arr.push(healthPlan.selectedOptions[i]._id)
+    }
+    
+    setHealthPlanId(arr)
     setFormData({
       ...formState.inputs,
       amount: {
@@ -115,10 +126,8 @@ const PatientPersonalInfo = () => {
        setPaymentNextDate(formState.inputs.paymentNextDate.value)
        setRefId(formState.inputs.refId.value)
     
-    console.log(amount,paymentMode,paymentDate,refId,paymentNextDate,'iss')
-    // if(amount === '' || paymentMode === '' || paymentDate === '' || paymentNextDate === '' || refId === ''){
-    //     alert('please enter full fields')
-    // }else{
+    // console.log(amount,paymentMode,paymentDate,refId,paymentNextDate,'iss')
+ 
       dispatch(
         patientEnrollment(
           phone,
@@ -132,25 +141,20 @@ const PatientPersonalInfo = () => {
           relation,
           caretakerNumber,
           caretakerTime,
-          healthPlan,
+          healthPlanId,
           planDate,
           patientTeam,
-          amount,
-          paymentMode,
-          paymentDate,
-          refId,
-          paymentNextDate
+          formState.inputs.amount.value,
+          formState.inputs.paymentMode.value,
+          formState.inputs.paymentDate.value,
+          formState.inputs.refId.value,
+          formState.inputs.paymentNextDate.value
         )
       );
-    // }  
 
 
 
-    console.log(formState,'form')
 
-    
-    
-    //
   };
   useEffect(() => {
     if (success) {
@@ -159,6 +163,10 @@ const PatientPersonalInfo = () => {
       navigate("/userrole/:roleid/dashboard/doctor/");
     }
   }, [success]);
+
+ 
+
+  // console.log(healthPlan.selectedOptions);
 
   
 

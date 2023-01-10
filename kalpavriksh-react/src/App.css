@@ -117,3 +117,13 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #
   width: 100%;
   overflow-x: auto;
 }
+
+.patient-otp input{
+  /* display: block; */
+width: 100%;
+padding: 11px;
+border-radius: 11px;
+}
+.table-res{
+  overflow-x: auto;
+}

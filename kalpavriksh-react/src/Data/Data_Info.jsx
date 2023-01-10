@@ -95,12 +95,16 @@ export const AppointmentInfo = [
     AppointmentTime: "2:00 PM",
   },
 ];
+const truncate = (str, n) => {
+  return str.length > n ? str.substr(0, n - 1) + "...." : str;
+};
+
 
 export const AppointmentGrid = [
   { type: "Checkbox", width: "50" },
   {
-    field: "index",
-    headerText: "AppointmentIDS",
+    field: "RowCount",
+    headerText: "RowCountAI",
     width: "150",
     textAlign: "Center",
     isPrimaryKey: true,
@@ -121,10 +125,13 @@ export const AppointmentGrid = [
     // template: patientGridImage,
   },
   {
-    field: "date",
+    field: truncate('date',5),
     headerText: "AppointmentDate",
     width: "150",
     textAlign: "Center",
+    type: 'date',
+     skeleton:'short',
+     maxLength:'10',
   },
   {
     field: "doctorId",
@@ -244,7 +251,7 @@ export const PatientAppointmentGrid = [
   { type: "Checkbox", width: "50" },
   {
     field: "index",
-    headerText: "AppointmentIDS",
+    headerText: "AppointmentID",
     width: "150",
     textAlign: "Center",
     isPrimaryKey: true,
@@ -308,32 +315,32 @@ export const ObservedInfo = [
 export const ObservationGrid = [
   { type: "Checkbox", width: "50" },
   {
-    field: "ObservationID",
-    headerText: "ObservationID",
+    field: "desc",
+    headerText: "Description",
     width: "100",
     textAlign: "Left",
     isPrimaryKey: true,
-    template: observedGridID,
+    // template: observedGridID,
   },
+  // {
+  //   field: "ObservedName",
+  //   headerText: "ObservedName",
+  //   width: "100",
+  //   textAlign: "Left",
+  //   template: observedGridImage,
+  // },
+  // {
+  //   field: "name",
+  //   headerText: "PatientName",
+  //   width: "100",
+  //   textAlign: "Left",
+  //   template: patientGridImage,
+  // },
   {
-    field: "ObservedName",
-    headerText: "ObservedName",
-    width: "100",
-    textAlign: "Left",
-    template: observedGridImage,
-  },
-  {
-    field: "PatientName",
-    headerText: "PatientName",
-    width: "100",
-    textAlign: "Left",
-    template: patientGridImage,
-  },
-  {
-    field: "ObservedDate",
+    field: "createdOn",
     headerText: "ObservedDate",
     width: "100",
     textAlign: "Left",
-    template: observedGridDate,
+    // template: observedGridDate,
   }
 ];

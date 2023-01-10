@@ -4,6 +4,8 @@ import { FiBell, FiX, FiMenu } from "react-icons/fi";
 
 import Logo from "../../Assets/img/logo-login.svg";
 import User from "../../Assets/user/user.jpg";
+import { patientSignout } from "../../action/PatientAction";
+import { useDispatch } from "react-redux";
 
 const user = {
     name: "Tom Cook",
@@ -34,17 +36,24 @@ const user = {
     },
   ];
   
-  const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Sign out", href: "/" },
-  ];
+
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
 const PatientNav = () => {
+  const dispatch=useDispatch()
+  const hello=()=>{
+    //  console.log('heysiri');
+    dispatch(patientSignout())
+  }
+
+  const userNavigation = [
+    { name: "Your Profile", href: "/userrole/:roleid/dashboard/patient/profile/" },
+    // { name: "Settings", href: "#" },
+    { name: "Sign outss", fun:hello  },
+  ];
   return (
     <>
       <Disclosure as="nav" className="navbar__BG">
@@ -116,6 +125,7 @@ const PatientNav = () => {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <a
+                                onClick={item.fun}
                                   href={item.href}
                                   className={classNames(
                                     active ? "navbar__ProfileBox--Item-Active" : "",

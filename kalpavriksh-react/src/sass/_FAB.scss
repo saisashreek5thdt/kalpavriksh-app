@@ -4,6 +4,10 @@
         @apply fixed right-5 bottom-5;
     }
 
+    &__Fix-Container-1 {
+        @apply fixed right-5 bottom-28;
+    }
+
     /*
     &__Btn-Toggle[type="button"] {
         @apply dropdown-toggle px-6 py-5 rounded-full bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded rounded-full shadow-md transition duration-150 ease-in-out flex items-center whitespace-nowrap focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 hover:bg-blue-700 hover:shadow-lg active:bg-blue-800 active:shadow-lg active:text-white;

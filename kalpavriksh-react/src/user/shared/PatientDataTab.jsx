@@ -62,11 +62,11 @@ export default class PatientDataTab extends React.Component {
                     content={this.content2}
                   />
                 </TabItemsDirective>
-              </TabComponent>
+              </TabComponent>              
             </div>
-          </main>
+          </main>          
         </div>
-        <FloatingForm />
+        <FloatingForm />     
         <PatientFooter />
       </>
     );

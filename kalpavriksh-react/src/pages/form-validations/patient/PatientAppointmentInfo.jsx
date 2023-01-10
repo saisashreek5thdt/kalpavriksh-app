@@ -10,6 +10,7 @@ import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 
 import PatientAppointmentTable from "./PatientAppointmentTable";
+import { getAllDoctors } from "../../../action/AdminAction";
 
 const PatientAppointmentInfo = () => {
   const [staff,setStaff]=useState('')
@@ -20,9 +21,11 @@ const PatientAppointmentInfo = () => {
   const {success}=appointmentCreate
   const appointmentList=useSelector(state=>state.appointmentList)
   const {loading,error,appointment}=appointmentList
+  const doctorList = useSelector((state) => state.doctorList);
+  const { loading:loadingDoctor, error:errorDoctors, doctors } = doctorList;
 
   const save=()=>{
-    console.log('heyy');
+    // console.log('heyy');
     dispatch(createAppointment(staff,date))
   }
 
@@ -31,7 +34,10 @@ const PatientAppointmentInfo = () => {
       if(success){
         dispatch({type:CREATE_APPOINTMENT_RESET})
       }
+      const user='patient'
+      dispatch(getAllDoctors(user))
   },[success])
+  // console.log(staff);
   return (
     <>
       <div className="flex justify-start my-5">
@@ -77,7 +83,11 @@ const PatientAppointmentInfo = () => {
                 <div className="modal-body relative p-4">
                   <div className="form__Grid--Rows-none">
                     <div className="form__Cols--Span-6">
-                      <label htmlFor="staff" className="form__Label-Heading">
+                      {loadingDoctor ? <LoadingBox></LoadingBox>:
+                      errorDoctors ? <MessageBox>{error}</MessageBox>:
+                      doctors.length > 0 ? (
+                        <>
+                        <label htmlFor="staff" className="form__Label-Heading">
                         Select Staff
                       </label>
                       <select
@@ -88,11 +98,16 @@ const PatientAppointmentInfo = () => {
                         onChange={(e)=>setStaff(e.target.value)}
                       >
                         <option>Select Staff</option>
-                        <option value='staf1'>Staff 1</option>
-                        <option value='staf2'>Staff 2</option>
-                        <option value='staf3'>Staff 3</option>
-                        <option value='staf4'>Staff 4</option>
+                        {doctors.map((dc)=>(
+                        <option value={dc._id}>{dc.name}</option>
+                        ))}
+                       
                       </select>
+                      </>
+                      ):
+                      <MessageBox>No doctors</MessageBox>
+                      }
+                    
                     </div>
                     <div className="form__Cols--Span-6">
                       <label

@@ -61,7 +61,7 @@ const ChatUI = () => {
     const filterMessages=messages.filter((e)=>e.uid === uid )
     const filterMessage2s=messages.filter((e)=>e.uid != uid )
 
-    console.log(filterMessages,'flss')
+    // console.log(filterMessages,'flss')
     setSender(filterMessages)
     setReciever(filterMessage2s)
     // console.log(user)

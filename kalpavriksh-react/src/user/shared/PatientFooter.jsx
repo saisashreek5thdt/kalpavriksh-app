@@ -18,12 +18,12 @@ const PatientFooter = () => {
             >
               Prescriptions
             </a>
-            <a
+            {/* <a
               href="/userrole/:roleid/dashboard/common/chat/"
               className="footer__Flex--Links"
             >
               Chat
-            </a>
+            </a> */}
           </div>
         </div>
       </footer>
