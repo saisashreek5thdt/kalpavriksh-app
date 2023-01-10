@@ -2,17 +2,16 @@ const mongoose = require('mongoose')
 
 const FormSchema = new mongoose.Schema({
     doctorId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "doctor"
     },
-    patientId: String,
-    question_title: String,
+    form_title: String,
     questions: [
         {
             type: {
                 type: String,
             },
-            question: {
+            question_title: {
                 type: String,
             },
             choise1: {
@@ -26,9 +25,21 @@ const FormSchema = new mongoose.Schema({
             },
             choise4: {
                 type: String,
-            }
-        }
-    ]
+            },
+            answered: {
+                type: Boolean,
+                default: false 
+            },
+            answer: [{
+                type: String,
+                required: true
+            }]
+        },
+    ],
+    status: {
+        type: String,
+        default: "Active" //De-Active
+    },
 })
 
 module.exports = mongoose.model('form', FormSchema)

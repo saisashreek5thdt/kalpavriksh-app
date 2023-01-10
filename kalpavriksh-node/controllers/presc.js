@@ -5,7 +5,7 @@ const { getFormatDate } = require('../utils/common');
 module.exports.add = async (req, res) => {
     try {
         const newPresc  = new Presc({
-            doctorId: "dinesh",
+            doctorId: req.user.id,
             patientId: req.body.patientId,
             createdOn: getFormatDate(new Date),
             medicine_type: req.body.medicine_type,
@@ -37,10 +37,53 @@ module.exports.add = async (req, res) => {
 
 module.exports.getAll = async (req, res) => {
     try {
+        let presc = []
+
+        if(req.user.type == "patient") {
+            presc = await Presc.find({ patientId: req.user.id }).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}]);
+        } else if(req.user.type == "doctor") {
+            presc = await Presc.find({doctorId: req.user.id}).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}]);
+        } else {
+            presc = await Presc.find().populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}]);
+        }
         return res.status(200).json({
             success: true,
             message: "Prescriptions fetched successfully",
-            data: await Presc.find()
+            data: presc
+        })
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
+
+module.exports.getBypatient = async (req, res) => {
+    try {
+        const prescs  = await Presc.find({ doctorId: req.user.id, patientId: req.params.id}).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}])
+        return res.status(200).json({
+            success: true,
+            message: "Prescriptions fetched successfully",
+            data: prescs
+        })
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
+
+module.exports.getLatest = async (req, res) => {
+    try {
+        const prescs  = await Presc.findOne({patientId: req.user.id}).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}]).sort({"_id": -1});
+        return res.status(200).json({
+            success: true,
+            message: "Prescriptions fetched successfully",
+            data: prescs
         })
     } catch (err) {
         console.log(err.message)

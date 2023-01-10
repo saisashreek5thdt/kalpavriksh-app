@@ -1,10 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const Patient = new mongoose.Schema({
-    doctorId: {
-        type: String,
-        required: true
-    },
+    doctors: [String],
     patientId: {
         type: String,
     },
@@ -55,9 +52,6 @@ const Patient = new mongoose.Schema({
     health_plan_date: {
         type: Date
     },
-    team: {
-        type: String
-    },
     amount: {
         type: Number
     },
@@ -73,6 +67,12 @@ const Patient = new mongoose.Schema({
     next_payment_date: {
         type: Date
     },
+    observations: [{
+        desc: {
+            type: String,
+        },
+        createdOn: Date,
+    }],
     otp: String,
     otpExpiresIn: String
 })

@@ -1,13 +1,11 @@
 const Form = require('../models/Form');
-const FormResponse = require('../models/FormResponse');
 
 module.exports.addForm = async (req, res) => {
     try {
 
         const newForm  = new Form({
-            doctorId: "dinesh",
-            patientId: req.body.patientId, //req.user.id
-            question_title: req.body.question_title,
+            doctorId: req.user.id,
+            form_title: req.body.form_title,
             questions: req.body.questions
         })
 
@@ -30,10 +28,23 @@ module.exports.addForm = async (req, res) => {
 module.exports.getAll = async (req, res) => {
     try {
 
+        let forms = [];
+        console.log(req.user.type)
+
+        if(req.user.type == "doctor") {
+            forms = await Form.find({doctorId: req.user.id}).populate('doctorId', ['name', 'email']);
+        } else if(req.user.type == "admin") {
+            forms = await Form.find().populate('doctorId', ['name', 'email']);
+        } else if(req.user.type == "patient") {
+            forms = await Form.find({
+                doctorId: {$in: req.user.doctors}
+            }).populate('doctorId', ['name', 'email']);
+        }
+
         return res.status(200).json({
             success: true,
             message: "Forms fetched successfully",
-            data: await Form.find()
+            data: forms
         })
     } catch (err) {
         console.log(err.message)
@@ -47,23 +58,23 @@ module.exports.getAll = async (req, res) => {
 module.exports.submitForm = async (req, res) => {
     try {
 
-        const form  = await Form.findOne({_id: req.body.formId, patientId: "ramu"})
+        const form  = await Form.findOne({_id: req.body.formId, patientId: req.user.id})
 
         if(form) {
-            const newFormResponse  = new FormResponse({
-                doctorId: "dinesh",
-                patientId: "ramu", //req.user.id
-                formId: req.body.formId,
-                question: req.body.question,
-                answer: req.body.answer
-            })
-
-            await newFormResponse.save();
+            for (let i = 0; i < form.questions.length; i++) {
+                if((form.questions[i].id == req.body.questionId) && !form.questions[i].answered) {
+                    form.questions[i].answer = req.body.answer;
+                    form.questions[i].answered = true;
+                    break;
+                }
+                
+            }
+            await form.save();
     
             return res.status(200).json({
                 success: true,
                 message: "Form submitted successfully",
-                data: newFormResponse
+                data: form
             })
         } else {
             return res.status(400).json({
@@ -79,4 +90,77 @@ module.exports.submitForm = async (req, res) => {
             message: err.message,
         })
     }
+};
+
+module.exports.deactivate = async (req, res) => {
+    try {
+
+        const form = await Form.findById(req.params.id)
+        if(!form) {
+            return res.status(400).json({
+                success: false,
+                message: "no form found",
+            })
+        }
+
+        form.status = "De-Active";
+
+        await form.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Form deactivated succesfully",
+            data: form
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
 }
+
+module.exports.activate = async (req, res) => {
+    try {
+
+        const form = await Form.findById(req.params.id)
+        if(!form) {
+            return res.status(400).json({
+                success: false,
+                message: "no form found",
+            })
+        }
+
+        form.status = "Active";
+
+        await form.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Form activated succesfully",
+            data: form
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
+// module.exports.getBypatient = async (req, res) => {
+//     try {
+//         const forms  = await Form.find({ doctorId: req.user.id,})
+//         return res.status(200).json({
+//             success: true,
+//             message: "Forms fetched successfully",
+//             data: forms
+//         })
+//     } catch (err) {
+//         console.log(err.message)
+//         return res.status(500).json({
+//             success: false,
+//             message: err.message,
+//         })
+//     }
+// }
