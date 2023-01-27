@@ -150,7 +150,7 @@ module.exports.activate = async (req, res) => {
 
 // module.exports.getBypatient = async (req, res) => {
 //     try {
-//         const forms  = await Form.find({ doctorId: req.user.id,})
+//         const forms  = await Form.find({ doctorId: req.user.id, patientId: req.params.id}).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}])
 //         return res.status(200).json({
 //             success: true,
 //             message: "Forms fetched successfully",

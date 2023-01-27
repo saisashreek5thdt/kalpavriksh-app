@@ -40,6 +40,6 @@ const FormSchema = new mongoose.Schema({
         type: String,
         default: "Active" //De-Active
     },
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('form', FormSchema)

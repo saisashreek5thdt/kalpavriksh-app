@@ -75,6 +75,6 @@ const Patient = new mongoose.Schema({
     }],
     otp: String,
     otpExpiresIn: String
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('patient', Patient)

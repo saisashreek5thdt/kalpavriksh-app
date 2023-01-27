@@ -12,6 +12,9 @@ const Appointment = new mongoose.Schema({
     date: {
         type: Date,
         required: true
+    },
+    invitation: {
+        type: mongoose.Schema.Types.Mixed,
     }
 });
 

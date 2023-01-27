@@ -18,6 +18,6 @@ const DietChart = new mongoose.Schema({
         type: String,
         default: "Active" //De-Active
     },
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('diet-chart', DietChart)
