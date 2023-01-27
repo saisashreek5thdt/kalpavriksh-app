@@ -144,6 +144,7 @@ export const adminSignout = () => (dispatch) => {
     dispatch({type:GET_ALL_DIET_CHART_REQUEST});   
     const { adminSignin: { adminDocInfo }} = getState();
     const { patientSignin: { patientInfo }} = getState();
+    const { doctorSignin: { doctorInfo }} = getState();
 
     try{
       if(user === 'patient'){
@@ -153,6 +154,14 @@ export const adminSignout = () => (dispatch) => {
           },
         }); 
         dispatch({type:GET_ALL_DIET_CHART_SUCCESS,payload:data});
+      }else if(user === 'doctor'){
+        const {data} = await axios.get(`${Url}/diet-charts/get-all`,{
+          headers: {
+            Authorization: `Bearer ${doctorInfo.token}`,
+          },
+        }); 
+        dispatch({type:GET_ALL_DIET_CHART_SUCCESS,payload:data});
+
       }else{
         const {data} = await axios.get(`${Url}/diet-charts/get-all`,{
           headers: {

@@ -6,21 +6,30 @@ import { getAllDietChart } from "../../../action/AdminAction";
 import { getLatesDietChart, getLatesPrescription } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
+import { UPLOAD_DIET_CHART_RESET } from "../../../constant.js/DoctorConstant";
 
 const PatientUploadDietChart = () => {
   const latestDietChart=useSelector((state)=>state.latestDietChart)
   const {loading,error,deitChartLatest}=latestDietChart
   const deitChartList=useSelector((state)=>state.deitChartList)
   const {loading:loadingDiet,error:errorDiet,dietchart}=deitChartList
+  const dietChartUpload=useSelector(state=>state.dietChartUpload)
+  const {success}=dietChartUpload
   const dispatch=useDispatch()
   useEffect(()=>{
    const user='patient'
   dispatch(getLatesDietChart())
   dispatch(getAllDietChart(user))
-  },[dispatch])
+  if(success){
+    dispatch({type:UPLOAD_DIET_CHART_RESET})
+  }
+  },[dispatch,success])
   // if(dietchart){
   //   console.log(dietchart,'dttt');
   // }
+  const truncate = (str, n) => {
+    return str.length > n ? str.substr(0, n - 1)  : str;
+  };
   return (
     <>
       <div className="tab__Card--Container tab__Card--Gap-1">
@@ -90,14 +99,14 @@ const PatientUploadDietChart = () => {
             </div>
             {loading ? <LoadingBox></LoadingBox>:
             error ? <MessageBox>{error}</MessageBox>:
-            deitChartLatest &&  (
+            deitChartLatest ?  (
               <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  <p className="form__Heading">Rajiv Singla</p>
+                  <p className="form__Heading">{deitChartLatest.doctorId ? deitChartLatest.doctorId.name : ''}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -106,7 +115,7 @@ const PatientUploadDietChart = () => {
                   >
                     Prescribed Date
                   </label>
-                  <p className="form__Heading">24-11-2022</p>
+                  <p className="form__Heading">{truncate(deitChartLatest.createdAt,11)}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -185,7 +194,9 @@ const PatientUploadDietChart = () => {
                 </div>
               </div>
             </div>
-          )}
+          ):
+          <MessageBox>No latest Diet Chart</MessageBox>
+          }
            
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
@@ -226,7 +237,7 @@ const PatientUploadDietChart = () => {
               {loadingDiet ? <LoadingBox></LoadingBox>:
               errorDiet ? <MessageBox>{error}</MessageBox>:
               dietchart.length > 0 ? dietchart.map((dt)=>(
-               <div className="p-2">
+               <div className="p-2" key={dt._id}>
                 <div className="relative w-full overflow-hidden">
                   <input
                     type="checkbox"
@@ -234,7 +245,7 @@ const PatientUploadDietChart = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singlashh /20-11-2022
+                      {dt.doctorId ?dt.doctorId.name : '' } /{truncate(dt.createdAt,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -252,7 +263,7 @@ const PatientUploadDietChart = () => {
                           >
                             Doctor Name
                           </label>
-                          <p className="form__Heading">Rajiv Singla</p>
+                          <p className="form__Heading">{dt.doctorId ?dt.doctorId.name : '' }</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -261,7 +272,7 @@ const PatientUploadDietChart = () => {
                           >
                             Prescribed Date
                           </label>
-                          <p className="form__Heading">20-11-2022</p>
+                          <p className="form__Heading">{truncate(dt.createdAt,11)}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label

@@ -7,14 +7,14 @@
         @apply bg-gray-50 border-b-2 border-gray-200;
 
         &--Text {
-            @apply p-3 text-lg font-semibold tracking-wide text-left;
+            @apply w-24 p-3 text-lg font-semibold tracking-wide text-left;
         }
     }
 
     &__Body {
 
         &--Row {
-            @apply bg-white;
+            @apply bg-white border-b;
 
             &_Data {
                 @apply p-3 text-base text-gray-700 whitespace-nowrap;

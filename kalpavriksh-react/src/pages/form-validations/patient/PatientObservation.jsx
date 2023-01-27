@@ -1,17 +1,31 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { FiEye, FiEdit } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { createObservations } from "../../../action/PatientAction";
+import { CREATE_OBSERVATION_RESET } from "../../../constant.js/PatientConstant";
 
 import PatientObservedTable from "./PatientObservedTable";
 
 const PatientObservation = () => {
+  const observationCreate=useSelector((state)=>state.observationCreate)
+  const {success}=observationCreate
   const [desc, setDesc] = useState('')
   const dispatch=useDispatch()
   const submitHandler=()=>{
-    // const id='63a9ec8e77c2e617d2c547bd'
     dispatch(createObservations(desc))
   }
+
+  useEffect(()=>{
+     if(success){
+      Swal.fire({
+        icon: "success",
+        text: "Observation created successfully",
+      });
+     setDesc('')
+     }
+  },[success])
 
 
   return (
@@ -66,7 +80,8 @@ const PatientObservation = () => {
                         Enter Patients Observation
                       </label>
                       <textarea
-                      onChange={(e)=>setDesc(e.target.value)}
+                        onChange={(e)=>setDesc(e.target.value)}
+                        value={desc}
                         rows={3}
                         name="observation-info"
                         id="observation-info"
@@ -88,6 +103,8 @@ const PatientObservation = () => {
                   <button
                     type="button"
                     onClick={submitHandler}
+                    data-bs-dismiss="modal"
+
                     className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                   >
                     Create &amp; Save Observation
@@ -162,7 +179,7 @@ const PatientObservation = () => {
             </tr>
           </tbody>
         </table> */}
-        <PatientObservedTable />
+        <PatientObservedTable success={success}/>
       </div>
     </>
   );

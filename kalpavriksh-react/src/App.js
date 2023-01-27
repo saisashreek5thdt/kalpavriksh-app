@@ -38,6 +38,8 @@ import '../src/App.css'
 import DoctorRoute from './Components/DoctorRoute';
 import AdminRoute from './Components/AdminRoute';
 import PatientRoute from './Components/PatientRoute';
+import CustomForms from './user/shared/CustomForms';
+import CustomCharts from './user/shared/CustomCharts';
 
 const App = () => {
   return (
@@ -66,6 +68,8 @@ const App = () => {
         <Route path='/userrole/:roleid/dashboard/admin/' element={<AdminRoute><Admin /></AdminRoute>}/>
         <Route path='/userrole/:roleid/dashboard/admin/patient/enrolment/view/' element={ <AdminRoute><EnrolmentsView /></AdminRoute>} />
         <Route path='/userrole/:roleid/dashboard/admin/summary/employee/view/' element={ <AdminRoute><EmployeSummary /></AdminRoute>} />
+        <Route path='/userrole/:roleid/dashboard/admin/forms/' element={<AdminRoute><CustomForms /></AdminRoute>} />
+        <Route path='/userrole/:roleid/dashboard/admin/charts/' element={<AdminRoute><CustomCharts /></AdminRoute>} />
       </Routes>
     </BrowserRouter>
   );

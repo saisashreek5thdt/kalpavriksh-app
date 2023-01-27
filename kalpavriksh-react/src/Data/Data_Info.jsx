@@ -1,7 +1,8 @@
+import React from "react";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const doctorGridImage = (props) => (
+export const doctorGridImage = (props) => (
   <div className="image flex gap-4">
     <div>
       <p>{props.DoctorName}</p>
@@ -9,7 +10,7 @@ const doctorGridImage = (props) => (
   </div>
 );
 
-const patientGridImage = (props) => (
+export const patientGridImage = (props) => (
   <div className="image flex gap-4">
     <div>
       <p>{props.PatientName}</p>
@@ -17,7 +18,7 @@ const patientGridImage = (props) => (
   </div>
 );
 
-const actionGridImage = () => (
+export const actionGridImage = () => (
   <div className="image flex">
     <div>
       <p className="text-center text-3xl hover:text-emerald-600">
@@ -27,7 +28,7 @@ const actionGridImage = () => (
   </div>
 );
 
-const observedGridID = (props) => (
+export const observedGridID = (props) => (
   <div className="image flex gap-2">
     <div>
       <p>{props.ObservationID}</p>
@@ -35,7 +36,7 @@ const observedGridID = (props) => (
   </div>
 );
 
-const observedGridImage = (props) => (
+export const observedGridImage = (props) => (
   <div className="image flex gap-2">
     <div>
       <p>{props.ObservedName}</p>
@@ -43,7 +44,7 @@ const observedGridImage = (props) => (
   </div>
 );
 
-const observedGridDate = (props) => (
+export const observedGridDate = (props) => (
   <div className="image flex gap-2">
     <div>
       <p>{props.ObservedDate}</p>

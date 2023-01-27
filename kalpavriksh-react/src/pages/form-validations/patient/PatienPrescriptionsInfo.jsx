@@ -18,6 +18,9 @@ const PatienPrescriptionsInfo = () => {
  dispatch(getPrescriptions())
  dispatch(getLatesPrescription())
   },[])
+  if(prescLatest){
+    console.log(prescLatest,'presc');
+  }
  
 
 
@@ -92,14 +95,14 @@ const PatienPrescriptionsInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
-          {!loadingLatest && !errorLatest && prescLatest && (
+          {!loadingLatest && !errorLatest && prescLatest ? (
             <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  <p className="form__Heading">{prescLatest.doctorId}</p>
+                  <p className="form__Heading">{prescLatest.doctorId ? prescLatest.doctorId.name : '' }</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -182,7 +185,9 @@ const PatienPrescriptionsInfo = () => {
                 </div>
               </div>
             </div>
-          )}
+          ):
+          <MessageBox>No latest Prescription</MessageBox>
+          }
             
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
@@ -231,7 +236,7 @@ const PatienPrescriptionsInfo = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singlashh / {truncate(pres.createdOn,11)}
+                     {pres.doctorId ? pres.doctorId.name : ''} / {truncate(pres.createdOn,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}

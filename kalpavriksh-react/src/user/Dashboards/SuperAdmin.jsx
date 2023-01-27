@@ -1,10 +1,11 @@
 import React from "react";
 import AdminNav from "../shared/AdminNav";
+import AdminTabs from "../shared/AdminTabs";
 
-import Summaryinfo from "../../pages/form-validations/admin/Summaryinfo";
-import AccessControl from "../../pages/form-validations/admin/AccessControl";
-import Charts from "../../pages/form-validations/admin/Charts";
-import DataCollection from "../../pages/form-validations/admin/DataCollection";
+// import Summaryinfo from "../../pages/form-validations/admin/Summaryinfo";
+// import AccessControl from "../../pages/form-validations/admin/AccessControl";
+// import Charts from "../../pages/form-validations/admin/Charts";
+// import DataCollection from "../../pages/form-validations/admin/DataCollection";
 const SuperAdmin = () => {
   return (
     <>
@@ -21,7 +22,8 @@ const SuperAdmin = () => {
           <div className="dashboard__Main-Content">
             {/* Replace with your content */}
             <div className="dashboard__Main-Inner-Content">
-            <ul
+              <AdminTabs />
+            {/* <ul
                 className="nav tabs__List-Container"
                 id="tabs-tabJustify"
                 role="tablist"
@@ -116,7 +118,7 @@ const SuperAdmin = () => {
                 >
                   <DataCollection />
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* /End replace */}
           </div>

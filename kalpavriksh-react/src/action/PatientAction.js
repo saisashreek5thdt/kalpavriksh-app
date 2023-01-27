@@ -76,6 +76,8 @@ export const getForms = (user) => async (dispatch,getState) => {
   dispatch({ type: GET_ALL_PATIENT_FORMS_REQUEST });
   const { patientSignin: { patientInfo }} = getState();
   const { adminSignin: { adminDocInfo }} = getState();
+  const { doctorSignin: { doctorInfo }} = getState();
+
 
 
   try {    
@@ -86,7 +88,14 @@ export const getForms = (user) => async (dispatch,getState) => {
         },
       });  
        dispatch({ type: GET_ALL_PATIENT_FORMS_SUCCESS, payload: data }); 
-    }else{
+    }else if(user === 'doctor'){
+      const { data } = await axios.get(`${Url}/forms/get-all`,{
+        headers: {
+          Authorization: `Bearer ${doctorInfo.token}`,
+        },
+      });  
+       dispatch({ type: GET_ALL_PATIENT_FORMS_SUCCESS, payload: data }); 
+    } else{
       const { data } = await axios.get(`${Url}/forms/get-all`,{
         headers: {
           Authorization: `Bearer ${patientInfo.token}`,

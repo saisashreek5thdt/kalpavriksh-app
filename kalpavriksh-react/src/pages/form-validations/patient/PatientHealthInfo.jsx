@@ -216,7 +216,7 @@ const dispatch=useDispatch()
   const fetchUsers = () => {
     return  axios.get(`${Url}/doctors/get-all`, {
      headers: {
-       Authorization: `Bearer ${doctorInfo}`,
+       Authorization: `Bearer ${doctorInfo.token}`,
      },
    }).then(function (response) {
      const res =  response.data.data;

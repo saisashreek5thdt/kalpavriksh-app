@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CREATE_FORM_FAIL, CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_PRESC_FAIL, CREATE_PRESC_REQUEST, CREATE_PRESC_SUCCESS, GET_APPOINTMENT_WITH_DATE_REQUEST, GET_APPOINTMENT_WITH_DATE_SUCCESS, GET_DOCTOR_PROFILE_FAIL, GET_DOCTOR_PROFILE_REQUEST, GET_DOCTOR_PROFILE_SUCCESS, UPDATE_PATIENT_FAIL, UPDATE_PATIENT_REQUEST, UPDATE_PATIENT_SUCCESS, UPLOAD_DIET_CHART_FAIL, UPLOAD_DIET_CHART_REQUEST, UPLOAD_DIET_CHART_SUCCESS } from "../constant.js/DoctorConstant";
+import { CREATE_FORM_FAIL, CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_PRESC_FAIL, CREATE_PRESC_REQUEST, CREATE_PRESC_SUCCESS, GET_APPOINTMENT_WITH_DATE_REQUEST, GET_APPOINTMENT_WITH_DATE_SUCCESS, GET_DOCTOR_PROFILE_FAIL, GET_DOCTOR_PROFILE_REQUEST, GET_DOCTOR_PROFILE_SUCCESS, GET_PATIENT_OLDPRESC_FAIL, GET_PATIENT_OLDPRESC_REQUEST, GET_PATIENT_OLDPRESC_SUCCESS, UPDATE_PATIENT_FAIL, UPDATE_PATIENT_REQUEST, UPDATE_PATIENT_SUCCESS, UPLOAD_DIET_CHART_FAIL, UPLOAD_DIET_CHART_REQUEST, UPLOAD_DIET_CHART_SUCCESS } from "../constant.js/DoctorConstant";
 import { GET_APPOINTMENT_FAIL, Url } from "../constant.js/PatientConstant";
 
 
@@ -111,3 +111,19 @@ export const uploadDietCharts=(calorie_lower,calorie_upper,ch_lower,ch_upper,pro
     }
   };
   
+
+  export const getPatientOldPresc= (id) => async (dispatch,getState) => {
+    dispatch({ type: GET_PATIENT_OLDPRESC_REQUEST });
+    const { doctorSignin: { doctorInfo }} = getState();
+    try {    
+      const { data } = await axios.get(`${Url}/presc/get/${id}`,{
+        headers: {Authorization: `Bearer ${doctorInfo.token}`}});      
+      dispatch({ type: GET_PATIENT_OLDPRESC_SUCCESS, payload: data }); 
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: GET_PATIENT_OLDPRESC_FAIL, payload: message });
+    }
+  };

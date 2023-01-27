@@ -11,6 +11,7 @@ import MessageBox from "../../../Components/MessageBox";
 
 import PatientAppointmentTable from "./PatientAppointmentTable";
 import { getAllDoctors } from "../../../action/AdminAction";
+import Swal from "sweetalert2";
 
 const PatientAppointmentInfo = () => {
   const [staff,setStaff]=useState('')
@@ -32,8 +33,13 @@ const PatientAppointmentInfo = () => {
   useEffect(()=>{
     dispatch(getAppointments())
       if(success){
+        Swal.fire({
+          icon: "success",
+          text: "Appointment created successfully",
+        });
         dispatch({type:CREATE_APPOINTMENT_RESET})
       }
+      setDate('')
       const user='patient'
       dispatch(getAllDoctors(user))
   },[success])
@@ -99,7 +105,7 @@ const PatientAppointmentInfo = () => {
                       >
                         <option>Select Staff</option>
                         {doctors.map((dc)=>(
-                        <option value={dc._id}>{dc.name}</option>
+                        <option key={dc._id} value={dc._id}>{dc.name}</option>
                         ))}
                        
                       </select>
@@ -118,7 +124,7 @@ const PatientAppointmentInfo = () => {
                       </label>
                       <input
                         onChange={(e)=>setDate(e.target.value)}
-
+                        value={date}
                         type="date"
                         name="appointment-date"
                         id="appointment-date"
@@ -137,7 +143,8 @@ const PatientAppointmentInfo = () => {
                     Cancel
                   </button>
                   <button
-                  onClick={save}
+                    onClick={save}
+                    data-bs-dismiss="modal"
                     type="button"
                     className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                   >

@@ -4,16 +4,18 @@ import { FiPaperclip, FiChevronDown } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DetailsPatients } from "../../../action/PatientAction";
+import { DetailsPatients, getForms } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 
 import Input from "../../../Components/Input";
 import { useForm } from "../../../hooks/form-hooks";
 import { VALIDATOR_MINLENGTH } from "../../../utils/validators";
-import { createPrescription } from "../../../action/DoctorAction";
+import { createPrescription, getPatientOldPresc } from "../../../action/DoctorAction";
 import { CREATE_PRESC_RESET } from "../../../constant.js/DoctorConstant";
 import Swal from "sweetalert2";
+import { getAllDietChart } from "../../../action/AdminAction";
+import { Form1 } from "../../shared/MultiForms";
 
 const DoctorMeetingInfo = () => {
   const location = useLocation();
@@ -26,11 +28,11 @@ const DoctorMeetingInfo = () => {
   const [aftDose, setAftDose] = useState("");
   const [eveDose, setEveDose] = useState("");
   const [frquency, setFrquency] = useState();
-  const [duration, setDuration] = useState();
-  const [durDays, setDurDays] = useState("");
+  const [duration, setDuration] = useState('');
+  const [durDays, setDurDays] = useState();
   const [specinst, setSpecinst] = useState("");
   const [open, setOpen] = useState(false);
-  const { id } = location.state;
+  const { id,patientid } = location.state;
 
   const patientDetails = useSelector((state) => state.patientDetails);
   const { loading, error, patient } = patientDetails;
@@ -38,27 +40,32 @@ const DoctorMeetingInfo = () => {
   const prescriptionCreate = useSelector((state) => state.prescriptionCreate);
   const { success } = prescriptionCreate;
 
+  const deitChartList=useSelector((state)=>state.deitChartList)
+  const {loading:loadingDiet,error:errorDiet,dietchart}=deitChartList
+
+  const prescriptionPatient=useSelector((state)=>state.prescriptionPatient)
+  const{loading:loadingPres,error:errorPres,presc} =prescriptionPatient
+
+  const getFomrsList=useSelector((state=>state.patientFormList))
+  const {loading:loadingForms,error:errorForms,forms}=getFomrsList
+
   useEffect(() => {
     dispatch(DetailsPatients(id));
+    
+    const user='doctor'
+    dispatch(getAllDietChart(user))
+    dispatch(getForms(user))
   }, [dispatch]);
-  // if (patient) {
-  //   console.log(patient.data, "dt");
-  // }
+
 
   const backFunc = () => {
     navigate("/userrole/:roleid/dashboard/doctor/#tabs-mypatientsJustify/");
   };
 
   useEffect(() => {
+    dispatch(getPatientOldPresc(id))
     if (success) {
       dispatch({ type: CREATE_PRESC_RESET });
-      // Swal.fire({
-      //   icon: 'success',
-      //   title: 'Priscription created succesfully',
-      //   text: "Thanks",
-      //   type: 'success',
-
-      // });
       Swal.fire({
         icon: "success",
         title: "Prescription created succesfully",
@@ -66,15 +73,17 @@ const DoctorMeetingInfo = () => {
         // showCancelButton: true,
         confirmButtonText: "Save",
         denyButtonText: `Don't save`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          window.location.reload();
-        } else if (result.isDenied) {
-          Swal.fire("Changes are not saved", "", "info");
-        }
-      });
-      // setOpen(false)
+      })
+      setMedType()
+      setMedName('')
+      setAftDose('')
+      setDurDays('')
+      setDuration('')
+      setEveDose('')
+      setFrquency('')
+      setMornDose('')
+      setSpecinst('')
+
     }
   }, [success]);
   const [formState, inputHandler, setFormData] = useForm({
@@ -132,48 +141,11 @@ const DoctorMeetingInfo = () => {
         specinst
       )
     );
-    // console.log(formState.inputs);
-    // setFormData({
-    //   ...formState.inputs,
-    //   medicineType: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineName: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineDoseMorning: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineDoseAfternoon: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineDoseEvening: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineFrequency: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineDurationNumber: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineDurationDays: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   medicineSplInstructions: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    // });
+   
   };
-
+  const truncate = (str, n) => {
+    return str.length > n ? str.substr(0, n - 1)  : str;
+  };
   return (
     <>
       <div className="min-h-full">
@@ -311,7 +283,7 @@ const DoctorMeetingInfo = () => {
                                     href="#"
                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                   >
-                                    Download
+                                    Add to Calendar
                                   </a>
                                 </div>
                               </li>
@@ -471,6 +443,7 @@ const DoctorMeetingInfo = () => {
                     </label>
                     <select
                       name=""
+                      value={medType}
                       id=""
                       onChange={(e) => setMedType(e.target.value)}
                     >
@@ -506,6 +479,7 @@ const DoctorMeetingInfo = () => {
                       Medicine Name
                     </label>
                     <input
+                      value={medName}
                       onChange={(e) => setMedName(e.target.value)}
                       id="medicineName"
                       name="medicineName"
@@ -534,6 +508,7 @@ const DoctorMeetingInfo = () => {
                       Medicine Morning Dose
                     </label>
                     <input
+                      value={mornDose}
                       onChange={(e) => setMornDose(e.target.value)}
                       id="medicineMorningDose"
                       name="medicineMorningDose"
@@ -562,6 +537,7 @@ const DoctorMeetingInfo = () => {
                       Medicine Afternoon Dose
                     </label>
                     <input
+                      value={aftDose}  
                       onChange={(e) => setAftDose(e.target.value)}
                       id="medicineAfternoonDose"
                       name="medicineAfternoonDose"
@@ -590,6 +566,7 @@ const DoctorMeetingInfo = () => {
                       Medicine Evening Dose
                     </label>
                     <input
+                      value={eveDose}
                       onChange={(e) => setEveDose(e.target.value)}
                       id="medicineEveningDose"
                       name="medicineEveningDose"
@@ -620,6 +597,7 @@ const DoctorMeetingInfo = () => {
                     <select
                       name=""
                       id=""
+                      value={frquency}
                       onChange={(e) => setFrquency(e.target.value)}
                     >
                       <option value="none">Please select</option>
@@ -655,7 +633,8 @@ const DoctorMeetingInfo = () => {
                     <select
                       name=""
                       id=""
-                      onChange={(e) => setDurDays(e.target.value)}
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
                     >
                       <option value="none">Please select</option>
                       <option value="Days">Days</option>
@@ -682,6 +661,7 @@ const DoctorMeetingInfo = () => {
                     </label>
                     <input
                       onChange={(e) => setDurDays(e.target.value)}
+                      value={durDays}
                       id="medicineDurationDays"
                       name="medicineDurationDays"
                       type="number"
@@ -712,6 +692,7 @@ const DoctorMeetingInfo = () => {
                       Medicine Special Instructions
                     </label>
                     <textarea
+                     value={specinst}
                       onChange={(e) => setSpecinst(e.target.value)}
                       id="medicineSplInstructions"
                       name="medicineSplInstructions"
@@ -741,6 +722,7 @@ const DoctorMeetingInfo = () => {
                   </button>
                   <button
                     type="submit"
+                    data-bs-dismiss="modal"
                     className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                   >
                     Create &amp; Save Prescription
@@ -760,14 +742,15 @@ const DoctorMeetingInfo = () => {
         aria-labelledby="modalFormsLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none presc">
+    
+          <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none presc">
           <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
             <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
               <h5
                 className="text-xl font-medium leading-normal text-gray-800"
                 id="modalFormsLabel"
               >
-                Medical Forms
+                Medical Formssss
               </h5>
               <button
                 type="button"
@@ -776,6 +759,10 @@ const DoctorMeetingInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
+
+            {loadingForms ? <LoadingBox></LoadingBox>:
+             errorForms ? <MessageBox>{errorForms}</MessageBox>:
+              forms.length>0 ? forms.map((frm)=>(
             <div className="modal-body relative p-4">
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
@@ -785,7 +772,7 @@ const DoctorMeetingInfo = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singla / Form Title / 10-12-2022
+                      {frm.doctorId ? frm.doctorId.name : ''}/ {frm.form_title} / {truncate(frm.createdAt,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -803,7 +790,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Doctor Name
                           </label>
-                          <p className="form__Heading">Rajiv Singla</p>
+                          <p className="form__Heading">{frm.doctorId ? frm.doctorId.name : ''}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -812,123 +799,65 @@ const DoctorMeetingInfo = () => {
                           >
                             Form Created Date
                           </label>
-                          <p className="form__Heading">10-12-2022</p>
+                          <p className="form__Heading">{truncate(frm.createdAt,11)}</p>
                         </div>
                       </div>
-                      <div className="py-4">
-                        <div className="form__Grid--Rows-none">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionTitle"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Title
-                            </label>
-                            <p className="form__Heading">Question Title</p>
+                      {frm.questions.map((qs)=>(
+                        <>
+                            <div className="py-4">
+                            <div className="form__Grid--Rows-none">
+                              <div className="form__Cols--Span-6">
+                                <label
+                                  htmlFor="formQuestionTitle"
+                                  className="form__Label-Heading"
+                                >
+                                  Form Question Title
+                                </label>
+                                <p className="form__Heading">{qs.question_title}</p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        <div className="form__Grid--Cols-6">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionType"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Type
-                            </label>
-                            <p className="form__Heading">Radio</p>
-                          </div>
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionChoice"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Choice
-                            </label>
-                            <p className="form__Heading">Choice Name</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="py-4">
-                        <div className="form__Grid--Rows-none">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionTitle"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Title
-                            </label>
-                            <p className="form__Heading">Question Title</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        <div className="form__Grid--Cols-6">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionType"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Type
-                            </label>
-                            <p className="form__Heading">Checkbox</p>
-                          </div>
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionChoice"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Choice
-                            </label>
-                            <p className="form__Heading">Choice Name</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="py-4">
-                        <div className="form__Grid--Rows-none">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionTitle"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Title
-                            </label>
-                            <p className="form__Heading">Question Title</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        <div className="form__Grid--Cols-6">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionType"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Type
-                            </label>
-                            <p className="form__Heading">Textarea</p>
-                          </div>
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="formQuestionChoice"
-                              className="form__Label-Heading"
-                            >
-                              Form Question Choice
-                            </label>
-                            <p className="form__Heading">
-                              Patient Medical Info
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                          <div className="py-2">
+                            <div className="form__Grid--Cols-6">
+                              <div className="form__Cols--Span-6">
+                                      <label
+                                  htmlFor="formQuestionType"
+                                  className="form__Label-Heading"
+                                >
+                                  Form Question Type
+                                </label>
+                                <p className="form__Heading">{qs.type}</p>
+                              </div>
+                              {qs.type != 'textArea' && (
+                                   <div className="form__Cols--Span-6">
+                                   <label
+                                     htmlFor="formQuestionChoice"
+                                     className="form__Label-Heading"
+                                   >
+                                     Form Question Choice
+                                   </label>
+                                  
+                                   <p className="form__Heading">{qs.choise1},{qs.choise2},{qs.choise3},{qs.choise4}</p>
+                                 </div>
+                                  )}
+                             
+                            </div>
+                          </div>  
+                          </>
+                      ))}
+                    
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+              )):
+              <MessageBox>No forms</MessageBox>
+              }
           </div>
         </div>
+      
+       
       </div>
 
       <div
@@ -954,7 +883,10 @@ const DoctorMeetingInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body relative p-4">
+            {loadingPres ? <LoadingBox></LoadingBox>:
+            errorPres ? <MessageBox>{errorPres}</MessageBox>:
+            presc.length > 0 ? presc.map((pre)=>(
+        <div className="modal-body relative p-4">
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input
@@ -963,7 +895,7 @@ const DoctorMeetingInfo = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singla /20-11-2022
+                      {pre.doctorId ? pre.doctorId.name : ''} /{truncate(pre.createdOn,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -981,7 +913,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Doctor Name
                           </label>
-                          <p className="form__Heading">Rajiv Singla</p>
+                          <p className="form__Heading"> {pre.doctorId ? pre.doctorId.name : ''} </p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -990,7 +922,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Patient Name
                           </label>
-                          <p className="form__Heading">Zafar Irshad</p>
+                          <p className="form__Heading">{pre.patientId ? pre.patientId.name : ''}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -999,7 +931,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Prescribed Date
                           </label>
-                          <p className="form__Heading">20-11-2022</p>
+                          <p className="form__Heading">{truncate(pre.createdOn,11)}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1008,7 +940,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Type
                           </label>
-                          <p className="form__Heading">Tablet</p>
+                          <p className="form__Heading">{pre.medicine_type}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1017,7 +949,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Name
                           </label>
-                          <p className="form__Heading">Coldact</p>
+                          <p className="form__Heading">{pre.medicine_name}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1026,7 +958,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Morning Dose
                           </label>
-                          <p className="form__Heading">2 Tabs</p>
+                          <p className="form__Heading">{pre.morning_dose}s</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1035,7 +967,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Afternoon Dose
                           </label>
-                          <p className="form__Heading">1 Tab</p>
+                          <p className="form__Heading">{pre.afternoon_dose}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1044,7 +976,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Evening Dose
                           </label>
-                          <p className="form__Heading">1/2 Tab</p>
+                          <p className="form__Heading">{pre.evening_dose}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1053,7 +985,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Frequency
                           </label>
-                          <p className="form__Heading">Every two hours</p>
+                          <p className="form__Heading">{pre.frequency}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1062,7 +994,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Medicine Duration (Number / Days / Weeks)
                           </label>
-                          <p className="form__Heading">3 / Weeks</p>
+                          <p className="form__Heading">{pre.duration_days}</p>
                         </div>
                       </div>
                       <div className="form__Grid--Rows-none">
@@ -1074,7 +1006,7 @@ const DoctorMeetingInfo = () => {
                             Medicine Special Instructions
                           </label>
                           <p className="form__Heading">
-                            Special Instructions for useage of Medicines
+                            {pre.special_inst}
                           </p>
                         </div>
                       </div>
@@ -1082,134 +1014,12 @@ const DoctorMeetingInfo = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-2">
-                <div className="relative w-full overflow-hidden">
-                  <input
-                    type="checkbox"
-                    className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                  />
-                  <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                    <h1 className="text-lg font-semibold text-gray-600">
-                      Suha / 15-10-2022
-                    </h1>
-                  </div>
-                  {/* Down Arrow Icon */}
-                  <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                    <FiChevronDown className="w-6 h-6" />
-                  </div>
-                  {/* Content */}
-                  <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                    <div className="p-4">
-                      <div className="form__Grid--Cols-6">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedBy"
-                            className="form__Label-Heading"
-                          >
-                            Doctor Name
-                          </label>
-                          <p className="form__Heading">Suha</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedFor"
-                            className="form__Label-Heading"
-                          >
-                            Patient Name
-                          </label>
-                          <p className="form__Heading">Zafar Irshad</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedDate"
-                            className="form__Label-Heading"
-                          >
-                            Prescribed Date
-                          </label>
-                          <p className="form__Heading">15-10-2022</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineType"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Type
-                          </label>
-                          <p className="form__Heading">Tablet</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineName"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Name
-                          </label>
-                          <p className="form__Heading">Coldact</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineMorningDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Morning Dose
-                          </label>
-                          <p className="form__Heading">2 Tabs</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineAfternoonDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Afternoon Dose
-                          </label>
-                          <p className="form__Heading">1 Tab</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineEveningDose"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Evening Dose
-                          </label>
-                          <p className="form__Heading">1/2 Tab</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineFrequency"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Frequency
-                          </label>
-                          <p className="form__Heading">Every two hours</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineDuration"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Duration (Number / Days / Weeks)
-                          </label>
-                          <p className="form__Heading">3 / Weeks</p>
-                        </div>
-                      </div>
-                      <div className="form__Grid--Rows-none">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="medicineSplInstructions"
-                            className="form__Label-Heading"
-                          >
-                            Medicine Special Instructions
-                          </label>
-                          <p className="form__Heading">
-                            Special Instructions for useage of Medicines
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            
             </div>
+            )):
+          <MessageBox>No Prescription</MessageBox>
+          }
+            
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
                 type="button"
@@ -1246,7 +1056,10 @@ const DoctorMeetingInfo = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body relative p-4">
+            {loadingDiet ? <LoadingBox></LoadingBox>:
+            errorDiet ? <MessageBox>{errorDiet}</MessageBox>:
+            dietchart.length > 0 ? dietchart.map((dt)=>(
+              <div className="modal-body relative p-4">
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input
@@ -1255,7 +1068,7 @@ const DoctorMeetingInfo = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      Rajiv Singla /20-11-2022
+                     {dt.doctorId ? dt.doctorId.name : ''}/20-11-2022
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -1273,7 +1086,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Doctor Name
                           </label>
-                          <p className="form__Heading">Rajiv Singla</p>
+                          <p className="form__Heading"> {dt.doctorId ? dt.doctorId.name : ''}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1300,7 +1113,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Low Calories Range
                           </label>
-                          <p className="form__Heading">23</p>
+                          <p className="form__Heading">{dt.calorie_lower}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1309,7 +1122,7 @@ const DoctorMeetingInfo = () => {
                           >
                             High Clories Range
                           </label>
-                          <p className="form__Heading">55</p>
+                          <p className="form__Heading">{dt.calorie_upper}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1318,7 +1131,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Low Carbohydrates Range
                           </label>
-                          <p className="form__Heading">23</p>
+                          <p className="form__Heading">{dt.ch_lower}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1327,7 +1140,7 @@ const DoctorMeetingInfo = () => {
                           >
                             High Carbohydrates Range
                           </label>
-                          <p className="form__Heading">55</p>
+                          <p className="form__Heading">{dt.ch_upper}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1336,13 +1149,13 @@ const DoctorMeetingInfo = () => {
                           >
                             Protiens Range
                           </label>
-                          <p className="form__Heading">68</p>
+                          <p className="form__Heading">{dt.protiens}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label htmlFor="fats" className="form__Label-Heading">
                             Fats Range
                           </label>
-                          <p className="form__Heading">35</p>
+                          <p className="form__Heading">{dt.fats}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label
@@ -1360,147 +1173,7 @@ const DoctorMeetingInfo = () => {
                           >
                             Food Cusine
                           </label>
-                          <p className="form__Heading">Home Cooked Food</p>
-                        </div>
-                      </div>
-                      <div className="py-3">
-                        <div className="form__Grid--Rows-none">
-                          <div className="form__Cols--Span-6">
-                            <label
-                              htmlFor="downloadDietChart"
-                              className="form__Label-Heading"
-                            >
-                              Download Diet Chart
-                            </label>
-                            <p className="form__Heading">
-                              <button
-                                type="button"
-                                className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                              >
-                                Download Diet Chart
-                              </button>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-2">
-                <div className="relative w-full overflow-hidden">
-                  <input
-                    type="checkbox"
-                    className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                  />
-                  <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                    <h1 className="text-lg font-semibold text-gray-600">
-                      Suha / 15-10-2022
-                    </h1>
-                  </div>
-                  {/* Down Arrow Icon */}
-                  <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                    <FiChevronDown className="w-6 h-6" />
-                  </div>
-                  {/* Content */}
-                  <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                    <div className="p-4">
-                      <div className="form__Grid--Cols-6">
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedBy"
-                            className="form__Label-Heading"
-                          >
-                            Doctor Name
-                          </label>
-                          <p className="form__Heading">Rajiv Singla</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedFor"
-                            className="form__Label-Heading"
-                          >
-                            Patient Name
-                          </label>
-                          <p className="form__Heading">Zafar Irshad</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="prescribedDate"
-                            className="form__Label-Heading"
-                          >
-                            Prescribed Date
-                          </label>
-                          <p className="form__Heading">20-11-2022</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="lowerCalories"
-                            className="form__Label-Heading"
-                          >
-                            Low Calories Range
-                          </label>
-                          <p className="form__Heading">23</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="highCalories"
-                            className="form__Label-Heading"
-                          >
-                            High Clories Range
-                          </label>
-                          <p className="form__Heading">55</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="lowerCarbohydrates"
-                            className="form__Label-Heading"
-                          >
-                            Low Carbohydrates Range
-                          </label>
-                          <p className="form__Heading">23</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="highCarbohydrates"
-                            className="form__Label-Heading"
-                          >
-                            High Carbohydrates Range
-                          </label>
-                          <p className="form__Heading">55</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="proties"
-                            className="form__Label-Heading"
-                          >
-                            Protiens Range
-                          </label>
-                          <p className="form__Heading">68</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label htmlFor="fats" className="form__Label-Heading">
-                            Fats Range
-                          </label>
-                          <p className="form__Heading">35</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="foodType"
-                            className="form__Label-Heading"
-                          >
-                            Food Type (Veg / Nonveg / Egg)
-                          </label>
-                          <p className="form__Heading">Veg</p>
-                        </div>
-                        <div className="form__Cols--Span-6">
-                          <label
-                            htmlFor="foodCusine"
-                            className="form__Label-Heading"
-                          >
-                            Food Cusine
-                          </label>
-                          <p className="form__Heading">Home Cooked Food</p>
+                          <p className="form__Heading">{dt.cuisine_type}</p>
                         </div>
                       </div>
                       <div className="py-3">
@@ -1528,6 +1201,10 @@ const DoctorMeetingInfo = () => {
                 </div>
               </div>
             </div>
+            )):
+            <MessageBox>No diet chart</MessageBox>
+            }
+          
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
                 type="button"

@@ -212,7 +212,7 @@ export const observationCreateReducer = (state = {}, action) => {
     case CREATE_OBSERVATION_SUCCESS:
       return { loading: false,  success: true };
     case CREATE_OBSERVATION_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: true,msg:action.payload };
     case CREATE_OBSERVATION_RESET:
       return {};
     default:

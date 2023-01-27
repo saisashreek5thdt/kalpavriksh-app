@@ -14,6 +14,7 @@ import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 import {
   ACTIVATE_DOCTOR_RESET,
+  CREATE_DOCTOR_RESET,
   DEACTIVATE_DOCTOR_RESET,
 } from "../../../constant.js/AdminConstant";
 
@@ -26,6 +27,8 @@ const AccessControl = () => {
   const dispatch = useDispatch();
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
+  const createDoctor=useSelector((state)=>state.doctorCreate)
+  const {success,error:errorCreate}=createDoctor
 
   const activateDoctorVariables = useSelector((state) => state.activateDoctor);
   const {
@@ -45,22 +48,6 @@ const AccessControl = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addDoctore(name, role, email, number, regId));
-    const modals = document.getElementsByClassName("modal");
-
-    // on every modal change state like in hidden modal
-    // for(let i=0; i<modals.length; i++) {
-    //   modals[i].classList.remove('show');
-    //   modals[i].setAttribute('aria-hidden', 'true');
-    //   modals[i].setAttribute('style', 'display: none');
-    // }
-
-    //  // get modal backdrops
-    //  const modalsBackdrops = document.getElementsByClassName('modal-backdrop');
-
-    //  // remove every modal backdrop
-    //  for(let i=0; i<modalsBackdrops.length; i++) {
-    //    document.body.removeChild(modalsBackdrops[i]);
-    //  }
   };
 
   useEffect(() => {
@@ -79,32 +66,43 @@ const AccessControl = () => {
         text: "Deactivated successfully",
       });
     }
-  }, [dispatch, successActivate, successDeActivate]);
 
-  // useEffect(()=>{
-  //   if
-  // },[])
+    if(success){
+      dispatch({type:CREATE_DOCTOR_RESET})
+      Swal.fire({
+        icon: "success",
+        text: "Doctor Created successfully",
+      });
+      setName('')
+      setRole('')
+      setEmail('')
+      setNumber('')
+      setRegId('')
+    }
+    if(errorCreate){
+      dispatch({type:CREATE_DOCTOR_RESET})
+      Swal.fire({
+        icon: "error",
+        text: errorCreate,
+      });
+      setName('')
+      setRole('')
+      setEmail('')
+      setNumber('')
+      setRegId('')
+    }
+  }, [dispatch, successActivate, successDeActivate,success,errorCreate]);
 
-  const deActivate = (id) => {
-    Swal.fire({
-      title: "Do you want to deactivet user?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        dispatch(deactivateDoctor(id));
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
-    });
+
+  const deActivate = (id,e) => {
+    console.log(e,'jey');
+    
   };
-  const activate = (id) => {
-    Swal.fire({
-      title: "Do you want to deactivet user?",
+  const activate = (state,id) => {
+    console.log(state,id,'hii');
+    if(state === 'De-Active'){
+   Swal.fire({
+      title: "Do you want to activate user?",
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: "Save",
@@ -118,7 +116,27 @@ const AccessControl = () => {
         Swal.fire("Changes are not saved", "", "info");
       }
     });
+    }else if(state === 'Active'){
+   Swal.fire({
+      title: "Do you want to deactivate user?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        dispatch(deactivateDoctor(id));
+        // Swal.fire('Saved!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
+    }
+ 
   };
+
+
 
   return (
     <>
@@ -149,7 +167,7 @@ const AccessControl = () => {
         aria-labelledby="createEmployeeLabel"
         aria-hidden="true"
       >
-        <form onSubmit={submitHandler}>
+        <form >
           <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
             <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
               <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
@@ -173,6 +191,7 @@ const AccessControl = () => {
                       Enter Employee Name
                     </label>
                     <input
+                     value={name}
                       required
                       onChange={(e) => setName(e.target.value)}
                       type="text"
@@ -187,6 +206,7 @@ const AccessControl = () => {
                       Select Role
                     </label>
                     <select
+                    value={role}
                       required
                       onChange={(e) => setRole(e.target.value)}
                       id="role"
@@ -195,10 +215,10 @@ const AccessControl = () => {
                       className="form__Select"
                     >
                       <option>Select Role</option>
-                      <option value="role1">Role 1</option>
-                      <option value="role2">Role 2</option>
-                      <option value="role3">Role 3</option>
-                      <option value="role4">Role 4</option>
+                      <option value="Doctor">Doctor</option>
+                      <option value="Junior Doctor">Junior Doctor</option>
+                      <option value="Dietitian">Dietitian</option>
+                      {/* <option value="role4">Role 4</option> */}
                     </select>
                   </div>
                   <div className="form__Cols--Span-6">
@@ -216,6 +236,7 @@ const AccessControl = () => {
                       id="employee-email"
                       autoComplete="given-name"
                       className="form__Input"
+                      value={email}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -233,6 +254,7 @@ const AccessControl = () => {
                       id="employee-phone"
                       autoComplete="given-name"
                       className="form__Input"
+                      value={number}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -250,6 +272,7 @@ const AccessControl = () => {
                       id="employee-regno"
                       autoComplete="given-name"
                       className="form__Input"
+                      value={regId}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -278,7 +301,7 @@ const AccessControl = () => {
                 >
                   Cancel
                 </button>
-                <button type="submit" className="modal__Btn--Teal">
+                <button onClick={submitHandler} data-bs-dismiss="modal" className="modal__Btn--Teal">
                   Create &amp; Save Employee
                 </button>
               </div>
@@ -306,7 +329,7 @@ const AccessControl = () => {
           ) : (
             doctors &&
             doctors.map((doc, index) => (
-              <tbody key={doc.index}>
+              <tbody className="divide-y divide-gray-100" key={doc._id}>
                 <tr className="table__Body--Row">
                   <td className="table__Body--Row_Data">{index + 1}</td>
                   <td className="table__Body--Row_Data">{doc.name}</td>
@@ -318,18 +341,20 @@ const AccessControl = () => {
                       name="status"
                       autoComplete="status-name"
                       className="form__Select"
+                      onChange={()=>activate(doc.status,doc._id)}
                     >
                       <option>{doc.status}</option>
                       {doc.status === "Active" ? (
-                        <option onClick={() => deActivate(doc._id)}>
+                        <option                    
+                         >
                           De-Active
                         </option>
                       ) : doc.status === "De-Active" ? (
                         <>
-                          <option onClick={() => activate(doc._id)}>
+                          <option
+                           >
                             Active
                           </option>
-                          {/* <option value="">hry</option> */}
                         </>
                       ) : (
                         ""

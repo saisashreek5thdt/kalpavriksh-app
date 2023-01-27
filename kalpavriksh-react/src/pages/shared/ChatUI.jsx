@@ -182,7 +182,7 @@ const ChatUI = () => {
                   {loading ? <LoadingBox></LoadingBox>:
                    error? <MessageBox>{error}</MessageBox>:
                     patients.data && patients.data.map((itm,i)=>(
-                  <div className="flex-1 h-full overflow-auto px-2">
+                  <div key={itm._id} className="flex-1 h-full overflow-auto px-2">
                     <div className="entry cursor-pointer transform hover:scale-105 duration-300 transition-transform bg-white mb-4 rounded p-4 flex shadow-md">
                       <div className="flex-2">
                         <div className="w-12 h-12 relative">

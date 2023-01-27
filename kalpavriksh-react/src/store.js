@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
 import thunk from 'redux-thunk';
 import { activateDoctorReducer, activateDtChartReducer, activateformReducer, adminSigninReducer, deactivateDoctorReducer, deactivateDtChartReducer, deactivateformReducer, deitChartListReducer, doctorCreateReducer, doctorListReducer } from './reducer/AdminReducer';
-import { appointmentDateReducer, dietChartUploadReducer, doctorProfileListReducer, formCreateReducer, prescriptionCreateReducer } from './reducer/DoctoreReducer';
+import { appointmentDateReducer, dietChartUploadReducer, doctorProfileListReducer, formCreateReducer, prescriptionCreateReducer, prescriptionPatientReducer } from './reducer/DoctoreReducer';
 import { appointmentCreateReducer, appointmentListReducer, doctorSigninReducer, enrollmentPatientReducer, formSubmitReducer, latestDietChartReducer, latestPrescriptionReducer, observationCreateReducer, observationListReducer, patientDetailsReducer, patientFormListReducer, patientListReducer, patientOtpReducer, patientProfileListReducer, patientSigninReducer, presctListReducer } from './reducer/Patientreducer';
 
 
@@ -55,6 +55,7 @@ const reducer =combineReducers({
     activateDtChart:activateDtChartReducer,
     deactivateDtChart:deactivateDtChartReducer,
     appointmentDate:appointmentDateReducer,
+    prescriptionPatient:prescriptionPatientReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

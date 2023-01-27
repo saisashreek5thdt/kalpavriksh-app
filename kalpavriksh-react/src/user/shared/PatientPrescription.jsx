@@ -24,7 +24,7 @@ export default class PatientPrescription extends React.Component {
   content0() {
     return (
       <div className="py-5">
-        <PatienPrescriptionsInfo />
+       <PatienPrescriptionsInfo />
         <PatientUploadDietChart />
       </div>
     );

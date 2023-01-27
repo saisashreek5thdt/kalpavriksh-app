@@ -89,7 +89,7 @@ const PatientAppointmentTable = () => {
             appointment.length>0 ? appointment.map((ap,i)=>(
 
             
-            <tr className="bg-white border-b">
+            <tr className="bg-white border-b" key={ap._id}>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
                 {i+1}
               </td>

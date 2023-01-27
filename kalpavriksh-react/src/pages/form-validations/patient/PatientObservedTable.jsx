@@ -17,17 +17,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { listObservation } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
+import { CREATE_OBSERVATION_RESET } from "../../../constant.js/PatientConstant";
 
-const PatientObservedTable = () => {
+const PatientObservedTable = ({success}) => {
   const observationList=useSelector(state=>state.observationList)
   const {loading,error,observation}=observationList
   const dispatch=useDispatch()
   useEffect(() => {
     updateSampleSection();
-    const id='63ac1dca0a5214a53cfa87f1'
-    dispatch(listObservation(id))
+    // const id='63ac1dca0a5214a53cfa87f1'
+    dispatch(listObservation())
+    if(success){
+      dispatch({type:CREATE_OBSERVATION_RESET})
+    }
 
-  },[]);
+  },[success]);
 
   const selectionsettings = { persistSelection: true };
   const toolbarOptions = ["Delete"];

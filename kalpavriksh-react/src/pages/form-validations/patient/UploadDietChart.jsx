@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadDietCharts } from "../../../action/DoctorAction";
 import { UPLOAD_DIET_CHART_RESET } from "../../../constant.js/DoctorConstant";
 import Navbar from "../../../user/shared/Navbar";
+import Swal from "sweetalert2";
 
 const UploadDietChart = () => {
   const [calorieLow, setCalorieLow] = useState()
@@ -28,7 +29,11 @@ const UploadDietChart = () => {
   useEffect(()=>{
       if(success){
         dispatch({type:UPLOAD_DIET_CHART_RESET})
-        alert('diet chart uploaded succesfully')
+        Swal.fire({
+          icon: "success",
+          text: "Diet Chart created succesfully",
+        });
+   
         navigate("/userrole/:roleid/dashboard/doctor/");
       }
   },[success])

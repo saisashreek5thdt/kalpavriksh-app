@@ -62,7 +62,7 @@ const PatientProfile = () => {
                           Patient Name
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          {/* {profile.patient.name} */}
+                          {profile.patient.name}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -78,7 +78,7 @@ const PatientProfile = () => {
                           Patient Email
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {/* {profile.patient.email} */}
+                        {profile.patient.email}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -86,7 +86,7 @@ const PatientProfile = () => {
                           Patient Phone Number
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {/* {profile.patient.phone} */}
+                        {profile.patient.phone}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -102,7 +102,7 @@ const PatientProfile = () => {
                           Patient Height
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {/* {profile.patient.height} */}
+                        {profile.patient.height}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -110,7 +110,7 @@ const PatientProfile = () => {
                           Patient Weight
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {/* {profile.patient.weight} */}
+                        {profile.patient.weight}
                         </dd>
                       </div>
                       <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

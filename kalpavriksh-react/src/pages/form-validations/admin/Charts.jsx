@@ -26,96 +26,131 @@ const Charts = () => {
   const {loading:loadingFormDe,error:errorFormDe,success:successFormDe}=deactivateFormVariables
 
 
-  const activateDtChartVariables=useSelector((state)=>state.activateform)
+  const activateDtChartVariables=useSelector((state)=>state.activateDtChart)
   const {loading:loadingChartAc,error:errorChartAc,success:successChartAc}=activateDtChartVariables
-  const deactivateDtChartVariables=useSelector((state)=>state.deactivateform)
+  const deactivateDtChartVariables=useSelector((state)=>state.deactivateDtChart)
   const {loading:loadingChartDe,error:errorChartDe,success:successChartDe}=deactivateDtChartVariables
 
   useEffect(()=>{
     dispatch(getForms('admin'))
-    dispatch(getAllDietChart())
+ 
     if(successFormAc){
       dispatch({type:ACTIVATE_FORM_RESET})
+      Swal.fire({
+        icon: "success",
+        text: "activated successfully",
+      });
     }
     if(successFormDe){
       dispatch({type:DEACTIVATE_FORM_RESET})
+      Swal.fire({
+        icon: "success",
+        text: "deactivated successfully",
+      });
     }
+ 
+  },[successFormAc,successFormDe,,])
+
+  const truncate = (str, n) => {
+    return str.length > n ? str.substr(0, n - 1)  : str;
+  };
+
+  useEffect(()=>{
+    dispatch(getAllDietChart())
     if(successChartAc){
       dispatch({type:ACTIVATE_DTCHART_RESET})
+      Swal.fire({
+        icon: "success",
+        text: "activated successfully",
+      });
     }
     if(successChartDe){
       dispatch({type:DEACTIVATE_DTCHART_RESET})
+      Swal.fire({
+        icon: "success",
+        text: "deactivated successfully",
+      });
     }
-  },[successFormAc,successFormDe,successChartAc,successChartDe])
+  },[successChartDe,successChartAc])
 
-  const deActivateForms=(id)=>{
-    Swal.fire({
-      title: 'Do you want to deactivet forms?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-          dispatch(deactivateForm(id))
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
-  }
-  const activateForms=(id)=>{
-    Swal.fire({
-      title: 'Do you want to activate forms?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-          dispatch(activateForm(id))
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
+  // const deActivateForms=(id)=>{
+   
+  // }
+  const activateForms=(state,id)=>{
+    if(state === 'Active'){
+      Swal.fire({
+        title: 'Do you want to deactivet forms?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            dispatch(deactivateForm(id))
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+    }else if(state === 'De-Active'){
+      Swal.fire({
+        title: 'Do you want to activate forms?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            dispatch(activateForm(id))
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+    }
+   
   }
 
-  const deActivateDietCharts=(id)=>{
-    Swal.fire({
-      title: 'Do you want to deactivet diet Chart?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-          dispatch(deactivateDtChart(id))
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
-  }
-  const acttivateDietCharts=(id)=>{
-    Swal.fire({
-      title: 'Do you want to activate diet chart?',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-          dispatch(activateDtChart(id))
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
+  // const deActivateDietCharts=(id)=>{
+    
+  // }
+  const acttivateDietCharts=(state,id)=>{
+    if(state === 'Active'){
+      Swal.fire({
+        title: 'Do you want to deactivet diet Chart?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            dispatch(deactivateDtChart(id))
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+    }else if(state === 'De-Active'){
+      Swal.fire({
+        title: 'Do you want to activate diet chart?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            dispatch(activateDtChart(id))
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })
+    }
+   
   }
  
 
@@ -148,20 +183,20 @@ const Charts = () => {
           {loading ? <LoadingBox></LoadingBox>:
           error ? <MessageBox>{error}</MessageBox>:
           forms.map((frm,index)=>(
-            <tbody>
+            <tbody key={frm._id}>
             <tr className="table__Body--Row">
               <td className="table__Body--Row_Data">
               {index + 1}
 
               </td>
               <td className="table__Body--Row_Data">
-               {frm.question_title}
+               {frm.form_title}
               </td>
               <td className="table__Body--Row_Data">
-                Dr. D.S.N.Rao
+                {frm.doctorId ?frm.doctorId.name : ''}
               </td>
               <td className="table__Body--Row_Data">
-                11-10-2022
+                {truncate(frm.createdAt,11)}
               </td>
               <td className="table__Body--Row_Data">
                 <select
@@ -169,13 +204,14 @@ const Charts = () => {
                   name="status"
                   autoComplete="status-name"
                   className="form__Select"
+                  onChange={()=>activateForms(frm.status,frm._id)}
                 >
-                 <option value={frm.active}>{frm.status}</option>  
+                 <option value={frm.status}>{frm.status}</option>  
                  {frm.status === 'Active' ? (
-                   <option onClick={()=>deActivateForms(frm._id)}>De-Active</option>
+                   <option >De-Active</option>
 
                  ):frm.status === 'De-Active' ? (
-                  <option onClick={()=>activateForms(frm._id)}>Active</option>
+                  <option>Active</option>
                  ):                
                  ''}
                 </select>
@@ -196,9 +232,9 @@ const Charts = () => {
               <th className="table__Head--Text">
                 Sl No.
               </th>
-              <th className="table__Head--Text">
+              {/* <th className="table__Head--Text">
                 Diet Chart Name
-              </th>
+              </th> */}
               <th className="table__Head--Text">
                 Created By
               </th>
@@ -216,19 +252,19 @@ const Charts = () => {
           {loadingDiet ? <LoadingBox></LoadingBox>:
           errorDiet ? <MessageBox>{error}</MessageBox>:
           dietchart && dietchart.map((dt,index)=>(
-          <tbody>
+          <tbody key={dt._id}>
             <tr className="table__Body--Row">
               <td className="table__Body--Row_Data">
                 {index + 1}
               </td>
-              <td className="table__Body--Row_Data">
+              {/* <td className="table__Body--Row_Data">
                 Burn Calories
+              </td> */}
+              <td className="table__Body--Row_Data">
+                {dt.doctorId ? dt.doctorId.name : ''}
               </td>
               <td className="table__Body--Row_Data">
-                Dr. Suha
-              </td>
-              <td className="table__Body--Row_Data">
-                11-10-2022
+              {truncate(dt.createdAt,11)}
               </td>
               <td className="table__Body--Row_Data">
                 <select
@@ -236,13 +272,14 @@ const Charts = () => {
                   name="status"
                   autoComplete="status-name"
                   className="form__Select"
+                  onChange={()=>acttivateDietCharts(dt.status,dt._id)}
                 >
                   <option>{dt.status}</option>
                   {dt.status === 'Active' ? (
-                   <option onClick={()=>deActivateDietCharts(dt._id)}>De-Active</option>
+                   <option >De-Active</option>
 
                  ):dt.status === 'De-Active' ? (
-                  <option onClick={()=>acttivateDietCharts(dt._id)}>Active</option>
+                  <option >Active</option>
                  ):                
                  ''}
                 </select>

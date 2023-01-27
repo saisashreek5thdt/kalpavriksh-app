@@ -74,21 +74,21 @@ const DoctorVisitor = () => {
               <th className="w-20 p-3 text-lg font-semibold tracking-wide text-left">
                 Sl No.
               </th>
-              {/* <th className="p-3 text-lg font-semibold tracking-wide text-left">
+              {/* <th className="w-24 p-3 text-lg font-semibold tracking-wide text-left">
                 Doctor Name
               </th> */}
-              <th className="p-3 text-lg font-semibold tracking-wide text-left">
+              <th className="w-24 p-3 text-lg font-semibold tracking-wide text-left">
                 Patient Name
               </th>
-              <th className="p-3 text-lg font-semibold tracking-wide text-left">
+              <th className="w-24 p-3 text-lg font-semibold tracking-wide text-left">
                 Date
               </th>
-              <th className="w-24 p-3 text-lg font-semibold tracking-wide text-left">
+              <th className="w-24 p-3 text-lg font-semibold tracking-wide text-center">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {loading ? (
               <LoadingBox></LoadingBox>
             ) : error ? (
@@ -96,7 +96,7 @@ const DoctorVisitor = () => {
             ) : (
               patients &&
               patients.map((itm, i) => (
-                <tr key={itm._id} className="bg-white">
+                <tr key={itm._id} className="bg-white border-b">
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                     {i + 1}
                   </td>
@@ -117,7 +117,7 @@ const DoctorVisitor = () => {
                           onClick={() =>
                             navigate(
                               "/userrole/:roleid/dashboard/doctor/meeting/info/",
-                              { state: { id: itm._id } }
+                              { state: { id: itm._id ,patientid: itm.patientId} }
                             )
                           }
                         />

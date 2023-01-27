@@ -22,6 +22,7 @@ import LoadingBox from "../../Components/LoadingBox";
 import MessageBox from "../../Components/MessageBox";
 import { adminLogin } from "../../action/AdminAction";
 
+
 const LoginForm = () => {
   const patientOtps = useSelector((state) => state.patientOtp);
   const { loading, error, success } = patientOtps;
@@ -31,7 +32,7 @@ const LoginForm = () => {
   const { loading:loadingDoctor , error:errorDoctor , doctorInfo } = doctorSignin;
   const adminSignin = useSelector((state) => state.adminSignin);
   const { loading:loadingAdmin, error:errorAdmin , adminDocInfo } = adminSignin;
-
+ const [otp, setOtp] = useState('')
   const dispatch = useDispatch();
 
   // console.log(doctorInfo,'addd');
@@ -142,6 +143,7 @@ const LoginForm = () => {
     );
   
   };
+  const   handleChange = (otp) => setOtp({ otp });
 
   useEffect(()=>{
     // if(formState.inputs.role.value === 'admin' && adminDocInfo){
@@ -171,16 +173,7 @@ const LoginForm = () => {
     navigate("/userrole/:roleid/dashboard/patient/mydata/");
   };
 
-  // useEffect(()=>{
-  //     if(formState.inputs.role.value === 'patient'){
-  //       navigate('/userrole/:roleid/dashboard/patient/mydata/')
-  //     }else if(formState.inputs.role.value === 'doctor'){
-  //       navigate('/userrole/:roleid/dashboard/doctor/')
-  //     }else if(formState.inputs.role.value === 'Admin'){
-  //       navigate('/userrole/:roleid/dashboard/admin/')
-  //     }
-  // },[formState])
-
+ 
   const loginAdmin=(e)=>{
     e.preventDefault()
     const user='admin'
@@ -236,8 +229,34 @@ const LoginForm = () => {
             />
             */}
           </div>
+
+            {/* {success ? ( */}
+            <div className="patient-otp">
+              <InputLog
+              
+                element="input"
+                id="element"
+                // type="password"
+                label="otp"
+                placeholder="Enter OTP"
+                validators={[VALIDATOR_MINLENGTH(6)]}
+                // errorText="Please Enter Valid Password"
+                onInput={inputHandler}
+              />
+              {/* <OtpInput
+              id='element'
+              element='input'
+            value={otp}
+            onChange={handleChange}
+            numInputs={6}
+            separator={<span>-</span>}
+            /> */}
+            </div>
+          {/* ):''} */}
+
+
           {formState.inputs.role.value === "doctor" ? (
-            <div>
+            <div className="generate-otp">
               <button
                 // type="submit"
                 onClick={otpHandler}
@@ -248,7 +267,7 @@ const LoginForm = () => {
               </button>
             </div>
           ) : formState.inputs.role.value === "patient" ? (
-            <div>
+            <div className="generate-otp">
               <button
                 onClick={otpHandler}
                 // type="submit"
@@ -264,29 +283,10 @@ const LoginForm = () => {
 
           {loading && <LoadingBox></LoadingBox>}
           {error && <MessageBox>{error}</MessageBox>}
-         <div className="patient-otp">
-            <InputLog
-            
-              element="input"
-              id="element"
-              // type="password"
-              label="otp"
-              placeholder="Enter OTP"
-              validators={[VALIDATOR_MINLENGTH(8)]}
-              errorText="Please Enter Valid Password"
-              onInput={inputHandler}
-            />
-          </div>
+        
+      
 
-          <div id="elements">
-            <button
-              onClick={submitOtp}
-              className="group login__Button--Container-Btn"
-            >
-              <span className="login__Button--Container-BtnSpan"></span>
-              Sign in
-            </button>
-          </div>
+       
 
           {/* {success ? ( */}
           {formState.inputs.role.value === "admin" ? (
@@ -309,7 +309,7 @@ const LoginForm = () => {
           {/* ):''} */}
         </div>
 
-        <div className="login__Checkbox-Container">
+        {/* <div className="login__Checkbox-Container">
           <div className="login__Checkbox-Container--Box">
             <input
               id="remember-me"
@@ -324,29 +324,40 @@ const LoginForm = () => {
               Remember me
             </label>
           </div>
-        </div>
-
-        <div>
-          <button type="submit" className="group login__Button--Container-Btn">
-            <span className="login__Button--Container-BtnSpan"></span>
-            Sign ins
-          </button>
-        </div>
+        </div> */}
+        {formState.inputs.role.value === "admin" ? (
+            <div>
+            <button type="submit" className="group login__Button--Container-Btn">
+              <span className="login__Button--Container-BtnSpan"></span>
+              Sign in admin
+            </button>
+          </div>
+        ):''}
+      {/* {formState.inputs.role.value === "admin" ? (
+   <div>
+   <button type="submit" className="group login__Button--Container-Btn">
+     <span className="login__Button--Container-BtnSpan"></span>
+     Sign ins
+   </button>
+ </div>
+      ): */}
+      {formState.inputs.role.value !== 'admin' ? (
+   <div id="elements">
+   <button
+     onClick={submitOtp}
+     className="group login__Button--Container-Btn"
+   >
+     <span className="login__Button--Container-BtnSpan"></span>
+     Sign in
+   </button>
+ </div>
+      ): ''}
+   
+      {/* } */}
         <div className="login__Divider--Box">
           <p className="login__Divider--Text">Or</p>
         </div>
       </form>
-
-      {/* <div>
-        <button
-          type="submit"
-          className="group login__Button--Container-Btn"
-          onClick={testPatientLoginHandler}
-        >
-          <span className="login__Button--Container-BtnSpan"></span>
-          Patient LogIn
-        </button>
-      </div> */}
 
       {user ? (
         <div>
