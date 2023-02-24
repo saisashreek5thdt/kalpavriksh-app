@@ -93,3 +93,20 @@ module.exports.getLatest = async (req, res) => {
         })
     }
 }
+
+module.exports.getLatestByDoctor = async (req, res) => {
+    try {
+        const prescs  = await Presc.findOne({patientId: req.params.id}).populate([{path:'doctorId',select: ['name', 'email'] },{ path: 'patientId', select: ['name', 'email']}]).sort({"_id": -1});
+        return res.status(200).json({
+            success: true,
+            message: "Prescriptions fetched successfully",
+            data: prescs
+        })
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};

@@ -24,6 +24,9 @@ const Patient = new mongoose.Schema({
         type: Date,
         required: true
     },
+    age: {
+        type: Number,
+    },
     gender: {
         type: String,
         required: true
@@ -50,7 +53,8 @@ const Patient = new mongoose.Schema({
         type: String
     },
     health_plan_date: {
-        type: Date
+        startDate: Date,
+        endDate: Date
     },
     amount: {
         type: Number

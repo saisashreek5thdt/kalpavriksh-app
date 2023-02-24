@@ -13,6 +13,7 @@ module.exports.addPatient = async (req, res) => {
                 message: "A patient is already exist with given email Id",
             })
         }
+        req.body.doctors.unshift(req.user.id);
         const newPatient = new Patient({
             patientId: "DAP-"+ await getPatientId(),
             ...req.body
@@ -51,7 +52,7 @@ module.exports.getAllPatients = async (req, res) => {
 
 module.exports.getPatient = async (req, res) => {
     try {
-        const patient = await Patient.findOne({doctorId: req.user.id, _id: req.params.id});
+        const patient = await Patient.findOne({doctorId: req.user.id, _id: req.params.id}).select(["name", "age", "gender", "phone"]);
         return res.status(200).json({
             success: true,
             message: "Successfully got the patient",

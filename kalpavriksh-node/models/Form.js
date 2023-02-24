@@ -5,7 +5,14 @@ const FormSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "doctor"
     },
-    form_title: String,
+    form_title: {
+        type: String,
+        required: true
+    },
+    answered: {
+        type: Boolean,
+        default: false 
+    },
     questions: [
         {
             type: {
@@ -26,13 +33,14 @@ const FormSchema = new mongoose.Schema({
             choise4: {
                 type: String,
             },
-            answered: {
-                type: Boolean,
-                default: false 
-            },
-            answer: [{
-                type: String,
-                required: true
+            answers: [{
+                patientId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "patient",
+                    required: true,
+                    unique: true
+                },
+                data: [String]
             }]
         },
     ],

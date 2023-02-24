@@ -8,5 +8,6 @@ router.get('/get-all', authorize(), diets.getAll);
 router.get('/latest-diets', authorize("patient"), diets.getLatest);
 router.put('/deactivate/:id', authorize("admin"), diets.deactivate);
 router.put('/activate/:id', authorize("admin"), diets.activate);
+router.get('/latest-diet-by-doctor/:id', authorize("doctor"), diets.getLatestByDoctor);
 
 module.exports = router;

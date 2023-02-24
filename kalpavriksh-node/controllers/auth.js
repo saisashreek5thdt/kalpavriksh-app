@@ -4,7 +4,6 @@ const Doctor = require('../models/Doctor');
 const jwt = require('jsonwebtoken');
 
 const sgMail = require('@sendgrid/mail');
-const { AuthorizationDocumentInstance } = require('twilio/lib/rest/preview/hosted_numbers/authorizationDocument');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -65,8 +64,8 @@ module.exports.login = async (req, res) => {
 
         // await twilio.messages.create({
         //     from: '+16508816310',
-        //     to: patient.phone,
-        //     body: `Hello ${patient.name},\n`+
+        //     to: "9072771916",
+        //     body: `Hello hello,\n`+
         //     `Your OTP for Login access is - ${otp}\n\n`+
         //     `Thanks,\n`+
         //     `Team KalpaVriksh`
@@ -79,15 +78,16 @@ module.exports.login = async (req, res) => {
 
         const msg = {
         to: user.email,
-        from: 'Health Vriksh <contactus@healthvriksh.com>',
+        from: 'Health Vriksh <saisashreek@graphiz.in>',
         subject: 'Authentication Request for Doctor App',
         text: `Hello ${user.name},\n`+
             `Your OTP for Login access is - ${otp}\n\n`+
             `Thanks,\n`+
             `Team KalpaVriksh`,
         };
-        await sgMail.send(msg);
 
+        const t = await sgMail.send(msg);
+        //console.log(t);
         return res.status(200).json({
             success: true,
             message: "OTP had send to your mailid and phone number",
@@ -120,10 +120,11 @@ module.exports.submitOtp = async (req, res) => {
                 message: "User doesn't exist / Invalid OTP",
             })
         }   
-
+        console.log(user);
         const payload = {
             user: {
               id: user.id,
+              status: user.status?user.status: undefined,
               type: req.body.user
             }
         };
@@ -139,6 +140,7 @@ module.exports.submitOtp = async (req, res) => {
               res.status(200).json({
                 success: true,
                 message: "Login successfull",
+                status: user.status,
                 user: req.body.user,
                 token
               });

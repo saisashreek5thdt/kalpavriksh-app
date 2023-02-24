@@ -29,7 +29,6 @@ module.exports.getAll = async (req, res) => {
     try {
 
         let forms = [];
-        console.log(req.user.type)
 
         if(req.user.type == "doctor") {
             forms = await Form.find({doctorId: req.user.id}).populate('doctorId', ['name', 'email']);
@@ -39,6 +38,11 @@ module.exports.getAll = async (req, res) => {
             forms = await Form.find({
                 doctorId: {$in: req.user.doctors}
             }).populate('doctorId', ['name', 'email']);
+            for (let i = 0; i < forms.length; i++) {
+               if(forms[i].questions[0].answers[0]?.patientId.toString() == req.user.id)
+               forms[i].answered = true;
+                
+            }
         }
 
         return res.status(200).json({
@@ -62,12 +66,11 @@ module.exports.submitForm = async (req, res) => {
 
         if(form) {
             for (let i = 0; i < form.questions.length; i++) {
-                if((form.questions[i].id == req.body.questionId) && !form.questions[i].answered) {
-                    form.questions[i].answer = req.body.answer;
-                    form.questions[i].answered = true;
-                    break;
-                }
-                
+                    for (let j = 0; j < req.body.answers.length; j++) {
+                        if(form.questions[i].id == req.body.answers[j].questionId) {
+                            form.questions[i].answers.push({"patientId": req.user.id, data: req.body.answers[j].answer});
+                        }
+                    }
             }
             await form.save();
     

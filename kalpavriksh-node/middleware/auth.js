@@ -42,6 +42,13 @@ module.exports.authorize = (role = "") => {
                   data: null,
                 });
               }
+              if(decoded.user.status == "De-Active") {
+                return res.status(401).json({
+                  success: false,
+                  message: "You are not allowed to perform the task. Please contact the admin.",
+                  data: "de-active",
+                });
+              }
         
               const userDetail = await Doctor.findById(decoded.user.id).select(
                 ["-password", "-observations" ]

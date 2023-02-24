@@ -130,4 +130,21 @@ module.exports.activate = async (req, res) => {
             message: err.message,
         })
     }
-}
+};
+
+module.exports.getLatestByDoctor = async (req, res) => {
+    try {
+        const diets  = await DietChart.findOne({doctorId: {$in: req.user.id }}).populate('doctorId', ['name', 'email']).sort({"_id": -1});
+        return res.status(200).json({
+            success: true,
+            message: "diet charts fetched successfully",
+            data: diets
+        })
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
