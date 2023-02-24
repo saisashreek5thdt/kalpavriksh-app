@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
 import thunk from 'redux-thunk';
 import { activateDoctorReducer, activateDtChartReducer, activateformReducer, adminSigninReducer, deactivateDoctorReducer, deactivateDtChartReducer, deactivateformReducer, deitChartListReducer, doctorCreateReducer, doctorListReducer } from './reducer/AdminReducer';
 import { appointmentDateReducer, dietChartUploadReducer, doctorProfileListReducer, formCreateReducer, prescriptionCreateReducer, prescriptionPatientReducer } from './reducer/DoctoreReducer';
-import { appointmentCreateReducer, appointmentListReducer, doctorSigninReducer, enrollmentPatientReducer, formSubmitReducer, latestDietChartReducer, latestPrescriptionReducer, observationCreateReducer, observationListReducer, patientDetailsReducer, patientFormListReducer, patientListReducer, patientOtpReducer, patientProfileListReducer, patientSigninReducer, presctListReducer } from './reducer/Patientreducer';
+import { appointmentCreateReducer, appointmentListReducer, doctorSigninReducer, enrollmentPatientReducer, formSubmitReducer, latestDietChartReducer, latestPrescriptionReducer, observationCreateReducer, observationListReducer, patientDetailsReducer, patientFormListReducer, patientListReducer, patientOtpReducer, patientProfileListReducer, patientSigninReducer, presctListReducer,patientUpdateReducer } from './reducer/Patientreducer';
 
 
 const initialState = {
@@ -26,6 +26,7 @@ const initialState = {
 const reducer =combineReducers({
     enrollmentPatient:enrollmentPatientReducer,
     patientList:patientListReducer,
+    updatedPatient:patientUpdateReducer,
     patientDetails:patientDetailsReducer,
     dietChartUpload:dietChartUploadReducer,
     formCreate:formCreateReducer,

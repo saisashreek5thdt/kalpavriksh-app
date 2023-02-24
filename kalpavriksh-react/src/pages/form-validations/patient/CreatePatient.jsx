@@ -50,7 +50,18 @@ const CreatePatient = () => {
   );
 
   const nextStep = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+  
+    // Check if all inputs are valid
+    const isAllValid = Object.values(formState.inputs).every(
+      (input) => input.isValid
+    );
+  
+    if (!isAllValid) {
+      alert("Please fill all the fields.");
+      return;
+    }
+  
     setFormData(
       {
         ...formState.inputs,
@@ -66,9 +77,9 @@ const CreatePatient = () => {
           value: "",
           isValid: false
         },
-        dob:{
+        dob: {
           value: "",
-          isValid: false,
+          isValid: false
         },
         gender: {
           value: "",
@@ -77,21 +88,16 @@ const CreatePatient = () => {
       },
       false
     );
-    const name=formState.inputs.name.value
-    const phone=formState.inputs.phone.value
-    const email=formState.inputs.email.value
-    const dob=formState.inputs.dob.value
-    const gender=formState.inputs.gender.value
-
-    // if(name ==='' ||phone ==='' || email ==='' || dob ==='' || gender ==='' ){
-    //   alert('please fill all the fields')
-    // }else{
-      navigate("/userrole/:roleid/dashboard/doctor/enrol/healthinfo/", {
-        state: {name,phone,email,dob,gender},
-      });
-    // }
-
+    
+    const name = formState.inputs.name.value;
+    const phone = formState.inputs.phone.value;
+    const email = formState.inputs.email.value;
+    const dob = formState.inputs.dob.value;
+    const gender = formState.inputs.gender.value;
   
+    navigate("/userrole/:roleid/dashboard/doctor/enrol/healthinfo/", {
+      state: { name, phone, email, dob, gender },
+    });
   };
 
   return (

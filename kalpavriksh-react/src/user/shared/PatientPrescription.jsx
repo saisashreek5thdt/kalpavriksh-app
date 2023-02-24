@@ -11,8 +11,9 @@ import PatientObservation from "../../pages/form-validations/patient/PatientObse
 import PatientUploadDietChart from "../../pages/form-validations/patient/PatientUploadDietChart";
 
 import PatientFooter from "./PatientFooter";
+import {connect} from 'react-redux';
 
-export default class PatientPrescription extends React.Component {
+class PatientPrescription extends React.Component {
   constructor() {
     super(...arguments);
     this.headerText = [
@@ -45,6 +46,8 @@ export default class PatientPrescription extends React.Component {
   }
 
   render() {
+    const { patientSignin } = this.props;
+    const {patientInfo} = patientSignin
     return (
       <>
         <div className="dashboard__Container">
@@ -61,10 +64,10 @@ export default class PatientPrescription extends React.Component {
                     header={this.headerText[1]}
                     content={this.content1}
                   />
-                  <TabItemDirective
+                  {!patientInfo ? <TabItemDirective
                     header={this.headerText[2]}
                     content={this.content2}
-                  />
+                  />: <></>}
                 </TabItemsDirective>
               </TabComponent>
             </div>
@@ -75,3 +78,11 @@ export default class PatientPrescription extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  patientSignin: state.patientSignin
+});
+
+export default connect(
+  mapStateToProps,
+)(PatientPrescription);

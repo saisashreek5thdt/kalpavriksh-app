@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,8 @@ const CustomFormTable = () => {
   const dispatch = useDispatch();
   const getFomrsList = useSelector((state) => state.patientFormList);
   const { loading, error, forms } = getFomrsList;
+  const [filterDatas, setFilterDatas] = useState([])
+  const [show,setShow]=useState(false)
 
   const activateFormVariables = useSelector((state) => state.activateform);
   const {
@@ -97,6 +99,15 @@ const CustomFormTable = () => {
     }
   };
 
+  const filterData=(id)=>{
+    console.log(id)
+    const filterdData=forms.filter((e)=>e._id ===id)
+    console.log(typeof(filterdData))
+    // console.log(filterdData[0])
+    setFilterDatas(filterdData)
+    setShow(true)
+  }
+
   return (
     <>
       <div className="my-10">
@@ -147,6 +158,7 @@ const CustomFormTable = () => {
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
+                      onClick={()=>filterData(frm._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"
                       data-bs-target="#modalForms"
@@ -179,13 +191,19 @@ const CustomFormTable = () => {
               ></button>
             </div>
             {/* {!loadingLatest && !errorLatest && prescLatest ? (  */}
-            <div className="modal-body relative p-4">
+            {loading ? <LoadingBox></LoadingBox>:
+            error ? <MessageBox>{error}</MessageBox>:
+            (
+              <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
+                {show && (
+
+               <>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.doctorId ? prescLatest.doctorId.name : '' }</p> */}
+                  <p className="form__Heading">{filterDatas[0].doctorId ? filterDatas[0].doctorId.name : '' }</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -194,27 +212,43 @@ const CustomFormTable = () => {
                   >
                     Form Created Date
                   </label>
-                  {/* <p className="form__Heading">{truncate(prescLatest.createdOn,11)}</p> */}
+                  <p className="form__Heading">{truncate(filterDatas[0].createdAt,11)}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineType" className="form__Label-Heading">
                     Form Title
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.medicine_type}</p> */}
+                  <p className="form__Heading">{filterDatas[0].form_title}</p>
                 </div>
+                </>
+                )}
               </div>
-              <div className="py-6 form__Grid--Cols-6">
+              {filterDatas[0] && filterDatas[0].questions.length > 0 && filterDatas[0].questions.map((qs)=>(
+                <div className="py-6 form__Grid--Cols-6">
+                
+
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineName" className="form__Label-Heading">
                     Question Name
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.medicine_name}</p> */}
+                  <p className="form__Heading">{qs.question_title}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="medicineName" className="form__Label-Heading">
                     Question Type
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.medicine_name}</p> */}
+                  <p className="form__Heading">{qs.type}</p>
+                </div>
+                {qs.type !== 'textArea' ?(
+                  <>
+                  <div className="form__Cols--Span-6">
+                  <label
+                    htmlFor="medicineDuration"
+                    className="form__Label-Heading"
+                  >
+                    Choice Name
+                  </label>
+                  <p className="form__Heading">{qs.choise1}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -223,7 +257,7 @@ const CustomFormTable = () => {
                   >
                     Choice Name
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
+                  <p className="form__Heading">{qs.choise2}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -232,7 +266,7 @@ const CustomFormTable = () => {
                   >
                     Choice Name
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
+                  <p className="form__Heading">{qs.choise3}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -241,93 +275,20 @@ const CustomFormTable = () => {
                   >
                     Choice Name
                   </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
+                  <p className="form__Heading">{qs.choise4}</p>
                 </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineDuration"
-                    className="form__Label-Heading"
-                  >
-                    Choice Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
-                </div>
+                </>
+                ):
+                ''}
+                
               </div>
-              <div className="py-2 form__Grid--Cols-6">
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="medicineName" className="form__Label-Heading">
-                    Question Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.medicine_name}</p> */}
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="medicineName" className="form__Label-Heading">
-                    Question Type
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.medicine_name}</p> */}
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineDuration"
-                    className="form__Label-Heading"
-                  >
-                    Choice Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineDuration"
-                    className="form__Label-Heading"
-                  >
-                    Choice Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineDuration"
-                    className="form__Label-Heading"
-                  >
-                    Choice Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineDuration"
-                    className="form__Label-Heading"
-                  >
-                    Choice Name
-                  </label>
-                  {/* <p className="form__Heading">{prescLatest.duration_days}/ days</p> */}
-                </div>
-              </div>
-              <div className="py-4 form__Grid--Cols-6">
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineSplInstructions"
-                    className="form__Label-Heading"
-                  >
-                    Question Name
-                  </label>
-                  <p className="form__Heading">
-                    {/* {prescLatest.special_inst} */}
-                  </p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="medicineSplInstructions"
-                    className="form__Label-Heading"
-                  >
-                    Question Type
-                  </label>
-                  <p className="form__Heading">
-                    {/* {prescLatest.special_inst} */}
-                  </p>
-                </div>
-              </div>
+                
+             ))} 
+              
+             
             </div>
+            )}
+           
             {/* ): */}
             {/* <MessageBox>No latest Prescription</MessageBox> */}
             {/* } */}

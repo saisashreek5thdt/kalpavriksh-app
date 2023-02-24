@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -7,6 +7,7 @@ import {
   deactivateDtChart,
   getAllDietChart,
 } from "../../../action/AdminAction";
+import { getLatesDietChart } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 import {
@@ -17,11 +18,16 @@ import {
 const CustomDietCharts = () => {
   
   const dispatch = useDispatch();
+  const [filterDatas, setFilterDatas] = useState([])
+  const [show,setShow]=useState(false)
   const getFomrsList = useSelector((state) => state.patientFormList);
   const { loading, error, forms } = getFomrsList;
 
   const deitChartList = useSelector((state) => state.deitChartList);
   const { loading: loadingDiet, error: errorDiet, dietchart } = deitChartList;
+
+  const latestDietChart=useSelector((state)=>state.latestDietChart)
+  const {loading:LoadingDietLatest,error:errorDietLatest,deitChartLatest}=latestDietChart
 
   const activateDtChartVariables = useSelector(
     (state) => state.activateDtChart
@@ -46,6 +52,7 @@ const CustomDietCharts = () => {
 
   useEffect(() => {
     dispatch(getAllDietChart());
+    dispatch(getLatesDietChart())
     if (successChartAc) {
       dispatch({ type: ACTIVATE_DTCHART_RESET });
       Swal.fire({
@@ -97,6 +104,16 @@ const CustomDietCharts = () => {
       });
     }
   };
+
+
+  const filterData=(id)=>{
+    console.log(id)
+    const filterdData=dietchart.filter((e)=>e._id ===id)
+    console.log(typeof(filterdData))
+    // console.log(filterdData[0])
+    setFilterDatas(filterdData)
+    setShow(true)
+  }
 
   return (
     <>
@@ -153,6 +170,7 @@ const CustomDietCharts = () => {
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
+                    onClick={()=>filterData(dt._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"
                       data-bs-target="#modalCharts"
@@ -178,7 +196,7 @@ const CustomDietCharts = () => {
                 className="text-xl font-medium leading-normal text-gray-800"
                 id="modalDietChartLabel"
               >
-                DietCharts
+                DietChartsss
               </h5>
               <button
                 type="button"
@@ -187,16 +205,16 @@ const CustomDietCharts = () => {
                 aria-label="Close"
               ></button>
             </div>
-            {loading ? <LoadingBox></LoadingBox>:
-            error ? <MessageBox>{error}</MessageBox>:
-            deitChartLatest ?  (
+            {loadingDiet ? <LoadingBox></LoadingBox>:
+            errorDiet ? <MessageBox>{errorDiet}</MessageBox>:
+            show ?  (
               <div className="modal-body relative p-4">
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
                     Doctor Name
                   </label>
-                  <p className="form__Heading">{deitChartLatest.doctorId ? deitChartLatest.doctorId.name : ''}</p>
+                  <p className="form__Heading">{filterDatas[0].doctorId ? filterDatas[0].doctorId.name : ''}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -205,7 +223,7 @@ const CustomDietCharts = () => {
                   >
                     Prescribed Date
                   </label>
-                  <p className="form__Heading">{truncate(deitChartLatest.createdAt,11)}</p>
+                  <p className="form__Heading">{truncate(filterDatas[0].createdAt,11)}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -214,13 +232,13 @@ const CustomDietCharts = () => {
                   >
                     Low Calories Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.calorie_lower}</p>
+                  <p className="form__Heading">{filterDatas[0].calorie_lower}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="highCalories" className="form__Label-Heading">
                     High Clories Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.calorie_upper}</p>
+                  <p className="form__Heading">{filterDatas[0].calorie_upper}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -229,7 +247,7 @@ const CustomDietCharts = () => {
                   >
                     Low Carbohydrates Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.ch_lower}</p>
+                  <p className="form__Heading">{filterDatas[0].ch_lower}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -238,19 +256,19 @@ const CustomDietCharts = () => {
                   >
                     High Carbohydrates Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.ch_upper}</p>
+                  <p className="form__Heading">{filterDatas[0].ch_upper}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="proties" className="form__Label-Heading">
                     Protiens Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.protiens}</p>
+                  <p className="form__Heading">{filterDatas[0].protiens}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="fats" className="form__Label-Heading">
                     Fats Range
                   </label>
-                  <p className="form__Heading">{deitChartLatest.fats}</p>
+                  <p className="form__Heading">{filterDatas[0].fats}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label htmlFor="foodType" className="form__Label-Heading">
@@ -262,7 +280,7 @@ const CustomDietCharts = () => {
                   <label htmlFor="foodCusine" className="form__Label-Heading">
                     Food Cusine
                   </label>
-                  <p className="form__Heading">{deitChartLatest.cuisine_type}</p>
+                  <p className="form__Heading">{filterDatas[0].cuisine_type}</p>
                 </div>
               </div>
               <div className="form__Grid--Rows-none">
@@ -274,18 +292,18 @@ const CustomDietCharts = () => {
                     Download Diet Chart
                   </label>
                   <p className="form__Heading">
-                    <button
+                    {/* <button
                       type="button"
                       className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >
                       Download Diet Chart
-                    </button>
+                    </button> */}
                   </p>
                 </div>
               </div>
             </div>
           ):
-          <MessageBox>No latest Diet Chart</MessageBox>
+          <MessageBox>No Diet Chart</MessageBox>
           }
            
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">

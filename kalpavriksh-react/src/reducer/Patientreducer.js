@@ -55,6 +55,9 @@ import {
   SUBMIT_FORM_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
+  UPDATE_PATIENT_FAIL,
+  UPDATE_PATIENT_REQUEST,
+  UPDATE_PATIENT_SUCCESS
 } from "../constant.js/PatientConstant";
 
 export const enrollmentPatientReducer = (state = {}, action) => {
@@ -80,6 +83,19 @@ export const patientListReducer = (state = { loading:true,patients:[] }, action)
     case GET_ALL_PATIENT_SUCCESS:
       return { loading: false, patients: action.payload.data };
     case GET_ALL_PATIENT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const patientUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_PATIENT_REQUEST:
+      return { loading: true };
+    case UPDATE_PATIENT_SUCCESS:
+      return { loading: false, success: true };
+    case UPDATE_PATIENT_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

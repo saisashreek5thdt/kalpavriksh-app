@@ -1,14 +1,14 @@
-import { CREATE_APPOINTMENT_FAIL, CREATE_APPOINTMENT_REQUEST, CREATE_APPOINTMENT_SUCCESS, CREATE_OBSERVATION_FAIL, CREATE_OBSERVATION_REQUEST, CREATE_OBSERVATION_SUCCESS, DOCTOR_LOGIN_SUCCESS, DOCTOR_SIGNOUT, ENROLMENT_PATIENT_FAIL, ENROLMENT_PATIENT_REQUEST, ENROLMENT_PATIENT_SUCCESS, GET_ALL_PATIENT_FAIL, GET_ALL_PATIENT_FORMS_FAIL, GET_ALL_PATIENT_FORMS_REQUEST, GET_ALL_PATIENT_FORMS_SUCCESS, GET_ALL_PATIENT_REQUEST, GET_ALL_PATIENT_SUCCESS, GET_APPOINTMENT_FAIL, GET_APPOINTMENT_REQUEST, GET_APPOINTMENT_SUCCESS, GET_LATEST_DIET_CHART_FAIL, GET_LATEST_DIET_CHART_REQUEST, GET_LATEST_DIET_CHART_SUCCESS, GET_LATEST_PRESCRIPTIONT_FAIL, GET_LATEST_PRESCRIPTION_REQUEST, GET_LATEST_PRESCRIPTION_SUCCESS, GET_OBSERVATION_FAIL, GET_OBSERVATION_REQUEST, GET_OBSERVATION_SUCCESS, GET_PATIENT_DETAILS_FAIL, GET_PATIENT_DETAILS_REQUEST, GET_PATIENT_DETAILS_SUCCESS, GET_PATIENT_PROFILE_FAIL, GET_PATIENT_PROFILE_REQUEST, GET_PATIENT_PROFILE_SUCCESS, GET_PRESCRIPTIONT_FAIL, GET_PRESCRIPTION_REQUEST, GET_PRESCRIPTION_SUCCESS, PATIENT_LOGIN_FAIL, PATIENT_LOGIN_REQUEST, PATIENT_LOGIN_SUCCESS, PATIENT_SIGNOUT, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, SENDOTP_FAIL, SENDOTP_REQUEST, SENDOTP_SUCCESS, SUBMIT_FORM_FAIL, SUBMIT_FORM_REQUEST, SUBMIT_FORM_SUCCESS, Url, USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS } from "../constant.js/PatientConstant";
+import { CREATE_APPOINTMENT_FAIL, CREATE_APPOINTMENT_REQUEST, CREATE_APPOINTMENT_SUCCESS, CREATE_OBSERVATION_FAIL, CREATE_OBSERVATION_REQUEST, CREATE_OBSERVATION_SUCCESS, DOCTOR_LOGIN_SUCCESS, DOCTOR_SIGNOUT, ENROLMENT_PATIENT_FAIL, ENROLMENT_PATIENT_REQUEST, ENROLMENT_PATIENT_SUCCESS, GET_ALL_PATIENT_FAIL, GET_ALL_PATIENT_FORMS_FAIL, GET_ALL_PATIENT_FORMS_REQUEST, GET_ALL_PATIENT_FORMS_SUCCESS, GET_ALL_PATIENT_REQUEST, GET_ALL_PATIENT_SUCCESS, GET_APPOINTMENT_FAIL, GET_APPOINTMENT_REQUEST, GET_APPOINTMENT_SUCCESS, GET_LATEST_DIET_CHART_FAIL, GET_LATEST_DIET_CHART_REQUEST, GET_LATEST_DIET_CHART_SUCCESS, GET_LATEST_PRESCRIPTIONT_FAIL, GET_LATEST_PRESCRIPTION_REQUEST, GET_LATEST_PRESCRIPTION_SUCCESS, GET_OBSERVATION_FAIL, GET_OBSERVATION_REQUEST, GET_OBSERVATION_SUCCESS, GET_PATIENT_DETAILS_FAIL, GET_PATIENT_DETAILS_REQUEST, GET_PATIENT_DETAILS_SUCCESS, GET_PATIENT_PROFILE_FAIL, GET_PATIENT_PROFILE_REQUEST, GET_PATIENT_PROFILE_SUCCESS, GET_PRESCRIPTIONT_FAIL, GET_PRESCRIPTION_REQUEST, GET_PRESCRIPTION_SUCCESS, PATIENT_LOGIN_FAIL, PATIENT_LOGIN_REQUEST, PATIENT_LOGIN_SUCCESS, PATIENT_SIGNOUT, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, SENDOTP_FAIL, SENDOTP_REQUEST, SENDOTP_SUCCESS, SUBMIT_FORM_FAIL, SUBMIT_FORM_REQUEST, SUBMIT_FORM_SUCCESS, Url, USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS,UPDATE_PATIENT_FAIL,UPDATE_PATIENT_REQUEST,UPDATE_PATIENT_SUCCESS } from "../constant.js/PatientConstant";
 import axios from 'axios'
 
 
 
-export const patientEnrollment=(phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date)=>async(dispatch,getState)=>{
+export const patientEnrollment=(phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date,createdDate)=>async(dispatch,getState)=>{
   dispatch({type:ENROLMENT_PATIENT_REQUEST});   
   const { doctorSignin: { doctorInfo }} = getState();
 
   try{
-    const {data} = await axios.post(`${Url}/doctors/add-patient`,{phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date},{
+    const {data} = await axios.post(`${Url}/doctors/add-patient`,{phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date,createdDate},{
       headers: {
         Authorization: `Bearer ${doctorInfo.token}`,
       },
@@ -25,6 +25,24 @@ export const patientEnrollment=(phone,name,email,dob,gender,height,weight,careta
   }
 }
 
+export const updatePatient = (patientId, phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date) => async (dispatch, getState) => {
+  dispatch({ type: UPDATE_PATIENT_REQUEST });
+  const { doctorSignin: { doctorInfo }} = getState();
+  try {    
+    const { data } = await axios.put(`${Url}/doctors/add-patient/${patientId}`, phone,name,email,dob,gender,height,weight,caretakers_name,caretakers_relation,caretakers_phone,caretakers_time,doctors,health_plan_date,team,amount,payment_mode,payment_date,ref_id,next_payment_date, {
+      headers: {
+        Authorization: `Bearer ${doctorInfo.token}`,
+      },
+    });
+    dispatch({ type: UPDATE_PATIENT_SUCCESS, payload: data }); 
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: UPDATE_PATIENT_FAIL, payload: message });
+  }
+};
 
 
 export const listPatients = () => async (dispatch,getState) => {
@@ -48,6 +66,8 @@ export const listPatients = () => async (dispatch,getState) => {
 
   }
 };
+
+
 
 export const DetailsPatients = (id) => async (dispatch,getState) => {
   dispatch({ type: GET_PATIENT_DETAILS_REQUEST });
@@ -236,11 +256,13 @@ export const patientLogin =(email,user,otp)=>async(dispatch)=>{
 export const doctorSignout = () => (dispatch) => {
   localStorage.removeItem("doctorInfo");
   dispatch({ type: DOCTOR_SIGNOUT });
+  window.location.href='/'
 };
 
 export const patientSignout = () => (dispatch) => {
   localStorage.removeItem("patientInfo");
   dispatch({ type: PATIENT_SIGNOUT });
+  window.location.href='/'
 };
 
 export const listObservation = (id) => async (dispatch,getState) => {
@@ -296,11 +318,11 @@ export const getPatientProfile= () => async (dispatch,getState) => {
 };
 
 
-export const submitForm=(doctorId,date)=>async(dispatch,getState)=>{
+export const submitForm=(payload)=>async(dispatch,getState)=>{
   dispatch({type:SUBMIT_FORM_REQUEST});   
   const { patientSignin: { patientInfo }} = getState();
   try{
-    const {data} = await axios.post(`${Url}/forms/submit-form`,{doctorId,date},{
+    const {data} = await axios.post(`${Url}/forms/submit-form`,payload,{
       headers: {
         Authorization: `Bearer ${patientInfo.token}`,
       },

@@ -9,35 +9,32 @@ import { CREATE_OBSERVATION_RESET } from "../../../constant.js/PatientConstant";
 import PatientObservedTable from "./PatientObservedTable";
 
 const PatientObservation = () => {
-  const observationCreate=useSelector((state)=>state.observationCreate)
-  const {success}=observationCreate
-  const [desc, setDesc] = useState('')
-  const dispatch=useDispatch()
-  const submitHandler=()=>{
-    dispatch(createObservations(desc))
-  }
+    const observationCreate = useSelector((state) => state.observationCreate);
+    const { success } = observationCreate;
+    const [desc, setDesc] = useState("");
+    const dispatch = useDispatch();
+    const submitHandler = () => {
+        dispatch(createObservations(desc));
+    };
 
-  useEffect(()=>{
-     if(success){
-      Swal.fire({
-        icon: "success",
-        text: "Observation created successfully",
-      });
-     setDesc('')
-     }
-  },[success])
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                icon: "success",
+                text: "Observation created successfully",
+            });
+            setDesc("");
+        }
+    }, [success]);
 
-
-  return (
-    <>
-      <div className="flex justify-start my-5">
-        <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
+    return (
+        <>
+            <div className="flex justify-start my-5">
+                {/* <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
           <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">
             Create Observations
           </h5>
           <p className="text-gray-700 text-base mb-4">
-            {/* Some quick example text to build on the card title and make up the
-            bulk of the card's content. */}
           </p>
           <button
             type="button"
@@ -113,11 +110,11 @@ const PatientObservation = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> */}
+            </div>
 
-      <div className="my-10">
-        {/* <table className="min-w-full table-auto">
+            <div className="my-10">
+                {/* <table className="min-w-full table-auto">
           <thead className="bg-gray-200">
             <tr>
               <th className="text-lg font-bold text-gray-900 px-2 py-4">
@@ -179,10 +176,10 @@ const PatientObservation = () => {
             </tr>
           </tbody>
         </table> */}
-        <PatientObservedTable success={success}/>
-      </div>
-    </>
-  );
+                <PatientObservedTable success={success} />
+            </div>
+        </>
+    );
 };
 
 export default PatientObservation;

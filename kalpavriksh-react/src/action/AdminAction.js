@@ -47,7 +47,9 @@ import { Url } from "../constant.js/PatientConstant";
   
 export const adminSignout = () => (dispatch) => {
   localStorage.removeItem("adminDocInfo");
+  
   dispatch({ type: ADMIN_SIGNOUT });
+  window.location.href='/'
 };
 
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CREATE_FORM_FAIL, CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_PRESC_FAIL, CREATE_PRESC_REQUEST, CREATE_PRESC_SUCCESS, GET_APPOINTMENT_WITH_DATE_REQUEST, GET_APPOINTMENT_WITH_DATE_SUCCESS, GET_DOCTOR_PROFILE_FAIL, GET_DOCTOR_PROFILE_REQUEST, GET_DOCTOR_PROFILE_SUCCESS, GET_PATIENT_OLDPRESC_FAIL, GET_PATIENT_OLDPRESC_REQUEST, GET_PATIENT_OLDPRESC_SUCCESS, UPDATE_PATIENT_FAIL, UPDATE_PATIENT_REQUEST, UPDATE_PATIENT_SUCCESS, UPLOAD_DIET_CHART_FAIL, UPLOAD_DIET_CHART_REQUEST, UPLOAD_DIET_CHART_SUCCESS } from "../constant.js/DoctorConstant";
-import { GET_APPOINTMENT_FAIL, Url } from "../constant.js/PatientConstant";
+import { GET_APPOINTMENT_FAIL, GET_LATEST_PRESCRIPTIONT_FAIL, GET_LATEST_PRESCRIPTION_REQUEST, GET_LATEST_PRESCRIPTION_SUCCESS, Url,GET_PATIENT_PROFILE_FAIL,GET_PATIENT_PROFILE_SUCCESS,GET_PATIENT_PROFILE_REQUEST, GET_LATEST_DIET_CHART_REQUEST, GET_LATEST_DIET_CHART_SUCCESS, GET_LATEST_DIET_CHART_FAIL } from "../constant.js/PatientConstant";
 
 
 export const uploadDietCharts=(calorie_lower,calorie_upper,ch_lower,ch_upper,protiens,fats,food_type,cuisine_type)=>async(dispatch,getState)=>{
@@ -42,12 +42,12 @@ export const uploadDietCharts=(calorie_lower,calorie_upper,ch_lower,ch_upper,pro
   }
 
 
-  export const createPrescription=(patientId,medicine_type,medicine_name,morning_dose,afternoon_dose,evening_dose,frequency,duration,duration_days,special_inst)=>async(dispatch,getState)=>{
+  export const createPrescription=(payload)=>async(dispatch,getState)=>{
     dispatch({type:CREATE_PRESC_REQUEST});   
     const { doctorSignin: { doctorInfo }} = getState();
 
     try{
-      const {data} = await axios.post(`${Url}/presc/add`,{patientId,medicine_type,medicine_name,morning_dose,afternoon_dose,evening_dose,frequency,duration,duration_days,special_inst},{
+      const {data} = await axios.post(`${Url}/presc/add`,payload,{
         headers: {Authorization: `Bearer ${doctorInfo.token}`}});    
       dispatch({type:CREATE_PRESC_SUCCESS,payload:data});
      
@@ -125,5 +125,55 @@ export const uploadDietCharts=(calorie_lower,calorie_upper,ch_lower,ch_upper,pro
           ? error.response.data.message
           : error.message;
       dispatch({ type: GET_PATIENT_OLDPRESC_FAIL, payload: message });
+    }
+  };
+
+
+  export const getLatesPrescriptionForDoctor= (id) => async (dispatch,getState) => {
+    dispatch({ type: GET_LATEST_PRESCRIPTION_REQUEST });
+    const { doctorSignin: { doctorInfo }} = getState();
+    try {    
+      const { data } = await axios.get(`${Url}/presc/latest-presc-by-doctor/${id}`,{
+        headers: {Authorization: `Bearer ${doctorInfo.token}`}});      
+      dispatch({ type: GET_LATEST_PRESCRIPTION_SUCCESS, payload: data }); 
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: GET_LATEST_PRESCRIPTIONT_FAIL, payload: message });
+    }
+  };
+
+
+  export const getLatesDietChartByDoctor= (id) => async (dispatch,getState) => {
+    dispatch({ type: GET_LATEST_DIET_CHART_REQUEST});
+    const { doctorSignin: { doctorInfo }} = getState();
+    try {    
+      const { data } = await axios.get(`${Url}/diet-charts/latest-diet-by-doctor/${id}`,{
+        headers: {Authorization: `Bearer ${doctorInfo.token}`}});      
+      dispatch({ type: GET_LATEST_DIET_CHART_SUCCESS, payload: data }); 
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: GET_LATEST_DIET_CHART_FAIL, payload: message });
+    }
+  };
+
+  export const getPatientProfileByDoctor= (id) => async (dispatch,getState) => {
+    dispatch({ type: GET_PATIENT_PROFILE_REQUEST });
+    const { doctorSignin: { doctorInfo }} = getState();
+    try {    
+      const { data } = await axios.get(`${Url}/doctors/patient/${id}`,{
+        headers: {Authorization: `Bearer ${doctorInfo.token}`}});      
+      dispatch({ type: GET_PATIENT_PROFILE_SUCCESS, payload: data }); 
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: GET_PATIENT_PROFILE_FAIL, payload: message });
     }
   };

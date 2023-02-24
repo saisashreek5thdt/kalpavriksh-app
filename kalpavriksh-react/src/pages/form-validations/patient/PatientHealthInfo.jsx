@@ -13,12 +13,14 @@ import {
   VALIDATOR_REQUIRE,
 } from "../../../utils/validators";
 import { useEffect } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDoctors } from "../../../action/AdminAction";
 import { Url } from "../../../constant.js/PatientConstant";
 import axios from "axios";
 import Creatable from 'react-select/creatable';
 const PatientHealthInfo = () => {
+  const initialEndingDate= new Date().setMonth(11)
   // const [height, setHeight] = useState("");
   // const [weight, setWeight] = useState("");
   // const [caretakerName, setCaretakerName] = useState("");
@@ -26,6 +28,15 @@ const PatientHealthInfo = () => {
   // const [caretakerNumber, setCaretakerNumber] = useState("");
   // const [caretakerTime, setCaretakerTime] = useState("");
   const [healthPlans, setHealthPlans] = useState([]);
+  const [value, setValue] = useState({
+    startDate: new Date(),
+    endDate: new Date(initialEndingDate).toISOString(),
+});
+
+const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue);
+    setValue({startDate: new Date(newValue.startDate).toISOString(), endDate: new Date(newValue.endDate).toISOString()});
+};
   // const [planDate, setPlanDate] = useState("");
   const [options, setOptions] = useState([""]);
   const location = useLocation();
@@ -73,7 +84,7 @@ const PatientHealthInfo = () => {
         isValid: false,
       },
       planDate: {
-        value: "",
+        value: {},
         isValid: false,
       },
       patientTeam: {
@@ -121,7 +132,14 @@ const PatientHealthInfo = () => {
 
   const nextStep = (e) => {
     e.preventDefault()
+    const isAllValid = Object.values(formState.inputs).every(
+      (input) => input.isValid
+    );
   
+    if (!isAllValid) {
+      alert("Please fill all the fields.");
+      return;
+    }
     setFormData(
       {
         ...formState.inputs,
@@ -154,7 +172,7 @@ const PatientHealthInfo = () => {
           isValid: false,
         },
         planDate: {
-          value: "",
+          value: {},
           isValid: false,
         },
         patientTeam: {
@@ -175,8 +193,9 @@ const PatientHealthInfo = () => {
     const caretakerNumber = formState.inputs.caretakerNumber.value
     const caretakerTime = formState.inputs.caretakerTime.value
     const healthPlan = healthPlans
-    const planDate = formState.inputs.planDate.value
+    const planDate = formState.inputs.planDate.value 
     const patientTeam = formState.inputs.patientTeam.value
+    console.log('----',formState,formState.inputs)
     // console.log(formState)
     // if(height === '' || weight === '' || caretakerName === '' || relation === '' || caretakerNumber === '' || caretakerTime === '' || healthPlan === '' || planDate === '' || patientTeam === ''  ){
     //   alert('please fill all the fields')
@@ -473,6 +492,7 @@ const dispatch=useDispatch()
                               // onInputChange={handleInputChange}
                               onChange={handleChange}
                               isMulti
+                             // onInput={inputHandler}
                             />
                             </>
                            {/* )} */}
@@ -510,7 +530,7 @@ const dispatch=useDispatch()
                               errorText="Please Select Health Team"
                               onInput={inputHandler}
                             /> */}
-                               <Input
+                               {/* <Input
                               element="input"
                               type="date"
                               label="Health Plan Date (Start + End)"
@@ -519,7 +539,30 @@ const dispatch=useDispatch()
                               validators={[VALIDATOR_MINLENGTH(1)]}
                               errorText="Please Select Valid Date"
                               onInput={inputHandler}
+                            /> */}
+                            <Input
+                            element="input"
+                            type="time"
+                            label="Health Plan Date (Start + End)"
+                            id="planDate"
+                            placeholder="Health Plan Date (Start + End)"
+                            validators={[VALIDATOR_MINLENGTH(1)]}
+                            errorText="Please Select Valid Dates"
+                            onInput={inputHandler}
+                            value={value}
+                            >
+                            <Datepicker
+                                id=""
+                                primaryColor={"blue"}
+                                placeholder={"Health Plan Date (Start + End)"}
+                                value={value}
+                                onChange={
+                                    handleValueChange
+                                }
+                                showShortcuts={true}
+                                inputClassName="text-slate-500 font-semibold shadow-sm"
                             />
+                            </Input>                            
                           </div>
                         </div>
                       </div>

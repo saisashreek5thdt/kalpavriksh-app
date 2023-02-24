@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DetailsPatients, getForms } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
+import { useRef } from 'react';
 
 import Input from "../../../Components/Input";
 import { useForm } from "../../../hooks/form-hooks";
@@ -21,18 +22,20 @@ const DoctorMeetingInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
   // patientId,medicine_type,medicine_name,morning_dose,afternoon_dose,evening_dose,frequency,duration,duration_days,special_inst
-  const [patientId, setPatientId] = useState("");
-  const [medType, setMedType] = useState("");
-  const [medName, setMedName] = useState("");
-  const [mornDose, setMornDose] = useState("");
-  const [aftDose, setAftDose] = useState("");
-  const [eveDose, setEveDose] = useState("");
-  const [frquency, setFrquency] = useState();
-  const [duration, setDuration] = useState('');
-  const [durDays, setDurDays] = useState();
-  const [specinst, setSpecinst] = useState("");
-  const [open, setOpen] = useState(false);
+  // const [patientId, setPatientId] = useState("");
+  // const [medType, setMedType] = useState({});
+  // const [medName, setMedName] = useState({});
+  // const [mornDose, setMornDose] = useState({});
+  // const [aftDose, setAftDose] = useState({});
+  // const [eveDose, setEveDose] = useState({});
+  // const [frquency, setFrquency] = useState({});
+  // const [duration, setDuration] = useState({});
+  // const [durDays, setDurDays] = useState({});
+  // const [specinst, setSpecinst] = useState({});
+  // const [open, setOpen] = useState(false);
   const { id,patientid } = location.state;
+  const [medicines,setMedicines] = useState(["med1"])
+  const [prescriptions,setPrescriptions] = useState([])
 
   const patientDetails = useSelector((state) => state.patientDetails);
   const { loading, error, patient } = patientDetails;
@@ -48,7 +51,17 @@ const DoctorMeetingInfo = () => {
 
   const getFomrsList=useSelector((state=>state.patientFormList))
   const {loading:loadingForms,error:errorForms,forms}=getFomrsList
+  const scrollRef = useRef(null);
 
+  function handleScrollToBottom() {
+    if (scrollRef.current) {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+      // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }
+useEffect(()=>{
+  handleScrollToBottom()
+},[medicines])
   useEffect(() => {
     dispatch(DetailsPatients(id));
     
@@ -57,11 +70,29 @@ const DoctorMeetingInfo = () => {
     dispatch(getForms(user))
   }, [dispatch]);
 
-
+  const addMedicine = () => {
+    const nextMed = 'med' + (medicines.length + 1);
+    setMedicines([...medicines, nextMed]);
+  }
+  const handlePrescriptions = ({e,key,i}) =>{
+    setPrescriptions((oldPrescriptions) => {
+      const prescriptionIndex = oldPrescriptions.findIndex(prescription => prescription.id === i);
+      const newPrescription = [...oldPrescriptions];
+      if (prescriptionIndex === -1) {
+        newPrescription.push({ id: i, [key]: e?.target.value,patientid:id });
+      } else {
+        newPrescription[prescriptionIndex] = {
+          ...newPrescription[prescriptionIndex],
+          [key]: e?.target.value,
+      };
+      }
+      return newPrescription;
+    });
+  }
   const backFunc = () => {
     navigate("/userrole/:roleid/dashboard/doctor/#tabs-mypatientsJustify/");
   };
-
+console.log(prescriptions)
   useEffect(() => {
     dispatch(getPatientOldPresc(id))
     if (success) {
@@ -74,16 +105,16 @@ const DoctorMeetingInfo = () => {
         confirmButtonText: "Save",
         denyButtonText: `Don't save`,
       })
-      setMedType()
-      setMedName('')
-      setAftDose('')
-      setDurDays('')
-      setDuration('')
-      setEveDose('')
-      setFrquency('')
-      setMornDose('')
-      setSpecinst('')
-
+      setPrescriptions([])
+      // setMedType({})
+      // setMedName({})
+      // setAftDose({})
+      // setDurDays({})
+      // setDuration({})
+      // setEveDose({})
+      // setFrquency({})
+      // setMornDose({})
+      // setSpecinst({})
     }
   }, [success]);
   const [formState, inputHandler, setFormData] = useForm({
@@ -129,16 +160,17 @@ const DoctorMeetingInfo = () => {
     e.preventDefault();
     dispatch(
       createPrescription(
-        id,
-        medType,
-        medName,
-        mornDose,
-        aftDose,
-        eveDose,
-        frquency,
-        duration,
-        durDays,
-        specinst
+        // id,
+        // medType,
+        // medName,
+        // mornDose,
+        // aftDose,
+        // eveDose,
+        // frquency,
+        // duration,
+        // durDays,
+        // specinst,
+        prescriptions
       )
     );
    
@@ -162,7 +194,6 @@ const DoctorMeetingInfo = () => {
                 className="text-center py-6 text-xl font-medium leading-6 text-gray-900"
                 onClick={backFunc}
               >
-                {" "}
                 Back
               </button>
               {/* Replace with your content */}
@@ -415,8 +446,11 @@ const DoctorMeetingInfo = () => {
             </div>
             <div className="modal-body relative p-4">
               <form onSubmit={createPrescriptionHandler}>
+                <div className="overflow-auto h-[33rem]">
+                {medicines.map((medicine,i)=><>
+                  <div className={`${i>0 ? 'mt-3':''} mb-2`}>
                 <div className="form__Grid--Cols-6">
-                  <div className="form__Cols--Span-6">
+                {i===0 ?<><div className="form__Cols--Span-6">
                     <label
                       htmlFor="prescribedBy"
                       className="form__Label-Heading"
@@ -429,11 +463,13 @@ const DoctorMeetingInfo = () => {
                     <label
                       htmlFor="prescribedDate"
                       className="form__Label-Heading"
-                    >
+                    > 
                       Prescribed Date
                     </label>
                     <p className="form__Heading">24-11-2022</p>
-                  </div>
+                  </div></> :<><span className="form__Cols--Span-6">Medicine {i+1}</span>
+                  <span className="form__Cols--Span-6"></span>
+                  </>}
                   <div className="form__Cols--Span-6">
                     <label
                       htmlFor="medicineType"
@@ -443,9 +479,14 @@ const DoctorMeetingInfo = () => {
                     </label>
                     <select
                       name=""
-                      value={medType}
+                      //value={medType}
                       id=""
-                      onChange={(e) => setMedType(e.target.value)}
+                    //  onChange={(e) => {setMedType({...medType, [medicine]: e.target.value})}}
+                     onChange={(e) => {
+                      const key ='medType'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                     >
                       <option value="none">Please select</option>
                       <option value="Tablet">Tablet</option>
@@ -478,9 +519,14 @@ const DoctorMeetingInfo = () => {
                     >
                       Medicine Name
                     </label>
-                    <input
-                      value={medName}
-                      onChange={(e) => setMedName(e.target.value)}
+                    <input 
+                    //  value={medName}
+                     // onChange={(e) => {setMedName({...medName, [medicine]: e.target.value})}}
+                     onChange={(e) => {
+                      const key ='medName'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                       id="medicineName"
                       name="medicineName"
                       type="text"
@@ -508,8 +554,13 @@ const DoctorMeetingInfo = () => {
                       Medicine Morning Dose
                     </label>
                     <input
-                      value={mornDose}
-                      onChange={(e) => setMornDose(e.target.value)}
+                     // value={mornDose}
+                    //  onChange={(e) => {setMornDose({...mornDose, [medicine]: e.target.value})}}
+                    onChange={(e) => {
+                      const key ='mornDose'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                       id="medicineMorningDose"
                       name="medicineMorningDose"
                       type="text"
@@ -537,9 +588,14 @@ const DoctorMeetingInfo = () => {
                       Medicine Afternoon Dose
                     </label>
                     <input
-                      value={aftDose}  
-                      onChange={(e) => setAftDose(e.target.value)}
-                      id="medicineAfternoonDose"
+                   //   value={aftDose}  
+                 //  onChange={(e) => {setAftDose({...aftDose, [medicine]: e.target.value})}}
+                 onChange={(e) => {
+                  const key ='aftDose'
+                  handlePrescriptions({e,key,i})
+                }
+                }
+                 id="medicineAfternoonDose"
                       name="medicineAfternoonDose"
                       type="text"
                       autoComplete="medicineAfternoonDose"
@@ -566,8 +622,13 @@ const DoctorMeetingInfo = () => {
                       Medicine Evening Dose
                     </label>
                     <input
-                      value={eveDose}
-                      onChange={(e) => setEveDose(e.target.value)}
+                      //value={eveDose}
+                     // onChange={(e) => {setEveDose({...eveDose, [medicine]: e.target.value})}}
+                     onChange={(e) => {
+                      const key ='eveDose'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                       id="medicineEveningDose"
                       name="medicineEveningDose"
                       type="text"
@@ -597,8 +658,13 @@ const DoctorMeetingInfo = () => {
                     <select
                       name=""
                       id=""
-                      value={frquency}
-                      onChange={(e) => setFrquency(e.target.value)}
+                     // value={frquency}
+                     // onChange={(e) => {setFrquency({...frquency, [medicine]: e.target.value})}}
+                     onChange={(e) => {
+                      const key ='frquency'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                     >
                       <option value="none">Please select</option>
                       <option value="Daily">Daily</option>
@@ -633,8 +699,13 @@ const DoctorMeetingInfo = () => {
                     <select
                       name=""
                       id=""
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
+                     // value={duration}
+                   //  onChange={(e) => {setDuration({...duration, [medicine]: e.target.value})}}
+                   onChange={(e) => {
+                    const key ='duration'
+                    handlePrescriptions({e,key,i})
+                  }
+                  }
                     >
                       <option value="none">Please select</option>
                       <option value="Days">Days</option>
@@ -660,8 +731,13 @@ const DoctorMeetingInfo = () => {
                       Medicine Duration (Days / Weeks)
                     </label>
                     <input
-                      onChange={(e) => setDurDays(e.target.value)}
-                      value={durDays}
+                  //  onChange={(e) => {setDurDays({...durDays, [medicine]: e.target.value})}}
+                    //  value={durDays}
+                    onChange={(e) => {
+                      const key ='durDays'
+                      handlePrescriptions({e,key,i})
+                    }
+                    }
                       id="medicineDurationDays"
                       name="medicineDurationDays"
                       type="number"
@@ -692,8 +768,13 @@ const DoctorMeetingInfo = () => {
                       Medicine Special Instructions
                     </label>
                     <textarea
-                     value={specinst}
-                      onChange={(e) => setSpecinst(e.target.value)}
+                     //value={specinst}
+                  //   onChange={(e) => {setSpecinst({...specinst, [medicine]: e.target.value})}}
+                  onChange={(e) => {
+                    const key ='specinst'
+                    handlePrescriptions({e,key,i})
+                  }
+                  } 
                       id="medicineSplInstructions"
                       name="medicineSplInstructions"
                       rows="3"
@@ -710,6 +791,21 @@ const DoctorMeetingInfo = () => {
              errorText="Please Enter Special Instructions for usage of Medicines"
              onInput={inputHandler}
            /> */}
+                  </div>
+                </div>
+                </div>
+                </>)}
+                <div ref={scrollRef}></div>
+                </div>
+                <div className="form__Grid--Rows-none">
+                  <div className="form__Cols--Span-6">
+                  <button
+                    type="button"
+                    className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                    onClick={addMedicine}
+                   >
+                    Add More Medicines
+                  </button>
                   </div>
                 </div>
                 <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
@@ -763,7 +859,7 @@ const DoctorMeetingInfo = () => {
             {loadingForms ? <LoadingBox></LoadingBox>:
              errorForms ? <MessageBox>{errorForms}</MessageBox>:
               forms.length>0 ? forms.map((frm)=>(
-            <div className="modal-body relative p-4">
+            <div className="modal-body relative p-4" key={frm._id}>
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input
@@ -804,7 +900,7 @@ const DoctorMeetingInfo = () => {
                       </div>
                       {frm.questions.map((qs)=>(
                         <>
-                            <div className="py-4">
+                            <div className="py-4" key={qs._id}>
                             <div className="form__Grid--Rows-none">
                               <div className="form__Cols--Span-6">
                                 <label
@@ -886,7 +982,7 @@ const DoctorMeetingInfo = () => {
             {loadingPres ? <LoadingBox></LoadingBox>:
             errorPres ? <MessageBox>{errorPres}</MessageBox>:
             presc.length > 0 ? presc.map((pre)=>(
-        <div className="modal-body relative p-4">
+         <div className="modal-body relative p-4" key={pre._id}>
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input
@@ -1059,7 +1155,7 @@ const DoctorMeetingInfo = () => {
             {loadingDiet ? <LoadingBox></LoadingBox>:
             errorDiet ? <MessageBox>{errorDiet}</MessageBox>:
             dietchart.length > 0 ? dietchart.map((dt)=>(
-              <div className="modal-body relative p-4">
+              <div className="modal-body relative p-4" key={dt._id}>
               <div className="p-2">
                 <div className="relative w-full overflow-hidden">
                   <input

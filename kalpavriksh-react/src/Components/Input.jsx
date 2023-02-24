@@ -22,7 +22,7 @@ const inputReducer = (state, action) => {
 };
 
 const Input = (props) => {
-
+    
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue || '',
         isTouched: false,
@@ -33,13 +33,15 @@ const Input = (props) => {
     const {value, isValid} = inputState;
 
     useEffect(() => {
-        onInput(id, value, isValid);
-    }, [id, value, isValid, onInput]);
+        onInput(id,
+            !props.children? value:props.value, 
+             isValid);
+    }, [id, value, isValid, onInput,props.value]);
 
     const changeHandler = event => {
         dispatch({
             type: 'CHANGE',
-            val: event.target.value,
+            val:event.target.value,
             validators: props.validators
         });
     };
@@ -72,11 +74,11 @@ const Input = (props) => {
                 className="form__Textarea"                
              />
         );
-
+        const childElement = props.children ? props.children : element;
     return (
         <div>
             <label htmlFor={props.id} className="form__Label-Heading">{props.label}</label>
-            {element}
+            {childElement}
             {!inputState.isValid && inputState.isTouched && <p className="form__Input--Error">{props.errorText}</p>}
         </div>
     );

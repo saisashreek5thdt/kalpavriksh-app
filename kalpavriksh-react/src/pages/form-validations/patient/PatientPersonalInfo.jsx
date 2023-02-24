@@ -50,7 +50,7 @@ const PatientPersonalInfo = () => {
   const dispatch = useDispatch();
   const enrolmentpatient = useSelector((state) => state.enrollmentPatient);
   const { loading, error, enrolment, success } = enrolmentpatient;
-
+console.log("enrolmentpatient",enrolmentpatient)
   const paymentModeOptions = [
     { value: "Please Select Payment Mode" },
     { value: "Cash" },
@@ -126,9 +126,12 @@ const PatientPersonalInfo = () => {
        setPaymentDate(formState.inputs.paymentDate.value)  
        setPaymentNextDate(formState.inputs.paymentNextDate.value)
        setRefId(formState.inputs.refId.value)
-    
+    const updatedPlanDate = {
+      startDate: planDate.startDate,
+      endDate: planDate.endDate,
+    };
     // console.log(amount,paymentMode,paymentDate,refId,paymentNextDate,'iss')
- 
+    const createdDate = new Date().toISOString();
       dispatch(
         patientEnrollment(
           phone,
@@ -143,13 +146,14 @@ const PatientPersonalInfo = () => {
           caretakerNumber,
           caretakerTime,
           healthPlanId,
-          planDate,
+          updatedPlanDate,
           patientTeam,
           formState.inputs.amount.value,
           formState.inputs.paymentMode.value,
           formState.inputs.paymentDate.value,
           formState.inputs.refId.value,
-          formState.inputs.paymentNextDate.value
+          formState.inputs.paymentNextDate.value,
+          createdDate
         )
       );
 

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
+import ReactToPrint from "react-to-print";
 import { getAllDietChart } from "../../../action/AdminAction";
 import { getLatesDietChart, getLatesPrescription } from "../../../action/PatientAction";
 import LoadingBox from "../../../Components/LoadingBox";
@@ -24,6 +25,8 @@ const PatientUploadDietChart = () => {
     dispatch({type:UPLOAD_DIET_CHART_RESET})
   }
   },[dispatch,success])
+  const componentRef = useRef();
+  const componentRef2 = useRef();
   // if(dietchart){
   //   console.log(dietchart,'dttt');
   // }
@@ -100,11 +103,12 @@ const PatientUploadDietChart = () => {
             {loading ? <LoadingBox></LoadingBox>:
             error ? <MessageBox>{error}</MessageBox>:
             deitChartLatest ?  (
-              <div className="modal-body relative p-4">
+              <>
+              <div className="modal-body relative p-4" ref={componentRef}>
               <div className="form__Grid--Cols-6">
                 <div className="form__Cols--Span-6">
                   <label htmlFor="prescribedBy" className="form__Label-Heading">
-                    Doctor Name
+                    Doctor Namess
                   </label>
                   <p className="form__Heading">{deitChartLatest.doctorId ? deitChartLatest.doctorId.name : ''}</p>
                 </div>
@@ -177,23 +181,33 @@ const PatientUploadDietChart = () => {
               </div>
               <div className="form__Grid--Rows-none">
                 <div className="form__Cols--Span-6">
-                  <label
+                  {/* <label
                     htmlFor="downloadDietChart"
                     className="form__Label-Heading"
                   >
-                    Download Diet Chart
-                  </label>
+                    Download Diet Charts
+                  </label> */}
                   <p className="form__Heading">
-                    <button
+             
+                    {/* <button
                       type="button"
                       className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >
-                      Download Diet Chart
-                    </button>
+                      Download Diet Chartss
+                    </button> */}
                   </p>
                 </div>
               </div>
             </div>
+            
+                 <ReactToPrint
+                 trigger={() => <button 
+                  type="button"
+                  className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                   style={{marginBottom:'16px',width:'200px'}}>Download Diet Charts!</button>}
+                 content={() => componentRef.current}
+               />
+               </>
           ):
           <MessageBox>No latest Diet Chart</MessageBox>
           }
@@ -237,7 +251,8 @@ const PatientUploadDietChart = () => {
               {loadingDiet ? <LoadingBox></LoadingBox>:
               errorDiet ? <MessageBox>{error}</MessageBox>:
               dietchart.length > 0 ? dietchart.map((dt)=>(
-               <div className="p-2" key={dt._id}>
+                <>
+               <div className="p-2" key={dt._id} >
                 <div className="relative w-full overflow-hidden">
                   <input
                     type="checkbox"
@@ -254,7 +269,7 @@ const PatientUploadDietChart = () => {
                   </div>
                   {/* Content */}
                   <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                    <div className="p-4">
+                    <div className="p-4" ref={componentRef2}>
                       <div className="form__Grid--Cols-6">
                         <div className="form__Cols--Span-6">
                           <label
@@ -346,26 +361,35 @@ const PatientUploadDietChart = () => {
                       </div>
                       <div className="form__Grid--Rows-none">
                         <div className="form__Cols--Span-6">
-                          <label
+                          {/* <label
                             htmlFor="downloadDietChart"
                             className="form__Label-Heading"
                           >
                             Download Diet Chart
-                          </label>
-                          <p className="form__Heading">
+                          </label> */}
+                          {/* <p className="form__Heading">
                             <button
                               type="button"
                               className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                             >
-                              Download Diet Chart
+                              Download Diet Chartaaa
                             </button>
-                          </p>
+                          </p> */}
                         </div>
                       </div>
                     </div>
+                    <ReactToPrint
+                 trigger={() => <button 
+                  type="button"
+                  className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                   style={{marginBottom:'16px',width:'200px'}}>Download Diet Charts!</button>}
+                 content={() => componentRef2.current}
+               />
                   </div>
                 </div>
               </div>
+            
+               </>
               )):
               <MessageBox>No diet chart</MessageBox>
               }

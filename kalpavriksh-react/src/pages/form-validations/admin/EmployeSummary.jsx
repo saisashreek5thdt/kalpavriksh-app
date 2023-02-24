@@ -1,7 +1,47 @@
 import React from "react";
 import AdminNav from "../../../user/shared/AdminNav";
+import { useState,useEffect } from 'react';
 
 const EmployeSummary = () => {
+
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState(''); 
+  const [selectedProgram, setSelectedProgram] = useState('');
+  const [employeeDetails,setEmployeeDetails] = useState({})
+  const handleProgramChange = (event) => {
+    setSelectedProgram(event.target.value);
+  };
+  const handleEmployeeChange = (event) => {
+    setSelectedEmployee(event.target.value);
+  };
+  const handleStatusChange = (e) => {
+    if (e.target.value === '') {
+      setSelectedStatus({});
+    } else {
+      setSelectedStatus({ status: e.target.value });
+    }
+  };
+  
+  useEffect(() => {
+    setEmployeeDetails((prevEmployeeDetails) => {
+      const newEmployeeDetails = { ...prevEmployeeDetails };
+      if (selectedEmployee === "") {
+        delete newEmployeeDetails.employee;
+      } else {
+        newEmployeeDetails.employee = selectedEmployee;
+      }
+      if (selectedProgram === "") {
+        delete newEmployeeDetails.program;
+      } else {
+        newEmployeeDetails.program = selectedProgram;
+      }
+      return newEmployeeDetails;
+    });
+  }, [selectedEmployee, selectedProgram]);
+  
+  
+  console.log("status",selectedStatus)
+  console.log("employeeDetails",employeeDetails)
   return (
     <>
       <div className="min-h-full">
@@ -27,8 +67,10 @@ const EmployeSummary = () => {
                     name="status"
                     autoComplete="status-name"
                     className="form__Select"
+                    onChange={handleStatusChange}
+                  //  value={selectedStatus.status}
                   >
-                    <option>Select Status</option>
+                    <option value="" data-default>Select Status</option>
                     <option>All</option>
                     <option>Active</option>
                     <option>De-Active</option>
@@ -71,8 +113,10 @@ const EmployeSummary = () => {
                     name="employee"
                     autoComplete="employee-name"
                     className="form__Select"
+                    onChange={handleEmployeeChange}
+                    
                   >
-                    <option>Select Employee</option>
+                    <option value="" data-default>Select Employee</option>
                     <option>Employee 1</option>
                     <option>Employee 2</option>
                     <option>Employee 3</option>
@@ -88,8 +132,9 @@ const EmployeSummary = () => {
                     name="program"
                     autoComplete="program-name"
                     className="form__Select"
+                    onChange={handleProgramChange}
                   >
-                    <option>Select Program</option>
+                    <option value="" data-default>Select Program</option>
                     <option>Program 1</option>
                     <option>Program 2</option>
                     <option>Program 3</option>

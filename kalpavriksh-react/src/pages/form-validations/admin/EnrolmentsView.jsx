@@ -1,7 +1,41 @@
 import React from "react";
 import AdminNav from "../../../user/shared/AdminNav";
+import { useState,useEffect } from 'react';
 
 const EnrolmentsView = () => {
+  const [selectedProgram, setSelectedProgram] = useState('');
+  const [selectedDate, setSelectedDate] = useState(''); 
+  const [selectedYear, setSelectedYear] = useState("");
+  const [data,setData] = useState({})
+  const handleProgramChange = (event) => {
+    setSelectedProgram(event.target.value);
+  };
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+  useEffect(() => {
+    const newData = { ...data };
+    if (selectedProgram !== '') {
+      newData.program = selectedProgram;
+    } else {
+      delete newData.program;
+    }
+    if (selectedDate !== '') {
+      newData.date = selectedDate;
+    } else {
+      delete newData.date;
+    }
+    if (selectedYear !== '') {
+      newData.year = selectedYear;
+    } else {
+      delete newData.year;
+    }
+    setData(newData);
+  }, [selectedYear, selectedDate, selectedProgram]);
+  console.log('o/p',data)
   return (
     <>
       <div className="dashboard__Container">
@@ -26,8 +60,10 @@ const EnrolmentsView = () => {
                   name="program"
                   autoComplete="program-name"
                   className="form__Select"
+                  onChange={handleProgramChange}
+                //  value={selectedProgram}
                 >
-                  <option>Select Program</option>
+                  <option value="" data-default>Select Program</option>
                   <option>Program 1</option>
                   <option>Program 2</option>
                   <option>Program 3</option>
@@ -44,6 +80,7 @@ const EnrolmentsView = () => {
                   id="program-date"
                   autoComplete="program-name"
                   className="form__Input"
+                  onChange={handleDateChange}
                 />
               </div>
               <div className="form__Cols--Span-2">
@@ -55,8 +92,9 @@ const EnrolmentsView = () => {
                   name="program-year"
                   autoComplete="program-year-name"
                   className="form__Select"
+                  onChange={handleYearChange}
                 >
-                  <option>Select Program Year</option>
+                  <option value="" data-default> Select Program Year</option>
                   <option>2019</option>
                   <option>2020</option>
                   <option>2021</option>
