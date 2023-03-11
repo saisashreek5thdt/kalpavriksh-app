@@ -26,6 +26,8 @@ import PatientPrescription from './user/shared/PatientPrescription';
 import PatientForm from './pages/form-validations/patient/PatientForm';
 import PatientMeetingInfo from './pages/form-validations/patient/PatientMeetingInfo';
 import PatientProfile from './pages/form-validations/Profiles/PatientProfile';
+import PatientEnrolments from './user/shared/PatientEnrolments';
+import PatientMyInfoTab from './user/shared/PatientMyInfoTab';
 
 //Common Page Imports
 import UserChat from './user/shared/UserChat';
@@ -64,6 +66,8 @@ const App = () => {
         <Route path='/userrole/:roleid/dashboard/patient/prescriptions/' element={ <PatientRoute><PatientPrescription /></PatientRoute>} />
         <Route path='/userrole/:roleid/dashboard/patient/meeting/info/' element={ <PatientRoute><PatientMeetingInfo /></PatientRoute>} />
         <Route path='/userrole/:roleid/dashboard/patient/profile/' element={<PatientRoute><PatientProfile /></PatientRoute>}  />
+        <Route path='/userrole/:roleid/dashboard/patient/all/enrolments/' element={<PatientRoute><PatientEnrolments /></PatientRoute>} />
+        <Route path='/userrole/:roleid/dashboard/patient/myinfo/' element={<PatientRoute><PatientMyInfoTab /></PatientRoute>} />
         <Route path='/userrole/:roleid/dashboard/common/chat/' element={<UserChat />} />
         <Route path='/userrole/:roleid/dashboard/admin/' element={<AdminRoute><Admin /></AdminRoute>}/>
         <Route path='/userrole/:roleid/dashboard/admin/patient/enrolment/view/' element={ <AdminRoute><EnrolmentsView /></AdminRoute>} />

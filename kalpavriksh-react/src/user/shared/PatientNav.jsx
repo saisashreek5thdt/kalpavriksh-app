@@ -20,18 +20,13 @@ const user = {
       current: true,
     },
     {
-      name: "MyData",
-      href: "/userrole/:roleid/dashboard/patient/mydata/",
+      name: "All Enrolments",
+      href: "/userrole/:roleid/dashboard/patient/all/enrolments/",
       current: true,
     },
     {
-      name: "Prescriptions",
-      href: "/userrole/:roleid/dashboard/patient/prescriptions/",
-      current: true,
-    },
-    {
-      name: "Chat",
-      href: "/userrole/:roleid/dashboard/common/chat/",
+      name: "My Info",
+      href: "/userrole/:roleid/dashboard/patient/myinfo/",
       current: true,
     },
   ];

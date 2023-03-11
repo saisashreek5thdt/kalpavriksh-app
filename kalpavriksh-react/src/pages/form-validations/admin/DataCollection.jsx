@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { CSVLink } from "react-csv";
 
 const DataCollection = () => {
     const [patientInfo, setPatientInfo] = useState({ patientId: "" });
@@ -30,6 +31,108 @@ const DataCollection = () => {
     };
     console.log("patient", patientInfo);
     console.log("forminfo", formInfo);
+    const data = [
+        {
+          "Patient ID": "1234",
+          "Name": "Keerthana",
+          "Age": "25",
+          "Sex": "Female",
+          "Phone": "555-1234",
+          "Email": "keerthana@gmail.com"
+        },
+        {},
+        {},
+        {},
+        {"Enrollments":""},
+        {
+          "Program Name": "Program 1",
+          "Payment Status": "Paid",
+          "Start Date": "2022-01-01",
+          "End Date": "2022-03-31",
+          "Primary Team": "Team A",
+          "Secondary Team": "Team B",
+          "Chat Messages Sent Count": "10",
+          "Chat Messages Received Count": "20"
+        },
+        {},{},{"Prescriptions Given":""},
+        {
+          "Medicine Name": "Medicine 1",
+          "Date": "2022-01-02",
+          "Total Dose (Morning + Afternoon + Evening)": "1 pill",
+          "Frequency": "daily"
+        },
+        {},{},{},
+        {
+          "Medicine Name": "Medicine 2",
+          "Date": "2022-01-02",
+          "Total Dose (Morning + Afternoon + Evening)": "2 pills",
+          "Frequency": "twice a day"
+        },
+        {},{},{},
+        {
+          "Medicine Name": "Medicine 3",
+          "Date": "2022-01-03",
+          "Total Dose (Morning + Afternoon + Evening)": "1 pill",
+          "Frequency": "daily"
+        },
+        {},{},{},
+        {
+          "Response 1": "Response 1",
+          "Response 2": "Response 2",
+          "Response 3": "Response 3",
+          "Date of response": "2022-01-04",
+          "Question 1": "Question 1",
+          "Question 2": "Question 2",
+        },
+        {},{},{},
+        {
+          "Diet chart Date": "2022-01-06",
+          "Total Calories": "2000",
+          "Carbs": "100",
+          "Proteins": "50",
+          "Fats": "20",
+          "Other attributes": "Other attributes"
+        },
+        {},{},{},
+        {
+          "Diet chart name": "Diet chart 1"
+        },
+        {},{},{},
+        {
+          "Patient feedback":"Positive Feedback"
+        }
+      ]
+  
+      const result = [];
+
+      data.forEach((obj,index) => {
+        if (index==0){
+            Object.keys(obj).forEach(key=>result.push([key,obj[key]]))
+        }
+        if (index!=0){
+        result.push(Object.keys(obj));
+        result.push(Object.values(obj));
+        }
+      });
+      const formData = [
+        {
+          "Program Name": "",
+          "Start Date": "",
+          "End Date": "",
+          "Patient Name": "",
+          "Patient ID": "",
+          "Patient Phone": "",
+          "Patient Gender": "",
+          "Patient Age": "",
+          "Patient's Primary Team": "",
+          "Patient's Secondary Team": "",
+          "Date 1": "",
+          "Value 1": "",
+          "Date 2": "",
+          "Value 2": ""
+        }]
+        const formCsvData = []
+        formData.forEach(obj=>{formCsvData.push(Object.keys(obj));formCsvData.push(Object.values(obj))})
     return (
         <>
             <div className="card__Container--Around">
@@ -58,12 +161,14 @@ const DataCollection = () => {
                             />
                         </div>
                         <div className="form__Cols--Span-6">
+                        <CSVLink  data={result}  filename={"PatientData.csv"}>
                             <button
                                 type="button"
                                 className="card__Btn card__Bg--Teal card__Btn--Bg-Teal"
                             >
                                 Download CSV
                             </button>
+                            </CSVLink>
                         </div>
                     </div>
                 </div>
@@ -98,12 +203,14 @@ const DataCollection = () => {
                             </select>
                         </div>
                         <div className="form__Cols--Span-6">
+                        <CSVLink data={formCsvData}  filename={"formData.csv"}>
                             <button
                                 type="button"
                                 className="card__Btn card__Bg--Sky card__Btn--Bg-Sky"
                             >
                                 Download CSV
                             </button>
+          </CSVLink>
                         </div>
                     </div>
                 </div>

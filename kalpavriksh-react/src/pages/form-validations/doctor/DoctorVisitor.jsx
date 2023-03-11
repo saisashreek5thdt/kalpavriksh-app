@@ -33,16 +33,21 @@ const DoctorVisitor = () => {
     startDate: new Date(),
     endDate: new Date(initialEndingDate).toISOString(),
 });
+
+const patientList = useSelector((state) => state.patientList);
+const { loading, error, patients } = patientList;
 const [currentPatientId,setCurrentPatientId] = useState('')
+const [selectedIcons, setSelectedIcons] = useState(
+{...patients?.reduce((icons, patient) => ({ ...icons, [patient._id]: 'HiOutlineStar' }), {}),...JSON.parse(localStorage.getItem('selectedIcons')) }
+);
 const [filter,setFilter] = useState(0)
 const handleValueChange = (newValue) => {
     console.log("newValue:", newValue);
     setValue({startDate: new Date(newValue.startDate).toISOString(), endDate: new Date(newValue.endDate).toISOString()});
 };
 
-  const patientList = useSelector((state) => state.patientList);
-  const { loading, error, patients } = patientList;
-
+  
+  console.log("patients---",patients)
   const dispatch = useDispatch();
 
   const fetchUsers = () => {
@@ -62,6 +67,31 @@ const handleValueChange = (newValue) => {
       setHealthPlans({ selectedOptions });
       // console.log(selectedOptions,'hea');
     }
+
+    function handlePriority(patientId) {
+      const selectedPatient = patients.find(patient => patient._id === patientId);
+      // Do something to show more data for the selected patient
+      setSelectedIcons(prevIcons => {
+        const newIcons = { ...prevIcons };
+        if (!newIcons[patientId]) {
+          newIcons[patientId] = 'HiStar';
+        } else {
+          newIcons[patientId] = prevIcons[patientId] === 'HiOutlineStar' ? 'HiStar' : 'HiOutlineStar';
+        }
+        return newIcons;
+      });
+    }
+  
+    useEffect(() => {
+      localStorage.setItem('selectedIcons', JSON.stringify(selectedIcons));
+    }, [selectedIcons]);
+  
+    // useEffect(() => {
+    //   const storedIcons = JSON.parse(localStorage.getItem('selectedIcons'));
+    //   if (storedIcons) {
+    //     setSelectedIcons(storedIcons);
+    //   }
+    // }, []);
   useEffect(() => {
     dispatch(listPatients());
   }, [dispatch]);
@@ -399,14 +429,17 @@ let
                     11-10-2022
                   </td>
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                    <div className="flex flex-row justify-center">
+                    {/* <div className="flex flex-row justify-center">
                       <div className="inline-block p-6">
                         <HiOutlineStar className="h-6 w-6 text-teal-600 hover:text-teal-500" />
                       </div>
                       <div className="inline-block p-6">
                         <HiStar className="h-6 w-6 text-teal-600 hover:text-teal-500" />
                       </div>
-                    </div>
+                    </div> */}
+                    <div onClick={() => handlePriority(itm._id)} className="inline-block p-6">
+                    {selectedIcons[itm._id] === 'HiStar' ? <HiStar className="h-6 w-6 text-teal-600 hover:text-teal-500" /> : <HiOutlineStar className="h-6 w-6 text-teal-600 hover:text-teal-500" />}
+                      </div>
                   </td>
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                     <div className="flex flex-row justify-center">

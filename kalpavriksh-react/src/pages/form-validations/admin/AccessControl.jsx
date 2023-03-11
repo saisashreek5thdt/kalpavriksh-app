@@ -9,6 +9,7 @@ import {
   deactivateDoctor,
   deactivateeDoctor,
   getAllDoctors,
+  editDoctor
 } from "../../../action/AdminAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
@@ -24,10 +25,14 @@ const AccessControl = () => {
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [regId, setRegId] = useState("");
+  const [editDocId,setEditDocId] = useState("")
   const dispatch = useDispatch();
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
+
   const createDoctor=useSelector((state)=>state.doctorCreate)
+  const updatedDoctor = useSelector((state)=>state.updatedDoctor)
+  const {error:updatedDoctorError} = updatedDoctor
   const {success,error:errorCreate}=createDoctor
 
   const activateDoctorVariables = useSelector((state) => state.activateDoctor);
@@ -44,14 +49,42 @@ const AccessControl = () => {
     error: errorDeActivate,
     success: successDeActivate,
   } = deactivateDoctorVariables;
-
+const editDocHandler = (e) =>{
+  e.preventDefault();
+  dispatch(editDoctor(editDocId,name, role, email, number, regId))
+}
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addDoctore(name, role, email, number, regId));
   };
-
+useEffect(()=>{
+  if(updatedDoctorError===false){
+  dispatch(getAllDoctors());
+  Swal.fire({
+    icon: "success",
+    text: "doctor updated successfully",
+  });
+  setName('')
+  setRole('')
+  setEmail('')
+  setNumber('')
+  setRegId('')
+    }
+    else if(updatedDoctorError){
+      Swal.fire({
+        icon: "error",
+        text: "Failed to update doctor",
+      });
+      setName('')
+      setRole('')
+      setEmail('')
+      setNumber('')
+      setRegId('')
+    }
+},[updatedDoctorError])
   useEffect(() => {
     dispatch(getAllDoctors());
+   
     if (successActivate) {
       dispatch({ type: ACTIVATE_DOCTOR_RESET });
       Swal.fire({
@@ -136,7 +169,7 @@ const AccessControl = () => {
  
   };
 
-
+console.log("id",editDocId)
 
   return (
     <>
@@ -296,8 +329,8 @@ const AccessControl = () => {
                 <button
                   type="button"
                   className="modal__Btn--Red"
-                  // data-bs-dismiss="modal"
-                  onClick="$('#modal_id').modal('hide')"
+                   data-bs-dismiss="modal"
+                //  onClick="$('#modal_id').modal('hide')"
                 >
                   Cancel
                 </button>
@@ -309,7 +342,155 @@ const AccessControl = () => {
           </div>
         </form>
       </div>
-
+      <div
+        className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="editEmployee"
+        tabIndex="-1"
+        aria-labelledby="editEmployeeLabel"
+        aria-hidden="true"
+      >
+        <form >
+          <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
+            <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+              <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                <h5 className="modal__Heading" id="editEmployeeLabel">
+                  Update Employee
+                </h5>
+                <button
+                  type="button"
+                  className="modal__Btn--Close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal__Body">
+                <div className="form__Grid--Rows-none">
+                  <div className="form__Cols--Span-6">
+                    <label
+                      htmlFor="employee-name"
+                      className="form__Label-Heading"
+                    >
+                      Enter Employee Name
+                    </label>
+                    <input
+                     value={name}
+                      required
+                      onChange={(e) => setName(e.target.value)}
+                      type="text"
+                      name="employee-name"
+                      id="employee-name"
+                      autoComplete="given-name"
+                      className="form__Input"
+                    />
+                  </div>
+                  <div className="form__Cols--Span-6">
+                    <label htmlFor="role" className="form__Label-Heading">
+                      Select Role
+                    </label>
+                    <select
+                    value={role}
+                      required
+                      onChange={(e) => setRole(e.target.value)}
+                      id="role"
+                      name="role"
+                      autoComplete="role-name"
+                      className="form__Select"
+                    >
+                      <option>Select Role</option>
+                      <option value="Doctor">Doctor</option>
+                      <option value="Junior Doctor">Junior Doctor</option>
+                      <option value="Dietitian">Dietitian</option>
+                      {/* <option value="role4">Role 4</option> */}
+                    </select>
+                  </div>
+                  <div className="form__Cols--Span-6">
+                    <label
+                      htmlFor="employee-email"
+                      className="form__Label-Heading"
+                    >
+                      Enter Employee Email
+                    </label>
+                    <input
+                      required
+                      onChange={(e) => setEmail(e.target.value)}
+                      type="email"
+                      name="employee-email"
+                      id="employee-email"
+                      autoComplete="given-name"
+                      className="form__Input"
+                      value={email}
+                    />
+                  </div>
+                  <div className="form__Cols--Span-6">
+                    <label
+                      htmlFor="employee-phone"
+                      className="form__Label-Heading"
+                    >
+                      Enter Employee Phone Number
+                    </label>
+                    <input
+                      required
+                      onChange={(e) => setNumber(e.target.value)}
+                      type="tel"
+                      name="employee-phone"
+                      id="employee-phone"
+                      autoComplete="given-name"
+                      className="form__Input"
+                      value={number}
+                    />
+                  </div>
+                  <div className="form__Cols--Span-6">
+                    <label
+                      htmlFor="employee-regno"
+                      className="form__Label-Heading"
+                    >
+                      Enter Employee Registration No. (Optional)
+                    </label>
+                    <input
+                      required
+                      onChange={(e) => setRegId(e.target.value)}
+                      type="text"
+                      name="employee-regno"
+                      id="employee-regno"
+                      autoComplete="given-name"
+                      className="form__Input"
+                      value={regId}
+                    />
+                  </div>
+                  <div className="form__Cols--Span-6">
+                    <label
+                      htmlFor="appointment-date"
+                      className="form__Label-Heading"
+                    >
+                      Select Employee Photo
+                    </label>
+                    <input
+                      type="file"
+                      name="appointment-date"
+                      id="appointment-date"
+                      autoComplete="given-name"
+                      className="form__Input"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="modal__Footer">
+                <button
+                  type="button"
+                  className="modal__Btn--Red"
+                  data-bs-dismiss="modal"
+                  //onClick="$('#modal_id').modal('hide')"
+                >
+                  Cancel
+                </button>
+                <button onClick={editDocHandler} data-bs-dismiss="modal" className="modal__Btn--Teal">
+                  UPDATE
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
       <div className="my-10">
         <table className="table__Container">
           <thead className="table__Head">
@@ -363,9 +544,10 @@ const AccessControl = () => {
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
+                    onClick={()=>setEditDocId(doc._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"
-                      data-bs-target="#createEmployee"
+                      data-bs-target="#editEmployee"
                     />
                   </td>
                 </tr>
