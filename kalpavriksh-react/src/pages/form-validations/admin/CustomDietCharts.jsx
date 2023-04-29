@@ -16,18 +16,18 @@ import {
 } from "../../../constant.js/AdminConstant";
 
 const CustomDietCharts = () => {
-  
+
   const dispatch = useDispatch();
   const [filterDatas, setFilterDatas] = useState([])
-  const [show,setShow]=useState(false)
+  const [show, setShow] = useState(false)
   const getFomrsList = useSelector((state) => state.patientFormList);
   const { loading, error, forms } = getFomrsList;
 
   const deitChartList = useSelector((state) => state.deitChartList);
   const { loading: loadingDiet, error: errorDiet, dietchart } = deitChartList;
 
-  const latestDietChart=useSelector((state)=>state.latestDietChart)
-  const {loading:LoadingDietLatest,error:errorDietLatest,deitChartLatest}=latestDietChart
+  const latestDietChart = useSelector((state) => state.latestDietChart)
+  const { loading: LoadingDietLatest, error: errorDietLatest, deitChartLatest } = latestDietChart
 
   const activateDtChartVariables = useSelector(
     (state) => state.activateDtChart
@@ -47,7 +47,7 @@ const CustomDietCharts = () => {
   } = deactivateDtChartVariables;
 
   const truncate = (str, n) => {
-    return str.length > n ? str.substr(0, n - 1) : str;
+    return str?.length > n ? str.substr(0, n - 1) : str;
   };
 
   useEffect(() => {
@@ -106,10 +106,10 @@ const CustomDietCharts = () => {
   };
 
 
-  const filterData=(id)=>{
+  const filterData = (id) => {
     console.log(id)
-    const filterdData=dietchart.filter((e)=>e._id ===id)
-    console.log(typeof(filterdData))
+    const filterdData = dietchart.filter((e) => e._id === id)
+    console.log(typeof (filterdData))
     // console.log(filterdData[0])
     setFilterDatas(filterdData)
     setShow(true)
@@ -148,7 +148,7 @@ const CustomDietCharts = () => {
                     {dt.doctorId ? dt.doctorId.name : ""}
                   </td>
                   <td className="table__Body--Row_Data">
-                    {truncate(dt.createdAt, 11)}
+                    {truncate(dt.createdOn, 11)}
                   </td>
                   <td className="table__Body--Row_Data">
                     <select
@@ -170,7 +170,7 @@ const CustomDietCharts = () => {
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
-                    onClick={()=>filterData(dt._id)}
+                      onClick={() => filterData(dt._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"
                       data-bs-target="#modalCharts"
@@ -205,107 +205,107 @@ const CustomDietCharts = () => {
                 aria-label="Close"
               ></button>
             </div>
-            {loadingDiet ? <LoadingBox></LoadingBox>:
-            errorDiet ? <MessageBox>{errorDiet}</MessageBox>:
-            show ?  (
-              <div className="modal-body relative p-4">
-              <div className="form__Grid--Cols-6">
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="prescribedBy" className="form__Label-Heading">
-                    Doctor Name
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].doctorId ? filterDatas[0].doctorId.name : ''}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="prescribedDate"
-                    className="form__Label-Heading"
-                  >
-                    Prescribed Date
-                  </label>
-                  <p className="form__Heading">{truncate(filterDatas[0].createdAt,11)}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="lowerCalories"
-                    className="form__Label-Heading"
-                  >
-                    Low Calories Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].calorie_lower}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="highCalories" className="form__Label-Heading">
-                    High Clories Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].calorie_upper}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="lowerCarbohydrates"
-                    className="form__Label-Heading"
-                  >
-                    Low Carbohydrates Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].ch_lower}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="highCarbohydrates"
-                    className="form__Label-Heading"
-                  >
-                    High Carbohydrates Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].ch_upper}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="proties" className="form__Label-Heading">
-                    Protiens Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].protiens}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="fats" className="form__Label-Heading">
-                    Fats Range
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].fats}</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="foodType" className="form__Label-Heading">
-                    Food Type (Veg / Nonveg / Egg)
-                  </label>
-                  <p className="form__Heading">Veg</p>
-                </div>
-                <div className="form__Cols--Span-6">
-                  <label htmlFor="foodCusine" className="form__Label-Heading">
-                    Food Cusine
-                  </label>
-                  <p className="form__Heading">{filterDatas[0].cuisine_type}</p>
-                </div>
-              </div>
-              <div className="form__Grid--Rows-none">
-                <div className="form__Cols--Span-6">
-                  <label
-                    htmlFor="downloadDietChart"
-                    className="form__Label-Heading"
-                  >
-                    Download Diet Chart
-                  </label>
-                  <p className="form__Heading">
-                    {/* <button
+            {loadingDiet ? <LoadingBox></LoadingBox> :
+              errorDiet ? <MessageBox>{errorDiet}</MessageBox> :
+                show ? (
+                  <div className="modal-body relative p-4">
+                    <div className="form__Grid--Cols-6">
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="prescribedBy" className="form__Label-Heading">
+                          Doctor Name
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].doctorId ? filterDatas[0].doctorId.name : ''}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label
+                          htmlFor="prescribedDate"
+                          className="form__Label-Heading"
+                        >
+                          Prescribed Date
+                        </label>
+                        <p className="form__Heading">{truncate(filterDatas[0].createdOn, 11)}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label
+                          htmlFor="lowerCalories"
+                          className="form__Label-Heading"
+                        >
+                          Low Calories Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].calorie_lower}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="highCalories" className="form__Label-Heading">
+                          High Clories Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].calorie_upper}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label
+                          htmlFor="lowerCarbohydrates"
+                          className="form__Label-Heading"
+                        >
+                          Low Carbohydrates Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].ch_lower}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label
+                          htmlFor="highCarbohydrates"
+                          className="form__Label-Heading"
+                        >
+                          High Carbohydrates Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].ch_upper}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="proties" className="form__Label-Heading">
+                          Protiens Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].protiens}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="fats" className="form__Label-Heading">
+                          Fats Range
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].fats}</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="foodType" className="form__Label-Heading">
+                          Food Type (Veg / Nonveg / Egg)
+                        </label>
+                        <p className="form__Heading">Veg</p>
+                      </div>
+                      <div className="form__Cols--Span-6">
+                        <label htmlFor="foodCusine" className="form__Label-Heading">
+                          Food Cusine
+                        </label>
+                        <p className="form__Heading">{filterDatas[0].cuisine_type}</p>
+                      </div>
+                    </div>
+                    <div className="form__Grid--Rows-none">
+                      <div className="form__Cols--Span-6">
+                        {/* <label
+                          htmlFor="downloadDietChart"
+                          className="form__Label-Heading"
+                        >
+                          Download Diet Chart
+                        </label> */}
+                        <p className="form__Heading">
+                          <button
                       type="button"
                       className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >
                       Download Diet Chart
-                    </button> */}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ):
-          <MessageBox>No Diet Chart</MessageBox>
-          }
-           
+                    </button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) :
+                  <MessageBox>No Diet Chart</MessageBox>
+            }
+
             <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
                 type="button"

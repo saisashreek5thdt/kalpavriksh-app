@@ -1,7 +1,7 @@
 import React, {useReducer, useEffect} from "react";
 
 import { validate } from "../utils/validators";
-
+import Datepicker from "react-tailwindcss-datepicker";
 const inputReducer = (state, action) => {
     switch (action.type) {
         case 'CHANGE' :
@@ -20,6 +20,8 @@ const inputReducer = (state, action) => {
             return state;
     }
 };
+
+
 
 const Input = (props) => {
     
@@ -52,37 +54,80 @@ const Input = (props) => {
         });
     };
 
-    const element = 
-        props.element === 'input' ? (
-            <input 
-                id={props.id}
-                type={props.type}
-                className="form__Input"
-                placeholder={props.placeholder}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-                required
+    let element;
+    switch (props.element) {
+        case 'input':
+            element = (
+                <input 
+                    id={props.id}
+                    type={props.type}
+                    className="form__Input"
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                    required
                 />
-        ) : (
-            <textarea
-                id={props.id}
-                rows={props.rows || 3}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-                value={inputState.value}
-                className="form__Textarea"                
-             />
-        );
-        const childElement = props.children ? props.children : element;
+            );
+            break;
+        case 'textarea':
+            element = (
+                <textarea
+                    id={props.id}
+                    rows={props.rows || 3}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                    className="form__Textarea"                
+                />
+            );
+            break;
+        case 'datepicker':
+            element = (
+                <Datepicker
+                    id={props.id}
+                    selected={inputState.value}
+                    onChange={(date) =>
+                        dispatch({
+                            type: 'CHANGE',
+                            val: date,
+                            validators: props.validators
+                        })
+                    }
+                    onBlur={touchHandler}
+                    className="form__Input"
+                    value={value}
+                    dateFormat={props.dateFormat || 'dd/MM/yyyy'}
+                    showYearDropdown
+                    scrollableMonthYearDropdown
+                    required
+                />
+            );
+            break;
+        default:
+            element = (
+                <input 
+                    id={props.id}
+                    type={props.type}
+                    className="form__Input"
+                    placeholder={props.placeholder}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                    value={inputState.value}
+                    required
+                />
+            );
+    }
+
     return (
         <div>
             <label htmlFor={props.id} className="form__Label-Heading">{props.label}</label>
-            {childElement}
-            {!inputState.isValid && inputState.isTouched && <p className="form__Input--Error">{props.errorText}</p>}
+            {props.element !== 'datepicker' && !inputState.isValid && inputState.isTouched && <p className="form__Input--Error">{props.errorText}</p>}
+            {props.element === 'datepicker' && !inputState.isValid && inputState.isTouched && <p className="form__Input--Error">{props.errorText}</p>}
+            {element}
         </div>
     );
-
 };
+
 
 export default Input;

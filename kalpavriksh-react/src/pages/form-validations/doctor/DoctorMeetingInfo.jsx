@@ -74,6 +74,11 @@ useEffect(()=>{
     const nextMed = 'med' + (medicines.length + 1);
     setMedicines([...medicines, nextMed]);
   }
+  const removeMedicine = (e) =>{
+   setMedicines((med)=>{
+    return med.filter((m)=>m!=e)
+   })
+  }
   const handlePrescriptions = ({e,key,i}) =>{
     setPrescriptions((oldPrescriptions) => {
       const prescriptionIndex = oldPrescriptions.findIndex(prescription => prescription.id === i);
@@ -468,7 +473,7 @@ console.log(prescriptions)
                     </label>
                     <p className="form__Heading">24-11-2022</p>
                   </div></> :<><span className="form__Cols--Span-6">Medicine {i+1}</span>
-                  <span className="form__Cols--Span-6"></span>
+                  <span onClick={()=>removeMedicine(medicine)} className="form__Cols--Span-6 cursor-pointer">Remove Medicine</span>
                   </>}
                   <div className="form__Cols--Span-6">
                     <label

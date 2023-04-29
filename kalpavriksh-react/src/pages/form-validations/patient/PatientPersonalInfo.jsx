@@ -34,7 +34,8 @@ const PatientPersonalInfo = () => {
     caretakerTime,
     healthPlan,
     planDate,
-    patientTeam,
+    primaryTeam,
+    secondaryTeam
   } = location.state;
   // console.log(healthPlan,'pln')
 
@@ -46,6 +47,8 @@ const PatientPersonalInfo = () => {
   const [paymentNextDate, setPaymentNextDate] = useState("");
   const [refId, setRefId] = useState("");
   const [healthPlanId, setHealthPlanId] = useState([])
+  const [primaryTeamIds, setPrimaryTeamIds] = useState([]);
+  const [secondaryTeamIds, setSecondaryTeamIds] = useState([]);
   // console.log(location.state)
   const dispatch = useDispatch();
   const enrolmentpatient = useSelector((state) => state.enrollmentPatient);
@@ -86,14 +89,14 @@ console.log("enrolmentpatient",enrolmentpatient)
   );
 
 
-  useEffect(()=>{
-    const arr=[]
-    for(let i=0;i<healthPlan.selectedOptions.length;i++){
-      // console.log(healthPlan.selectedOptions[i]._id,'id');
-      arr.push(healthPlan.selectedOptions[i]._id)
-    }
-    
-    setHealthPlanId(arr)
+  
+  
+  useEffect(() => {
+    const newPrimaryTeamIds = primaryTeam?.map(option => option._id);
+    setPrimaryTeamIds(newPrimaryTeamIds);
+  
+    const newSecondaryTeamIds = secondaryTeam?.map(option => option._id);
+    setSecondaryTeamIds(newSecondaryTeamIds);
     setFormData({
       ...formState.inputs,
       amount: {
@@ -145,10 +148,12 @@ console.log("enrolmentpatient",enrolmentpatient)
           relation,
           caretakerNumber,
           caretakerTime,
-          healthPlanId,
+          healthPlan,
           updatedPlanDate,
-          patientTeam,
+primaryTeamIds,
+secondaryTeamIds,
           formState.inputs.amount.value,
+
           formState.inputs.paymentMode.value,
           formState.inputs.paymentDate.value,
           formState.inputs.refId.value,

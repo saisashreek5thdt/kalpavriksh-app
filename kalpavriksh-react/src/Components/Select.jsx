@@ -1,13 +1,13 @@
-import React, {useReducer, useEffect} from "react";
+import React, { useReducer, useEffect } from "react";
 
 import { validate } from "../utils/validators";
 
 const selectReducer = (state, action) => {
     switch (action.type) {
-        case 'CHANGE' :
+        case 'CHANGE':
             return {
                 ...state,
-                value:action.val,
+                value: action.val,
                 isValid: validate(action.val, action.validators)
             };
         case 'TOUCH': {
@@ -29,8 +29,8 @@ const Select = (props) => {
         isValid: props.initialValue || false
     });
 
-    const {id, onInput} = props;
-    const {value, isValid} = inputState;
+    const { id, onInput } = props;
+    const { value, isValid } = inputState;
 
     useEffect(() => {
         onInput(id, value, isValid);
@@ -39,7 +39,7 @@ const Select = (props) => {
     const changeHandler = event => {
         dispatch({
             type: 'CHANGE',
-            val: event.target.value,
+            val: props.healthPlanOptions ? props.healthPlanOptions.find((opt) => opt.value == event.target.value)?.id : event.target.value,
             validators: props.validators
         });
     };
@@ -50,24 +50,24 @@ const Select = (props) => {
         });
     };
 
-    const element = 
+    const element =
         props.element === 'select' ? (
-            <select 
+            <select
                 id={props.id}
                 className="form__Select"
                 onChange={changeHandler}
-                onBlur={touchHandler} 
+                onBlur={touchHandler}
                 options={props.options}>
-                    {props.options.map(option => <option key={option.value}>{option.value}</option>) }
-                </select>
+                {props.options.map(option => <option key={option.value}>{option.value}</option>)}
+            </select>
         ) : (
             <textarea
                 id={props.id}
                 rows={props.rows || 3}
                 onChange={changeHandler}
                 onBlur={touchHandler}
-                value={inputState.value}                
-             />
+                value={inputState.value}
+            />
         );
 
     return (

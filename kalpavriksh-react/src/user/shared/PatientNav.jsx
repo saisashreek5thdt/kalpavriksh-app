@@ -5,41 +5,58 @@ import { FiBell, FiX, FiMenu } from "react-icons/fi";
 import Logo from "../../Assets/img/logo-login.svg";
 import User from "../../Assets/user/user.jpg";
 import { patientSignout } from "../../action/PatientAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const user = {
-    name: "Tom Cook",
-    email: "tom@example.com",
-    imageUrl: User,
-  };
-  
-  const navigation = [
-    {
-      name: "Dashboard",
-      href: "/userrole/:roleid/dashboard/patient/",
-      current: true,
-    },
-    {
-      name: "All Enrolments",
-      href: "/userrole/:roleid/dashboard/patient/all/enrolments/",
-      current: true,
-    },
-    {
-      name: "My Info",
-      href: "/userrole/:roleid/dashboard/patient/myinfo/",
-      current: true,
-    },
-  ];
-  
+  name: "Tom Cook",
+  email: "tom@example.com",
+  imageUrl: User,
+};
 
-  
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 const PatientNav = () => {
-  const dispatch=useDispatch()
-  const hello=()=>{
+  const patientSignin = useSelector((state) => state.patientSignin);
+  const doctorSignin = useSelector((state) => state.doctorSignin);
+  const { patientInfo } = patientSignin;
+  const { doctorInfo } = doctorSignin;
+  const activeUser = localStorage.getItem('activeUser')
+  let navigation;
+  if (doctorInfo && activeUser == 'doctor') {
+    navigation = [
+      {
+        name: "Dashboard",
+        href: "/userrole/:roleid/dashboard/patient/",
+        current: true,
+      },
+      {
+        name: "All Enrolments",
+        href: "/userrole/:roleid/dashboard/patient/all/enrolments/",
+        current: true,
+      },
+      {
+        name: "My Info",
+        href: "/userrole/:roleid/dashboard/patient/myinfo/",
+        current: true,
+      },
+    ];
+  }
+  else if (patientInfo) {
+    navigation = [
+      {
+        name: "Dashboard",
+        href: "/userrole/:roleid/dashboard/patient/",
+        current: true,
+      }
+    ]
+  }
+
+
+  const dispatch = useDispatch()
+  const hello = () => {
     //  console.log('heysiri');
     dispatch(patientSignout())
   }
@@ -47,7 +64,7 @@ const PatientNav = () => {
   const userNavigation = [
     { name: "Your Profile", href: "/userrole/:roleid/dashboard/patient/profile/" },
     // { name: "Settings", href: "#" },
-    { name: "Sign outss", fun:hello  },
+    { name: "Sign Out", fun: hello },
   ];
   return (
     <>
@@ -120,7 +137,7 @@ const PatientNav = () => {
                             <Menu.Item key={item.name}>
                               {({ active }) => (
                                 <a
-                                onClick={item.fun}
+                                  onClick={item.fun}
                                   href={item.href}
                                   className={classNames(
                                     active ? "navbar__ProfileBox--Item-Active" : "",

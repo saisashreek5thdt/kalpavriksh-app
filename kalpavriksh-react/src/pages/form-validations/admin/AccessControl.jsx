@@ -25,15 +25,21 @@ const AccessControl = () => {
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [regId, setRegId] = useState("");
-  const [editDocId,setEditDocId] = useState("")
+  const [docName, setDocName] = useState('');
+  const [docRole, setDocRole] = useState('');
+  const [docEmail, setDocEmail] = useState('');
+  const [docNumber, setDocNumber] = useState('');
+  const [docRegId, setDocRegId] = useState('');
+  const [editDocId, setEditDocId] = useState("")
   const dispatch = useDispatch();
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
+  const [formErrors, setFormErrors] = useState({});
 
-  const createDoctor=useSelector((state)=>state.doctorCreate)
-  const updatedDoctor = useSelector((state)=>state.updatedDoctor)
-  const {error:updatedDoctorError} = updatedDoctor
-  const {success,error:errorCreate}=createDoctor
+  const createDoctor = useSelector((state) => state.doctorCreate)
+  const updatedDoctor = useSelector((state) => state.updatedDoctor)
+  const { error: updatedDoctorError } = updatedDoctor
+  const { success, error: errorCreate } = createDoctor
 
   const activateDoctorVariables = useSelector((state) => state.activateDoctor);
   const {
@@ -49,28 +55,66 @@ const AccessControl = () => {
     error: errorDeActivate,
     success: successDeActivate,
   } = deactivateDoctorVariables;
-const editDocHandler = (e) =>{
-  e.preventDefault();
-  dispatch(editDoctor(editDocId,name, role, email, number, regId))
-}
+
+  const validateForm = () => {
+    let errors = {};
+
+    if (!name.trim()) {
+      errors.name = '*Name is required';
+    } else {
+      errors.name = ''
+    }
+
+    if (!role.trim()) {
+      errors.role = '*Role is required';
+    } else {
+      errors.role = ''
+    }
+    if (!email) {
+      errors.email = '*Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Invalid email address';
+    }
+    if (!number.trim()) {
+      errors.number = '*Number is required';
+    } else {
+      errors.number = ''
+    }
+
+
+    return errors;
+  };
+  const editDocHandler = (e) => {
+    e.preventDefault();
+
+    const errors = validateForm();
+    console.log("errors", errors)
+    console.log("test", Object.values(errors).some((e) => e.length > 0))
+    if (Object.values(errors).some((e) => e.length > 0)) {
+      setFormErrors(errors);
+    } else {
+      dispatch(editDoctor(editDocId, name, role, email, number, regId))
+    }
+  }
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(addDoctore(name, role, email, number, regId));
+    dispatch(addDoctore(docName, docRole, docEmail, docNumber, docRegId));
   };
-useEffect(()=>{
-  if(updatedDoctorError===false){
-  dispatch(getAllDoctors());
-  Swal.fire({
-    icon: "success",
-    text: "doctor updated successfully",
-  });
-  setName('')
-  setRole('')
-  setEmail('')
-  setNumber('')
-  setRegId('')
+
+  useEffect(() => {
+    if (updatedDoctorError === false) {
+      dispatch(getAllDoctors());
+      Swal.fire({
+        icon: "success",
+        text: "doctor updated successfully",
+      });
+      setName('')
+      setRole('')
+      setEmail('')
+      setNumber('')
+      setRegId('')
     }
-    else if(updatedDoctorError){
+    else if (updatedDoctorError) {
       Swal.fire({
         icon: "error",
         text: "Failed to update doctor",
@@ -81,10 +125,10 @@ useEffect(()=>{
       setNumber('')
       setRegId('')
     }
-},[updatedDoctorError])
+  }, [updatedDoctorError])
   useEffect(() => {
     dispatch(getAllDoctors());
-   
+
     if (successActivate) {
       dispatch({ type: ACTIVATE_DOCTOR_RESET });
       Swal.fire({
@@ -100,76 +144,83 @@ useEffect(()=>{
       });
     }
 
-    if(success){
-      dispatch({type:CREATE_DOCTOR_RESET})
+    if (success) {
+      dispatch({ type: CREATE_DOCTOR_RESET });
       Swal.fire({
         icon: "success",
-        text: "Doctor Created successfully",
+        text: "Doctor created successfully",
       });
-      setName('')
-      setRole('')
-      setEmail('')
-      setNumber('')
-      setRegId('')
+      setDocName("");
+      setDocRole("");
+      setDocEmail("");
+      setDocNumber("");
+      setDocRegId("");
     }
-    if(errorCreate){
-      dispatch({type:CREATE_DOCTOR_RESET})
+    if (errorCreate) {
+      dispatch({ type: CREATE_DOCTOR_RESET });
       Swal.fire({
         icon: "error",
         text: errorCreate,
       });
-      setName('')
-      setRole('')
-      setEmail('')
-      setNumber('')
-      setRegId('')
+      setDocName("");
+      setDocRole("");
+      setDocEmail("");
+      setDocNumber("");
+      setDocRegId("");
     }
-  }, [dispatch, successActivate, successDeActivate,success,errorCreate]);
 
+  }, [dispatch, successActivate, successDeActivate, success, errorCreate]);
 
-  const deActivate = (id,e) => {
-    console.log(e,'jey');
-    
+  useEffect(() => {
+    setName(doctors.find((doc) => doc._id === editDocId)?.name || '')
+    setRole(doctors.find((doc) => doc._id === editDocId)?.role || '')
+    setEmail(doctors.find((doc) => doc._id === editDocId)?.email || '')
+    setNumber(doctors.find((doc) => doc._id === editDocId)?.phone || '')
+    setRegId(doctors.find((doc) => doc._id === editDocId)?.registration_no || '')
+  }, [editDocId])
+  const deActivate = (id, e) => {
+    console.log(e, 'jey');
+
   };
-  const activate = (state,id) => {
-    console.log(state,id,'hii');
-    if(state === 'De-Active'){
-   Swal.fire({
-      title: "Do you want to activate user?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        dispatch(activateDoctor(id));
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
-    });
-    }else if(state === 'Active'){
-   Swal.fire({
-      title: "Do you want to deactivate user?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        dispatch(deactivateDoctor(id));
-        // Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
-    });
+  const activate = (state, id) => {
+    console.log(state, id, 'hii');
+    if (state === 'De-Active') {
+      Swal.fire({
+        title: "Do you want to activate user?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          dispatch(activateDoctor(id));
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
+    } else if (state === 'Active') {
+      Swal.fire({
+        title: "Do you want to deactivate user?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          dispatch(deactivateDoctor(id));
+          // Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
     }
- 
+
   };
 
-console.log("id",editDocId)
+  console.log("id", editDocId)
 
   return (
     <>
@@ -224,9 +275,9 @@ console.log("id",editDocId)
                       Enter Employee Name
                     </label>
                     <input
-                     value={name}
+                      value={docName}
                       required
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setDocName(e.target.value)}
                       type="text"
                       name="employee-name"
                       id="employee-name"
@@ -239,9 +290,9 @@ console.log("id",editDocId)
                       Select Role
                     </label>
                     <select
-                    value={role}
+                      value={docRole}
                       required
-                      onChange={(e) => setRole(e.target.value)}
+                      onChange={(e) => setDocRole(e.target.value)}
                       id="role"
                       name="role"
                       autoComplete="role-name"
@@ -251,7 +302,6 @@ console.log("id",editDocId)
                       <option value="Doctor">Doctor</option>
                       <option value="Junior Doctor">Junior Doctor</option>
                       <option value="Dietitian">Dietitian</option>
-                      {/* <option value="role4">Role 4</option> */}
                     </select>
                   </div>
                   <div className="form__Cols--Span-6">
@@ -263,13 +313,13 @@ console.log("id",editDocId)
                     </label>
                     <input
                       required
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setDocEmail(e.target.value)}
                       type="email"
                       name="employee-email"
                       id="employee-email"
                       autoComplete="given-name"
                       className="form__Input"
-                      value={email}
+                      value={docEmail}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -281,13 +331,13 @@ console.log("id",editDocId)
                     </label>
                     <input
                       required
-                      onChange={(e) => setNumber(e.target.value)}
+                      onChange={(e) => setDocNumber(e.target.value)}
                       type="tel"
                       name="employee-phone"
                       id="employee-phone"
                       autoComplete="given-name"
                       className="form__Input"
-                      value={number}
+                      value={docNumber}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -299,13 +349,13 @@ console.log("id",editDocId)
                     </label>
                     <input
                       required
-                      onChange={(e) => setRegId(e.target.value)}
+                      onChange={(e) => setDocRegId(e.target.value)}
                       type="text"
                       name="employee-regno"
                       id="employee-regno"
                       autoComplete="given-name"
                       className="form__Input"
-                      value={regId}
+                      value={docRegId}
                     />
                   </div>
                   <div className="form__Cols--Span-6">
@@ -329,12 +379,14 @@ console.log("id",editDocId)
                 <button
                   type="button"
                   className="modal__Btn--Red"
-                   data-bs-dismiss="modal"
+                  data-bs-dismiss="modal"
                 //  onClick="$('#modal_id').modal('hide')"
                 >
                   Cancel
                 </button>
-                <button onClick={submitHandler} data-bs-dismiss="modal" className="modal__Btn--Teal">
+                <button onClick={submitHandler}
+                  data-bs-dismiss="modal"
+                  className="modal__Btn--Teal">
                   Create &amp; Save Employee
                 </button>
               </div>
@@ -373,7 +425,7 @@ console.log("id",editDocId)
                       Enter Employee Name
                     </label>
                     <input
-                     value={name}
+                      value={name}
                       required
                       onChange={(e) => setName(e.target.value)}
                       type="text"
@@ -382,13 +434,14 @@ console.log("id",editDocId)
                       autoComplete="given-name"
                       className="form__Input"
                     />
+                    {formErrors.name && <div className="text-red-600 text-xs">{formErrors.name}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label htmlFor="role" className="form__Label-Heading">
                       Select Role
                     </label>
                     <select
-                    value={role}
+                      value={role}
                       required
                       onChange={(e) => setRole(e.target.value)}
                       id="role"
@@ -402,6 +455,7 @@ console.log("id",editDocId)
                       <option value="Dietitian">Dietitian</option>
                       {/* <option value="role4">Role 4</option> */}
                     </select>
+                    {formErrors.role && <div className="text-red-600 text-xs">{formErrors.role}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -420,6 +474,7 @@ console.log("id",editDocId)
                       className="form__Input"
                       value={email}
                     />
+                    {formErrors.email && <div className="text-red-600 text-xs">{formErrors.email}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -438,6 +493,7 @@ console.log("id",editDocId)
                       className="form__Input"
                       value={number}
                     />
+                    {formErrors.number && <div className="text-red-600 text-xs">{formErrors.number}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -479,11 +535,13 @@ console.log("id",editDocId)
                   type="button"
                   className="modal__Btn--Red"
                   data-bs-dismiss="modal"
-                  //onClick="$('#modal_id').modal('hide')"
+                //onClick="$('#modal_id').modal('hide')"
                 >
                   Cancel
                 </button>
-                <button onClick={editDocHandler} data-bs-dismiss="modal" className="modal__Btn--Teal">
+                <button onClick={editDocHandler}
+                  // data-bs-dismiss="modal" 
+                  className="modal__Btn--Teal">
                   UPDATE
                 </button>
               </div>
@@ -515,25 +573,25 @@ console.log("id",editDocId)
                   <td className="table__Body--Row_Data">{index + 1}</td>
                   <td className="table__Body--Row_Data">{doc.name}</td>
                   <td className="table__Body--Row_Data">{doc.role}</td>
-                  <td className="table__Body--Row_Data">11-10-2022</td>
+                  <td className="table__Body--Row_Data"> {new Date(doc?.createdAt || doc?.updatedAt).toLocaleString().substring(0, 9)}</td>
                   <td className="table__Body--Row_Data">
                     <select
                       id="status"
                       name="status"
                       autoComplete="status-name"
                       className="form__Select"
-                      onChange={()=>activate(doc.status,doc._id)}
+                      onChange={() => activate(doc.status, doc._id)}
                     >
                       <option>{doc.status}</option>
                       {doc.status === "Active" ? (
-                        <option                    
-                         >
+                        <option
+                        >
                           De-Active
                         </option>
                       ) : doc.status === "De-Active" ? (
                         <>
                           <option
-                           >
+                          >
                             Active
                           </option>
                         </>
@@ -544,7 +602,8 @@ console.log("id",editDocId)
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
-                    onClick={()=>setEditDocId(doc._id)}
+                      onClick={() => setEditDocId(doc._id)}
+
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"
                       data-bs-target="#editEmployee"

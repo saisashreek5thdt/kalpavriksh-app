@@ -12,7 +12,7 @@ import {
     Sort,
     Filter,
 } from "@syncfusion/ej2-react-grids";
-import { createPrescription, getPatientOldPresc } from "../../../action/DoctorAction"; 
+import { createPrescription, getPatientOldPresc } from "../../../action/DoctorAction";
 import Swal from "sweetalert2";
 import { CREATE_PRESC_RESET } from "../../../constant.js/DoctorConstant";
 import { AppointmentInfo, AppointmentGrid } from "../../../Data/Data_Info";
@@ -30,23 +30,24 @@ import { useRef } from 'react';
 
 const DocAppointmentTable = () => {
     const [modal, setModal] = useState(false);
-    const [show,setShow]=useState(false)
+    const [show, setShow] = useState(false)
     const appointmentCreate = useSelector((state) => state.appointmentCreate);
     const { success } = appointmentCreate;
     const appointmentList = useSelector((state) => state.appointmentList);
     const { loading, error, appointment } = appointmentList;
-    const [medicines,setMedicines] = useState(["med1"])
-    const [prescriptions,setPrescriptions] = useState([])
-    const latestPrescription=useSelector((state)=>state.latestPrescription)
-  const {loading:loadingLatest,error:errorLatest,prescLatest}=latestPrescription
-  const patientProfileList=useSelector(state=>state.patientProfileList)
-  const {loading:loadingProfile,error:errorProfile,profile}=patientProfileList
-  const latestDietChart=useSelector((state)=>state.latestDietChart)
-  const {loading:LoadingDietLatest,error:errorDietLatest,deitChartLatest}=latestDietChart
-  
-  const location = useLocation();
-//   const { id } = location.state;
-const prescriptionPatient = useSelector(
+    const [prescribePatient, setPrescribePatient] = useState('')
+    const [prescriptions, setPrescriptions] = useState([{ id: 0 }])
+    const latestPrescription = useSelector((state) => state.latestPrescription)
+    const { loading: loadingLatest, error: errorLatest, prescLatest } = latestPrescription
+    const patientProfileList = useSelector(state => state.patientProfileList)
+    const { loading: loadingProfile, error: errorProfile, profile } = patientProfileList
+    const latestDietChart = useSelector((state) => state.latestDietChart)
+    const { loading: LoadingDietLatest, error: errorDietLatest, deitChartLatest } = latestDietChart
+    const prescriptionCreate = useSelector((state) => state.prescriptionCreate)
+    const { success: prescriptionCreateSuccess, error: prescriptionCreateError } = prescriptionCreate;
+    const location = useLocation();
+    //   const { id } = location.state;
+    const prescriptionPatient = useSelector(
         (state) => state.prescriptionPatient
     );
     const {
@@ -54,8 +55,6 @@ const prescriptionPatient = useSelector(
         error: errorPres,
         presc,
     } = prescriptionPatient;
-    const prescriptionCreate = useSelector((state) => state.prescriptionCreate);
-    const { prescriptionsuccess } = prescriptionCreate;
     const dispatch = useDispatch();
     const scrollRef = useRef(null);
     useEffect(() => {
@@ -66,14 +65,28 @@ const prescriptionPatient = useSelector(
         dispatch(getAllDietChart(user));
         // dispatch(getPatientOldPresc(id))
     }, []);
+    useEffect(() => {
+        if (prescriptionCreateSuccess) {
+            Swal.fire({
+                icon: "success",
+                text: "Prescription Created successfully",
+            });
+        }
+        else if (prescriptionCreateError) {
+            Swal.fire({
+                icon: "error",
+                text: "Failed to create Prescription",
+            });
+        }
+    }, [prescriptionCreate])
     function handleScrollToBottom() {
         if (scrollRef.current) {
             scrollRef.current?.scrollIntoView({ behavior: "smooth" })
         }
-      }
-    useEffect(()=>{
-      handleScrollToBottom()
-    },[medicines])
+    }
+    useEffect(() => {
+        handleScrollToBottom()
+    }, [prescriptions.length])
 
     // const selectionsettings = { persistSelection: true };
     // const toolbarOptions = ["Delete"];
@@ -82,36 +95,55 @@ const prescriptionPatient = useSelector(
         return str.length > n ? str.substr(0, n - 1) : str;
     };
 
-    const getDetailsOfPatient=(id)=>{
+    const getDetailsOfPatient = (id) => {
         dispatch(getLatesPrescriptionForDoctor(id))
         dispatch(getPatientProfileByDoctor(id))
         dispatch(getLatesDietChartByDoctor(id))
+        setPrescribePatient(id)
         console.log(id)
 
     }
-    if(deitChartLatest){
+    if (deitChartLatest) {
         console.log(deitChartLatest)
     }
     const addMedicine = () => {
-        const nextMed = 'med' + (medicines.length + 1);
-        setMedicines([...medicines, nextMed]);
-      }
-      const handlePrescriptions = ({e,key,i}) =>{
+        const maxId = prescriptions.reduce((max, prescription) => Math.max(max, prescription.id), 0);
+        setPrescriptions([...prescriptions, { id: maxId + 1 }]);
+    }
+
+    const removeMedicine = (idToRemove) => {
         setPrescriptions((oldPrescriptions) => {
-          const prescriptionIndex = oldPrescriptions.findIndex(prescription => prescription.id === i);
-          const newPrescription = [...oldPrescriptions];
-          if (prescriptionIndex === -1) {
-            newPrescription.push({ id: i, [key]: e?.target.value ,patientId:appointment[0]?.patientId?._id});
-          } else {
-            newPrescription[prescriptionIndex] = {
-              ...newPrescription[prescriptionIndex],
-              [key]: e?.target.value,
-          };
-          }
-          return newPrescription;
+            // Remove the prescription with the specified ID
+            const newPrescriptions = oldPrescriptions.filter((prescription) => prescription.id !== idToRemove);
+
+            // Update the IDs of all prescriptions with an ID greater than the one that was removed
+            return newPrescriptions.map((prescription) => {
+                if (prescription.id > idToRemove) {
+                    return { ...prescription, id: prescription.id - 1 };
+                } else {
+                    return prescription;
+                }
+            });
         });
-      }
-      console.log("prescriptions",prescriptions)
+    };
+
+
+    const handlePrescriptions = ({ e, key, i }) => {
+        setPrescriptions((oldPrescriptions) => {
+            const prescriptionIndex = oldPrescriptions.findIndex(prescription => prescription.id === i);
+            const newPrescription = [...oldPrescriptions];
+            if (prescriptionIndex === -1) {
+                newPrescription.push({ id: i, [key]: e?.target.value, patientId: appointment[0]?.patientId?._id });
+            } else {
+                newPrescription[prescriptionIndex] = {
+                    ...newPrescription[prescriptionIndex],
+                    [key]: e?.target.value,
+                };
+            }
+            return newPrescription;
+        });
+    }
+    console.log("prescriptions", prescriptions)
     //   useEffect(() => {
     //     dispatch(getPatientOldPresc(id))
     //     if (prescriptionsuccess) {
@@ -134,28 +166,18 @@ const prescriptionPatient = useSelector(
     //       // setFrquency({})
     //       // setMornDose({})
     //       // setSpecinst({})
-    
+
     //     }
     //   }, [prescriptionsuccess]);
-      const createPrescriptionHandler = (e) => {
+    const createPrescriptionHandler = (e) => {
         e.preventDefault();
-        dispatch(
-          createPrescription(
-            // id,
-            // medType,
-            // medName,
-            // mornDose,
-            // aftDose,
-            // eveDose,
-            // frquency,
-            // duration,
-            // durDays,
-            // specinst,
-            prescriptions
-          )
-        );
-       
-      };
+        const payload = {
+            patientId: prescribePatient,
+            prescriptions: prescriptions,
+        };
+        dispatch(createPrescription(payload));
+    };
+
     return (
         <>
             <div className="py-16 bg-white rounded-3xl">
@@ -197,7 +219,7 @@ const prescriptionPatient = useSelector(
                                             key={ap._id}
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalAppointment"
-                                            onClick={()=>getDetailsOfPatient(ap.patientId._id)}
+                                            onClick={() => getDetailsOfPatient(ap.patientId._id)}
                                         >
                                             <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                                                 {i + 1}
@@ -276,57 +298,57 @@ const prescriptionPatient = useSelector(
                                     </div>
                                     {!loadingProfile && !errorProfile && profile && (
                                         <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                                        <div className="p-4">
-                                            <div className="form__Grid--Cols-6">
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Patient Name
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                        {profile.name}
-                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Patient Age
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                        46 yrs
-                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Patient Gender
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                        {profile.gender}
-                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Patient Phone Number
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                        {profile.phone}
-                                                    </p>
+                                            <div className="p-4">
+                                                <div className="form__Grid--Cols-6">
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Patient Name
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            {profile.name}
+                                                        </p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Patient Age
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            46 yrs
+                                                        </p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Patient Gender
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            {profile.gender}
+                                                        </p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Patient Phone Number
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            {profile.phone}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
                                     )}
-                                   
+
                                 </div>
                             </div>
                             <div className="p-2">
@@ -347,231 +369,193 @@ const prescriptionPatient = useSelector(
                                     </div>
                                     {!loadingLatest && !errorLatest && prescLatest && (
                                         <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                                        <div className="p-4">
-                                            <div className="form__Grid--Cols-6">
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Prescribed Date
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                    {truncate(prescLatest.createdOn,11)}                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Prescribed By
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                        {prescLatest.doctorId.name}
-                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Type
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.medicine_type}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Name
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.medicine_name}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Morning Dose
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.morning_dose}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Afternoon Dose
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.afternoon_dose}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Evening Dose
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.evening_dose}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Frequency
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.frequency}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Duration
-                                                        (Number / Days / Weeks)
-                                                    </label>
-                                                    <p className="form__Heading">{prescLatest.duration_days}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    ></label>
-                                                    <p className="form__Heading"></p>
-                                                </div>
-                                            </div>                                     
-                                              
-                                            <div className="form__Grid--Rows-none">
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="medicineSplInstructions"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Medicine Special
-                                                        Instructions
-                                                    </label>
-                                                    <p className="form__Heading">  {prescLatest.special_inst}</p>
+                                            <div className="p-4">
+                                                <div className="form__Grid--Cols-6">
+                                                    <div className="form__Cols--Span-6">
+                                                        <label htmlFor="prescribedBy" className="form__Label-Heading">
+                                                            Prescribed Date
+                                                        </label>
+                                                        <p className="form__Heading">{truncate(prescLatest.createdOn, 11)}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label htmlFor="prescribedBy" className="form__Label-Heading">
+                                                            Prescribed By
+                                                        </label>
+                                                        <p className="form__Heading">{prescLatest.doctorId.name}</p>
+                                                    </div>
+
+                                                    {prescLatest.medicines.map((medicine, index) => (
+                                                        <React.Fragment key={index}>
+                                                            <> <div className="form__Cols--Span-6 font-bold">Medicine {index + 1}</div><div className="form__Cols--Span-6 font-bold"></div></>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineType${index}`} className="form__Label-Heading">
+                                                                    Medicine Type
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.medType}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineName${index}`} className="form__Label-Heading">
+                                                                    Medicine Name
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.medName}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineMorningDose${index}`} className="form__Label-Heading">
+                                                                    Medicine Morning Dose
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.mornDose}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineAfternoonDose${index}`} className="form__Label-Heading">
+                                                                    Medicine Afternoon Dose
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.aftDose}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineEveningDose${index}`} className="form__Label-Heading">
+                                                                    Medicine Evening Dose
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.eveDose}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineFrequency${index}`} className="form__Label-Heading">
+                                                                    Medicine Frequency
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.frequency}</p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineDuration${index}`} className="form__Label-Heading">
+                                                                    Medicine Duration (Number / Days / Weeks)
+                                                                </label>
+                                                                <p className="form__Heading">
+                                                                    {medicine.durDays} {medicine.duration}
+                                                                </p>
+                                                            </div>
+                                                            <div className="form__Cols--Span-6">
+                                                                <label htmlFor={`medicineSplInstructions${index}`} className="form__Label-Heading">
+                                                                    Medicine Special Instructions
+                                                                </label>
+                                                                <p className="form__Heading">{medicine.specinst}</p>
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ))}
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    )}
-                                
+                                        </div>)}
+
                                 </div>
                             </div>
                             {!LoadingDietLatest && !errorDietLatest && deitChartLatest && (
                                 <div className="p-2">
-                                <div className="relative w-full overflow-hidden">
-                                    <input
-                                        type="checkbox"
-                                        className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                                    />
-                                    <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                                        <h1 className="text-lg font-semibold text-gray-600">
-                                            Medical Information - Latest Diet
-                                            Chart
-                                        </h1>
-                                    </div>
-                                    {/* Down Arrow Icon */}
-                                    <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                                        <FiChevronDown className="w-6 h-6" />
-                                    </div>
-                                    <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                                        <div className="p-4">
-                                            <div className="form__Grid--Cols-6">
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Prescribed Date
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                    {truncate(deitChartLatest.createdAt,11)}
-                                                    </p>
+                                    <div className="relative w-full overflow-hidden">
+                                        <input
+                                            type="checkbox"
+                                            className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
+                                        />
+                                        <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
+                                            <h1 className="text-lg font-semibold text-gray-600">
+                                                Medical Information - Latest Diet
+                                                Chart
+                                            </h1>
+                                        </div>
+                                        {/* Down Arrow Icon */}
+                                        <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                                            <FiChevronDown className="w-6 h-6" />
+                                        </div>
+                                        <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
+                                            <div className="p-4">
+                                                <div className="form__Grid--Cols-6">
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Prescribed Date
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            {truncate(deitChartLatest.createdAt, 11)}
+                                                        </p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Prescribed By
+                                                        </label>
+                                                        <p className="form__Heading">
+                                                            {deitChartLatest.doctorId ? deitChartLatest.doctorId.name : ''}                                                    </p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Low Calories Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.calorie_lower}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            High Clories Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.calorie_upper}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Low Carbohydrates Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.ch_lower}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            High Carbohydrates Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.ch_upper}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Protiens Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.protiens}</p>
+                                                    </div>
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Fats Range
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.fats}</p>
+                                                    </div>
+
+                                                    <div className="form__Cols--Span-6">
+                                                        <label
+                                                            htmlFor="prescribedBy"
+                                                            className="form__Label-Heading"
+                                                        >
+                                                            Food Cusine
+                                                        </label>
+                                                        <p className="form__Heading">{deitChartLatest.cuisine_type}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Prescribed By
-                                                    </label>
-                                                    <p className="form__Heading">
-                                                    {deitChartLatest.doctorId ? deitChartLatest.doctorId.name : ''}                                                    </p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Low Calories Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.calorie_lower}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        High Clories Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.calorie_upper}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Low Carbohydrates Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.ch_lower}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        High Carbohydrates Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.ch_upper}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Protiens Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.protiens}</p>
-                                                </div>
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Fats Range
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.fats}</p>
-                                                </div>
-                                              
-                                                <div className="form__Cols--Span-6">
-                                                    <label
-                                                        htmlFor="prescribedBy"
-                                                        className="form__Label-Heading"
-                                                    >
-                                                        Food Cusine
-                                                    </label>
-                                                    <p className="form__Heading">{deitChartLatest.cuisine_type}</p>
-                                                </div>
+
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             )}
                             <div className="p-2">
                                 <div className="relative w-full overflow-hidden">
@@ -1128,85 +1112,85 @@ const prescriptionPatient = useSelector(
                                 <button
                                     type="button"
                                     className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                                    // data-bs-toggle="modal"
-                                    // data-bs-target="#modalPrescription"
-                                    
+                                // data-bs-toggle="modal"
+                                // data-bs-target="#modalPrescription"
+
                                 >
                                     Create Prescription
                                 </button>
                                 <div className="p-4">
-                                <div className="relative w-full overflow-hidden">
-                                    <input
-                                        type="checkbox"
-                                        className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
-                                    />
-                                    <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
-                                        <h1 className="text-lg font-semibold text-gray-600">
-                                            Medical Information - Prescription
-                                        </h1>
-                                    </div>
-                                    {/* Down Arrow Icon */}
-                                    <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
-                                        <FiChevronDown className="w-6 h-6" />
-                                    </div>
-                                    <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
-                                    <form onSubmit={createPrescriptionHandler}>
-                <div className="overflow-auto h-[33rem]">
-                {medicines.map((medicine,i)=><>
-                  <div className={`${i>0 ? 'mt-3':''} mb-2`}>
-                <div className="form__Grid--Cols-6">
-                {i===0 ?<><div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="prescribedBy"
-                      className="form__Label-Heading"
-                    >
-                      Doctor Name
-                    </label>
-                    <p className="form__Heading">Rajiv Singla</p>
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="prescribedDate"
-                      className="form__Label-Heading"
-                    > 
-                      Prescribed Date
-                    </label>
-                    <p className="form__Heading">24-11-2022</p>
-                  </div></> :<><span className="form__Cols--Span-6">Medicine {i+1}</span>
-                  <span className="form__Cols--Span-6"></span>
-                  </>}
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineType"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Type
-                    </label>
-                    <select
-                      name=""
-                      //value={medType}
-                      id=""
-                    //  onChange={(e) => {setMedType({...medType, [medicine]: e.target.value})}}
-                     onChange={(e) => {
-                      const key ='medType'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                    >
-                      <option value="none">Please select</option>
-                      <option value="Tablet">Tablet</option>
-                      <option value="Tab">Tab</option>
-                      <option value="Injection">Injection</option>
-                      <option value="Injection by pen">Injection by pen</option>
-                      <option value="Sachet">Sachet</option>
-                      <option value="Rotacap">Rotacap</option>
-                      <option value="TAB">TAB</option>
-                      <option value="Ointment">Ointment</option>
-                      <option value="Ointment/Cream">Ointment/Cream</option>
-                      <option value="Tablet/Sachet">Tablet/Sachet</option>
-                      <option value="NEBULIZATION">NEBULIZATION</option>
-                    </select>
-                    {/* <Input
+                                    <div className="relative w-full overflow-hidden">
+                                        <input
+                                            type="checkbox"
+                                            className="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-10 cursor-pointer"
+                                        />
+                                        <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
+                                            <h1 className="text-lg font-semibold text-gray-600">
+                                                Medical Information - Prescription
+                                            </h1>
+                                        </div>
+                                        {/* Down Arrow Icon */}
+                                        <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
+                                            <FiChevronDown className="w-6 h-6" />
+                                        </div>
+                                        <div className="bg-white shadow-lg rounded-b-md overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-max">
+                                            <form onSubmit={createPrescriptionHandler}>
+                                                <div className="overflow-auto h-[33rem]">
+                                                    {prescriptions.map((medicine, i) => <>
+                                                        <div key={i} className={`${i > 0 ? 'mt-3' : ''} mb-2`}>
+                                                            <div className="form__Grid--Cols-6">
+                                                                {i === 0 ? <><div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="prescribedBy"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Doctor Name
+                                                                    </label>
+                                                                    <p className="form__Heading">Rajiv Singla</p>
+                                                                </div>
+                                                                    <div className="form__Cols--Span-6">
+                                                                        <label
+                                                                            htmlFor="prescribedDate"
+                                                                            className="form__Label-Heading"
+                                                                        >
+                                                                            Prescribed Date
+                                                                        </label>
+                                                                        <p className="form__Heading">24-11-2022</p>
+                                                                    </div></> : <><span className="form__Cols--Span-6 font-bold">Medicine {i + 1}</span>
+                                                                    <span onClick={() => removeMedicine(i)} className="form__Cols--Span-6 cursor-pointer font-bold">Remove Medicine</span>
+                                                                </>}
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineType"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Type
+                                                                    </label>
+                                                                    <select
+                                                                        name=""
+                                                                        value={prescriptions[i]?.medType || ''}
+                                                                        id=""
+                                                                        //  onChange={(e) => {setMedType({...medType, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'medType'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                    >
+                                                                        <option value="none">Please select</option>
+                                                                        <option value="Tablet">Tablet</option>
+                                                                        <option value="Tab">Tab</option>
+                                                                        <option value="Injection">Injection</option>
+                                                                        <option value="Injection by pen">Injection by pen</option>
+                                                                        <option value="Sachet">Sachet</option>
+                                                                        <option value="Rotacap">Rotacap</option>
+                                                                        <option value="TAB">TAB</option>
+                                                                        <option value="Ointment">Ointment</option>
+                                                                        <option value="Ointment/Cream">Ointment/Cream</option>
+                                                                        <option value="Tablet/Sachet">Tablet/Sachet</option>
+                                                                        <option value="NEBULIZATION">NEBULIZATION</option>
+                                                                    </select>
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineType"
@@ -1216,31 +1200,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Type"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineName"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Name
-                    </label>
-                    <input 
-                    //  value={medName}
-                     // onChange={(e) => {setMedName({...medName, [medicine]: e.target.value})}}
-                     onChange={(e) => {
-                      const key ='medName'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                      id="medicineName"
-                      name="medicineName"
-                      type="text"
-                      autoComplete="medicineName"
-                      required
-                      className="form__Input"
-                      placeholder="Enter Medicine Name"
-                    />
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineName"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Name
+                                                                    </label>
+                                                                    <input
+                                                                        value={prescriptions[i]?.medName || ''}
+                                                                        // onChange={(e) => {setMedName({...medName, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'medName'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineName"
+                                                                        name="medicineName"
+                                                                        type="text"
+                                                                        autoComplete="medicineName"
+                                                                        required
+                                                                        className="form__Input"
+                                                                        placeholder="Enter Medicine Name"
+                                                                    />
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineName"
@@ -1250,31 +1234,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Name"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineMorningDose"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Morning Dose
-                    </label>
-                    <input
-                     // value={mornDose}
-                    //  onChange={(e) => {setMornDose({...mornDose, [medicine]: e.target.value})}}
-                    onChange={(e) => {
-                      const key ='mornDose'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                      id="medicineMorningDose"
-                      name="medicineMorningDose"
-                      type="text"
-                      autoComplete="medicineMorningDose"
-                      required
-                      className="form__Input"
-                      placeholder="Enter Medicine Morning Dose"
-                    />
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineMorningDose"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Morning Dose
+                                                                    </label>
+                                                                    <input
+                                                                        value={prescriptions[i]?.mornDose || ''}
+                                                                        //  onChange={(e) => {setMornDose({...mornDose, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'mornDose'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineMorningDose"
+                                                                        name="medicineMorningDose"
+                                                                        type="text"
+                                                                        autoComplete="medicineMorningDose"
+                                                                        required
+                                                                        className="form__Input"
+                                                                        placeholder="Enter Medicine Morning Dose"
+                                                                    />
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineDoseMorning"
@@ -1284,31 +1268,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Morning Dose"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineAfternoonDose"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Afternoon Dose
-                    </label>
-                    <input
-                   //   value={aftDose}  
-                 //  onChange={(e) => {setAftDose({...aftDose, [medicine]: e.target.value})}}
-                 onChange={(e) => {
-                  const key ='aftDose'
-                  handlePrescriptions({e,key,i})
-                }
-                }
-                 id="medicineAfternoonDose"
-                      name="medicineAfternoonDose"
-                      type="text"
-                      autoComplete="medicineAfternoonDose"
-                      required
-                      className="form__Input"
-                      placeholder="Enter Medicine Afternoon Dose"
-                    />
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineAfternoonDose"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Afternoon Dose
+                                                                    </label>
+                                                                    <input
+                                                                        value={prescriptions[i]?.aftDose || ''}
+                                                                        //  onChange={(e) => {setAftDose({...aftDose, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'aftDose'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineAfternoonDose"
+                                                                        name="medicineAfternoonDose"
+                                                                        type="text"
+                                                                        autoComplete="medicineAfternoonDose"
+                                                                        required
+                                                                        className="form__Input"
+                                                                        placeholder="Enter Medicine Afternoon Dose"
+                                                                    />
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineDoseAfternoon"
@@ -1318,31 +1302,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Afternoon Dose"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineEveningDose"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Evening Dose
-                    </label>
-                    <input
-                      //value={eveDose}
-                     // onChange={(e) => {setEveDose({...eveDose, [medicine]: e.target.value})}}
-                     onChange={(e) => {
-                      const key ='eveDose'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                      id="medicineEveningDose"
-                      name="medicineEveningDose"
-                      type="text"
-                      autoComplete="medicineEveningDose"
-                      required
-                      className="form__Input"
-                      placeholder="Enter Medicine Evening Dose"
-                    />
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineEveningDose"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Evening Dose
+                                                                    </label>
+                                                                    <input
+                                                                        value={prescriptions[i]?.eveDose || ''}
+                                                                        // onChange={(e) => {setEveDose({...eveDose, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'eveDose'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineEveningDose"
+                                                                        name="medicineEveningDose"
+                                                                        type="text"
+                                                                        autoComplete="medicineEveningDose"
+                                                                        required
+                                                                        className="form__Input"
+                                                                        placeholder="Enter Medicine Evening Dose"
+                                                                    />
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineDoseEvening"
@@ -1352,38 +1336,38 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Evening Dose"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineFrequency"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Frequency
-                    </label>
-                    <select
-                      name=""
-                      id=""
-                     // value={frquency}
-                     // onChange={(e) => {setFrquency({...frquency, [medicine]: e.target.value})}}
-                     onChange={(e) => {
-                      const key ='frquency'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                    >
-                      <option value="none">Please select</option>
-                      <option value="Daily">Daily</option>
-                      <option value="Alternative day">Alternative day</option>
-                      <option value="Daily/SOS">Daily/SOS</option>
-                      <option value="once every 15 day">
-                        once every 15 day
-                      </option>
-                      <option value="Day 1-21 with a gap of 7 days">
-                        Day 1-21 with a gap of 7 days
-                      </option>
-                      <option value="Dail">Dail</option>
-                    </select>
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineFrequency"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Frequency
+                                                                    </label>
+                                                                    <select
+                                                                        name=""
+                                                                        id=""
+                                                                        value={prescriptions[i]?.frequency || ''}
+                                                                        // onChange={(e) => {setFrquency({...frquency, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'frequency'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                    >
+                                                                        <option value="none">Please select</option>
+                                                                        <option value="Daily">Daily</option>
+                                                                        <option value="Alternative day">Alternative day</option>
+                                                                        <option value="Daily/SOS">Daily/SOS</option>
+                                                                        <option value="once every 15 day">
+                                                                            once every 15 day
+                                                                        </option>
+                                                                        <option value="Day 1-21 with a gap of 7 days">
+                                                                            Day 1-21 with a gap of 7 days
+                                                                        </option>
+                                                                        <option value="Dail">Dail</option>
+                                                                    </select>
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineFrequency"
@@ -1393,31 +1377,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Frequency"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineDurationNumber"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Duration (Number)
-                    </label>
-                    <select
-                      name=""
-                      id=""
-                     // value={duration}
-                   //  onChange={(e) => {setDuration({...duration, [medicine]: e.target.value})}}
-                   onChange={(e) => {
-                    const key ='duration'
-                    handlePrescriptions({e,key,i})
-                  }
-                  }
-                    >
-                      <option value="none">Please select</option>
-                      <option value="Days">Days</option>
-                      <option value="Weeks">Weeks</option>
-                      <option value="Months">Months</option>
-                    </select>
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineDurationNumber"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Duration (Number)
+                                                                    </label>
+                                                                    <select
+                                                                        name=""
+                                                                        id=""
+                                                                        value={prescriptions[i]?.duration || ''}
+                                                                        //  onChange={(e) => {setDuration({...duration, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'duration'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                    >
+                                                                        <option value="none">Please select</option>
+                                                                        <option value="Days">Days</option>
+                                                                        <option value="Weeks">Weeks</option>
+                                                                        <option value="Months">Months</option>
+                                                                    </select>
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineDurationNumber"
@@ -1427,31 +1411,31 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Duration Number"
                onInput={inputHandler}
              /> */}
-                  </div>
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineDurationDays"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Duration (Days / Weeks)
-                    </label>
-                    <input
-                  //  onChange={(e) => {setDurDays({...durDays, [medicine]: e.target.value})}}
-                    //  value={durDays}
-                    onChange={(e) => {
-                      const key ='durDays'
-                      handlePrescriptions({e,key,i})
-                    }
-                    }
-                      id="medicineDurationDays"
-                      name="medicineDurationDays"
-                      type="number"
-                      autoComplete="medicineDurationDays"
-                      required
-                      className="form__Input"
-                      placeholder="Enter Medicine Duration Days"
-                    />
-                    {/* <Input
+                                                                </div>
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineDurationDays"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Duration (Days / Weeks)
+                                                                    </label>
+                                                                    <input
+                                                                        //  onChange={(e) => {setDurDays({...durDays, [medicine]: e.target.value})}}
+                                                                        value={prescriptions[i]?.durDays || ''}
+                                                                        onChange={(e) => {
+                                                                            const key = 'durDays'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineDurationDays"
+                                                                        name="medicineDurationDays"
+                                                                        type="number"
+                                                                        autoComplete="medicineDurationDays"
+                                                                        required
+                                                                        className="form__Input"
+                                                                        placeholder="Enter Medicine Duration Days"
+                                                                    />
+                                                                    {/* <Input
                element="input"
                type="text"
                id="medicineDurationDays"
@@ -1461,34 +1445,35 @@ const prescriptionPatient = useSelector(
                errorText="Please Enter Valid Medicine Duration Days"
                onInput={inputHandler}
              /> */}
-                  </div>
-                </div>
+                                                                </div>
+                                                            </div>
 
-                <div className="form__Grid--Rows-none">
-                  <div className="form__Cols--Span-6">
-                    <label
-                      htmlFor="medicineSplInstructions"
-                      className="form__Label-Heading"
-                    >
-                      Medicine Special Instructions
-                    </label>
-                    <textarea
-                     //value={specinst}
-                  //   onChange={(e) => {setSpecinst({...specinst, [medicine]: e.target.value})}}
-                  onChange={(e) => {
-                    const key ='specinst'
-                    handlePrescriptions({e,key,i})
-                  }
-                  } 
-                      id="medicineSplInstructions"
-                      name="medicineSplInstructions"
-                      rows="3"
-                      autoComplete="medicineSplInstructions"
-                      required
-                      className="form__Textarea"
-                      placeholder="Enter Medicine Spl Instructions"
-                    ></textarea>
-                    {/* <Input
+                                                            <div className="form__Grid--Rows-none">
+                                                                <div className="form__Cols--Span-6">
+                                                                    <label
+                                                                        htmlFor="medicineSplInstructions"
+                                                                        className="form__Label-Heading"
+                                                                    >
+                                                                        Medicine Special Instructions
+                                                                    </label>
+                                                                    <textarea
+
+                                                                        value={prescriptions[i]?.specinst || ''}
+                                                                        //   onChange={(e) => {setSpecinst({...specinst, [medicine]: e.target.value})}}
+                                                                        onChange={(e) => {
+                                                                            const key = 'specinst'
+                                                                            handlePrescriptions({ e, key, i })
+                                                                        }
+                                                                        }
+                                                                        id="medicineSplInstructions"
+                                                                        name="medicineSplInstructions"
+                                                                        rows="3"
+                                                                        autoComplete="medicineSplInstructions"
+                                                                        required
+                                                                        className="form__Textarea"
+                                                                        placeholder="Enter Medicine Spl Instructions"
+                                                                    ></textarea>
+                                                                    {/* <Input
              id="medicineSplInstructions"
              label="Medicine Spl Instructions"
              placeholder="Enter Medicine Spl Instructions"
@@ -1496,47 +1481,47 @@ const prescriptionPatient = useSelector(
              errorText="Please Enter Special Instructions for usage of Medicines"
              onInput={inputHandler}
            /> */}
-                  </div>
-                </div>
-                </div>
-                </>)}
-                <div ref={scrollRef}></div>
-                </div>
-                <div className="form__Grid--Rows-none">
-                  <div className="form__Cols--Span-6">
-                  <button
-                    type="button"
-                    className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                    onClick={addMedicine}
-                   >
-                    Add More Medicines
-                  </button>
-                  </div>
-                </div>
-                <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-                  <button
-                    type="button"
-                    className="px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                    data-bs-dismiss="modal"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    data-bs-dismiss="modal"
-                    className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                  >
-                    Create &amp; Save Prescription
-                  </button>
-                </div>
-              </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>)}
+                                                    <div ref={scrollRef}></div>
+                                                </div>
+                                                <div className="form__Grid--Rows-none">
+                                                    <div className="form__Cols--Span-6">
+                                                        <button
+                                                            type="button"
+                                                            className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                                                            onClick={addMedicine}
+                                                        >
+                                                            Add More Medicines
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+                                                    <button
+                                                        type="button"
+                                                        className="px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                                                        data-bs-dismiss="modal"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        type="submit"
+                                                        data-bs-dismiss="modal"
+                                                        className="px-6 py-2.5 bg-teal-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-teal-700 hover:shadow-lg focus:bg-teal-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-teal-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                                                    >
+                                                        Create &amp; Save Prescription
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            </div>
-        
+
                             <div className="p-4">
-                            <p className="form__Heading">Add Multi Prescription Form Here When Create Button is Clicked </p>
+                                <p className="form__Heading">Add Multi Prescription Form Here When Create Button is Clicked </p>
                             </div>
                         </div>
                         <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">

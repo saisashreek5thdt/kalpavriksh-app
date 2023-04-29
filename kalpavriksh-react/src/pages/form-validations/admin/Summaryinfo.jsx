@@ -1,116 +1,138 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import { CSVLink } from "react-csv";
-
-
+import { Url } from "../../../constant.js/PatientConstant";
+import Papa from 'papaparse';
+import { useSelector } from "react-redux";
 
 const Summaryinfo = () => {
-  const doctors= [
-      {
-        "name": "Dr. Suha",
-        "primaryPatients": 150,
-        "secondaryPatients": 48,
-        "programs": [
-          {
-            "programName": "Program 1",
-            "activePatients": 150,
-            "newPatients": 48
-          },
-          {
-            "programName": "Program 2",
-            "activePatients": 78,
-            "newPatients": 14
-          }
-        ]
-      },
-      {
-        "name": "Dr. John",
-        "primaryPatients": 100,
-        "secondaryPatients": 32,
-        "programs": [
-          {
-            "programName": "Program 3",
-            "activePatients": 100,
-            "newPatients": 32
-          },
-          {
-            "programName": "Program 4",
-            "activePatients": 60,
-            "newPatients": 12
-          }
-        ]
-      },
-      {
-        "name": "Dr. Sarah",
-        "primaryPatients": 75,
-        "secondaryPatients": 20,
-        "programs": [
-          {
-            "programName": "Program 5",
-            "activePatients": 75,
-            "newPatients": 20
-          },
-          {
-            "programName": "Program 6",
-            "activePatients": 40,
-            "newPatients": 8
-          }
-        ]
-      }
-    ]
-    const transformedData = doctors.map(doctor => {
-      const doctorObj = {
-        "Doctor Name": doctor.name,
-        "Primary Patients": doctor.primaryPatients,
-        "Secondary Patients": doctor.secondaryPatients
-      };
-    
-      doctor.programs.forEach(program => {
-        doctorObj[program.programName] = "Yes";
-        doctorObj[`${program.programName}_activePatients`] = program.activePatients;
-        doctorObj[`${program.programName}_newPatients`] = program.newPatients;
-      });
-    
-      return doctorObj;
-    });
-    console.log("transformed_data",transformedData)
-    const headers = [
-      { label: 'Doctor Name', key: 'Doctor Name' },
-      { label: 'Primary Patients', key: 'Primary Patients' },
-      { label: 'Secondary Patients', key: 'Secondary Patients' }
-    ];
-    
-    // Get an array of all program names
-    const programNames = doctors.flatMap(doctor => doctor.programs.map(program => program.programName));
-    console.log("programs",programNames)
-    // Iterate over program names and add them as headers
-    programNames.forEach(programName => {
-      headers.push({ label: programName, key: programName });
-      headers.push({ label: `${programName} Active Patients`, key: `${programName}_activePatients` });
-      headers.push({ label: `${programName} New Patients`, key: `${programName}_newPatients` });
-    });
-    
-  
-   
-  
+  const adminDocInfo = useSelector(state => state.adminSignin.adminDocInfo);
+  const [patientData, setPatientData] = useState();
+  const [patientsPendingPaymentData, setPatientsPendingPaymentData] = useState();
+  const [employeeData, setEmployeeData] = useState();
+  const formatDateString = (dateString) => {
+    const strippedDate = dateString.slice(0, 10);
+    return strippedDate
+  };
 
- const PatientEnrolments =  [
-  {
-    programName: 'Program 1',
-    activePatients: '150',
-    newPatients: '48',
-  },
-  {
-    programName: 'Program 2',
-    activePatients: '100',
-    newPatients: '25',
-  },
-  {
-    programName: 'Program 3',
-    activePatients: '75',
-    newPatients: '10',
-  },
-]
+  //employee-data csv
+  useEffect(() => {
+    if (employeeData) {
+      let employeeCsvData = employeeData;
+      employeeCsvData.forEach((employee) => {
+        employee.programs.forEach((program, index) => {
+          Object.keys(program).forEach((key) => {
+            employee[`program_${index + 1}_${key}`] = program[key];
+          });
+        });
+
+        delete employee.programs
+      });
+
+      const csvData = Papa.unparse(employeeCsvData);
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+      // Create a temporary anchor element to download the CSV file
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "patient.csv";
+      link.click();
+    }
+  }, [employeeData])
+  const fetchEmployeeData = async () => {
+
+    fetch(`${Url}/summary/employee-data`, {
+      headers: {
+        Authorization: `Bearer ${adminDocInfo.token}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => setEmployeeData(data?.data))
+      .catch(error => console.error(error))
+
+  }
+  //employye-data csv
+
+
+
+  // patient-data csv
+  useEffect(() => {
+    if (patientData) {
+      const patientCsvData = patientData.planDetails
+
+      const csvData = Papa.unparse(patientCsvData);
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+      // Create a temporary anchor element to download the CSV file
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "patient.csv";
+      link.click();
+    }
+  }, [patientData]);
+
+
+
+  const downloadpatientData = () => {
+    fetch(`${Url}/summary/patient-data`, {
+      headers: {
+        Authorization: `Bearer ${adminDocInfo.token}`,
+      },
+    })
+      .then(response => response.json())
+      .then(data => setPatientData(data?.data))
+      .catch(error => console.error(error));
+
+
+
+  }
+  // patient-data csv
+
+  // pending-payment csv
+  useEffect(() => {
+    if (patientsPendingPaymentData) {
+      const modifiedPatientsPendingPaymentData = patientsPendingPaymentData?.map((patient) => ({
+        ...patient,
+        healthPlanStartDate: formatDateString(patient.health_plan_date?.startDate),
+        healthPlanId: patient.health_plan?._id,
+        healthPlanName: patient.health_plan?.name,
+        healthPlanEndDate: formatDateString(patient.health_plan_date?.endDate),
+        dob: formatDateString(patient?.dob),
+        payment_date: formatDateString(patient?.payment_date),
+        next_payment_date: formatDateString(patient?.next_payment_date),
+        createdOn: formatDateString(patient?.createdOn),
+        primaryTeamIds: JSON.stringify(patient?.primaryTeamIds),
+        secondaryTeamIds: JSON.stringify(patient?.secondaryTeamIds),
+        observations: JSON.stringify(patient?.observations),
+      }));
+
+      const patientCsvData = modifiedPatientsPendingPaymentData?.map(({ __v, health_plan_date, health_plan, ...rest }) => rest); // remove __v property from each object
+      const csvData = Papa.unparse(patientCsvData);
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+      // Create a temporary anchor element to download the CSV file
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "patientsPendingPaymentData.csv";
+      link.click();
+      // document.body.removeChild(link);
+    }
+  }, [patientsPendingPaymentData]);
+
+  const downloadPatientsPendingPaymentData = async () => {
+    try {
+      const response = await fetch(`${Url}/summary/payment-pendings`, {
+        headers: {
+          Authorization: `Bearer ${adminDocInfo.token}`,
+        },
+      });
+      const data = await response.json();
+      setPatientsPendingPaymentData(data?.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // pending payment csv
   let navigate = useNavigate();
 
   return (
@@ -125,14 +147,15 @@ const Summaryinfo = () => {
             {/* Some quick example text to build on the card title and make up the
             bulk of the card's content. */}
           </p>
-          {/* <CSVLink data={PatientEnrolments} filename={"PatientEnrolments.csv"}> */}
-            <button
-              type="button"
-              className="card__Btn card__Bg--Red card__Btn--Bg-Red"
-            >
-              Download CSV 
-            </button>
-          {/* </CSVLink> */}
+
+          <button
+            // disabled={!patientsPendingPaymentData}
+            onClick={downloadPatientsPendingPaymentData}
+            type="button"
+            className="card__Btn card__Bg--Red card__Btn--Bg-Red"
+          >
+            Download CSV
+          </button>
         </div>
         <div className="card__Block">
           <h5 className="card__Heading">
@@ -145,14 +168,16 @@ const Summaryinfo = () => {
             {/* Some quick example text to build on the card title and make up the
             bulk of the card's content. */}
           </p>
-          <CSVLink data={PatientEnrolments} filename={"PatientEnrolments.csv"}>
-            <button
-              type="button"
-              className="card__Btn card__Bg--Red card__Btn--Bg-Red"
-            >
-              Download CSV 
-            </button>
-          </CSVLink>
+
+          <button
+            // disabled={!patientData}
+            onClick={downloadpatientData}
+            type="button"
+            className="card__Btn card__Bg--Red card__Btn--Bg-Red"
+          >
+            Download CSV
+          </button>
+
           <button
             type="button"
             className="card__Btn card__Btn--Gap-1 card__Bg--Teal card__Btn--Bg-Teal"
@@ -174,14 +199,15 @@ const Summaryinfo = () => {
             {/* Some quick example text to build on the card title and make up the
             bulk of the card's content. */}
           </p>
-          <CSVLink data={transformedData} headers={headers} filename={"doctors.csv"}>
-            <button
-              type="button"
-              className="card__Btn card__Bg--Red card__Btn--Bg-Red"
-            >
-              Download CSV 
-            </button>
-          </CSVLink>
+
+          <button
+            onClick={fetchEmployeeData}
+            type="button"
+            className="card__Btn card__Bg--Red card__Btn--Bg-Red"
+          >
+            Download CSV
+          </button>
+
           <button
             type="button"
             className="card__Btn card__Btn--Gap-2 card__Bg--Cyan card__Btn--Bg-Cyan"

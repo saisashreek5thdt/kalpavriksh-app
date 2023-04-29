@@ -89,7 +89,7 @@ export const patientListReducer = (state = { loading:true,patients:[] }, action)
   }
 };
 
-export const patientUpdateReducer = (state = {}, action) => {
+export const patientUpdateReducer = (state = {loading:true,success:false}, action) => {
   switch (action.type) {
     case UPDATE_PATIENT_REQUEST:
       return { loading: true };

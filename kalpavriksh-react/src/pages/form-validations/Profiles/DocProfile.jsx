@@ -1,19 +1,25 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getDoctorProfile } from "../../../action/DoctorAction";
 import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 import Navbar from "../../../user/shared/Navbar";
+import { listPatients } from "../../../action/PatientAction";
 
 const DocProfile = () => {
   const navigate = useNavigate();
+  const [paidCount, setPaidCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const doctorProfileList=useSelector(state=>state.doctorProfileList)
   const {loading,error,profile}=doctorProfileList
+  const patientList = useSelector((state) => state.patientList);
+  const {  patients } = patientList;
   const dispatch=useDispatch()
   useEffect(()=>{
     dispatch(getDoctorProfile())
+    dispatch(listPatients());
   },[dispatch])
   const backFunc = () => {
     navigate("/userrole/:roleid/dashboard/doctor/");
@@ -21,6 +27,18 @@ const DocProfile = () => {
   // if(profile){
   //   console.log(profile);
   // }
+  useEffect(() => {
+    setTotalCount(patients?.length);
+    patients?.forEach((patient) => {
+      if (
+        !patient.next_payment_date ||
+        new Date(patient.next_payment_date) < new Date()
+      ) {
+      } else {
+        setPaidCount((count) => count + 1);
+      }
+    });
+  }, [patientList, patients]);
   return (
     <>
       <div className="dashboard__Container">
@@ -123,7 +141,7 @@ const DocProfile = () => {
                           Count of Patients (Overall)
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          68
+                        {totalCount}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

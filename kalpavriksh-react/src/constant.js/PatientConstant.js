@@ -1,7 +1,9 @@
 // export const Url = 'https://mydoctor-app.herokuapp.com/api/v1'
 // export const Url = 'https://doctor-app-backend-production.up.railway.app/api/v1'
 export const Url='https://doctor-app-backend-production-ffc1.up.railway.app/api/v1'
-
+// export const Url='http://localhost:5000/api/v1'
+//export const Url='https://doctor-app-backend-production-ffc1.up.railway.app/api/v1'
+//export const Url='https://doctor-app-backend-production-ffc1.up.railway.app/api/v1'
 
 export const REGISTER_USER_REQUEST ='REGISTER_USER_REQUEST'
 export const REGISTER_USER_SUCCESS ='REGISTER_USER_SUCCESS'

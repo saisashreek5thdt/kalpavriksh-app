@@ -20,39 +20,43 @@ import { Url } from "../../../constant.js/PatientConstant";
 import axios from "axios";
 import Creatable from 'react-select/creatable';
 const PatientHealthInfo = () => {
-  const initialEndingDate= new Date().setMonth(11)
+  const initialEndingDate = new Date().setMonth(11)
   // const [height, setHeight] = useState("");
   // const [weight, setWeight] = useState("");
   // const [caretakerName, setCaretakerName] = useState("");
   // const [relation, setRelation] = useState("");
   // const [caretakerNumber, setCaretakerNumber] = useState("");
   // const [caretakerTime, setCaretakerTime] = useState("");
-  const [healthPlans, setHealthPlans] = useState([]);
+  const [primaryTeam, setPrimaryTeam] = useState([]);
+  const [secondaryTeam, setSecondaryTeam] = useState([]);
   const [value, setValue] = useState({
     startDate: new Date(),
     endDate: new Date(initialEndingDate).toISOString(),
-});
+  });
 
-const handleValueChange = (newValue) => {
+  const handleValueChange = (newValue) => {
     console.log("newValue:", newValue);
-    setValue({startDate: new Date(newValue.startDate).toISOString(), endDate: new Date(newValue.endDate).toISOString()});
-};
+    setValue({ startDate: new Date(newValue.startDate).toISOString(), endDate: new Date(newValue.endDate).toISOString() });
+  };
   // const [planDate, setPlanDate] = useState("");
   const [options, setOptions] = useState([""]);
   const location = useLocation();
   const { phone, name, email, dob, gender } = location.state;
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
+  const [healthPlanOptions, setHealthPlanOptions] = useState([]);
+  const [optionsError, setOptionsError] = useState(null);
   const doctorSignin = useSelector((state) => state.doctorSignin);
-  const {doctorInfo } = doctorSignin;
+  const { doctorInfo } = doctorSignin;
   // console.log(doctorInfo,'info');
   // console.log(healthPlans,'pl');
- const  handleChange = (selectedOptions) => {
-  const value=  selectedOptions.filter((e)=>e.id)
-    setHealthPlans({ selectedOptions });
-    // console.log(selectedOptions,'hea');
-  }
+  const handlePrimaryTeamChange = (selectedOptions) => {
+    setPrimaryTeam(selectedOptions);
+  };
 
+  const handleSecondaryTeamChange = (selectedOptions) => {
+    setSecondaryTeam(selectedOptions);
+  };
   const [formState, inputHandler, setFormData] = useForm(
     {
       height: {
@@ -84,17 +88,36 @@ const handleValueChange = (newValue) => {
         isValid: false,
       },
       planDate: {
-        value: {},
-        isValid: false,
-      },
-      patientTeam: {
-        value: "",
+        value: value,
         isValid: false,
       },
     },
     false
   );
+  async function fetchData() {
+    try {
+      const response = await fetch(`${Url}/health-plan`, {
+        headers: {
+          Authorization: `Bearer ${doctorInfo.token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const json = await response.json();
+      setHealthPlanOptions([
+        { value: 'Please Select Health Plan', label: "Please Select Health Plan" },
+        ...(json?.data.flatMap((opt) => ({ id: opt._id, value: opt.name })))
 
+      ]);
+    } catch (err) {
+      setOptionsError(err.message);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log('----->', healthPlanOptions)
   const relationOptions = [
     { value: "Please Select Caretaker Relation" },
     { value: "Father" },
@@ -108,22 +131,22 @@ const handleValueChange = (newValue) => {
     { value: "Spouse" },
   ];
 
-  const healthPlanOptions = [
-    { value: "Please Select Health Plan" },
-    { value: "Plan A" ,label:'Plan A'},
-    { value: "TeaPlanm B" ,label:'Plan B'},
-    { value: "TeaPlanm C" ,label:'Plan C'},
-    { value: "Plan D" ,label:'Plan D'}
-  ];
+  // const healthPlanOptions = [
+  //   { value: "Please Select Health Plan" },
+  //   { value: "Plan A", label: 'Plan A' },
+  //   { value: "TeaPlanm B", label: 'Plan B' },
+  //   { value: "TeaPlanm C", label: 'Plan C' },
+  //   { value: "Plan D", label: 'Plan D' }
+  // ];
 
 
 
   const healthTeamOptions = [
     { value: "Please Select Health Team" },
-    { value: "Team A" ,label:'Team A'},
-    { value: "Team B" ,label:'Team B'},
-    { value: "Team C" ,label:'Team C'},
-    { value: "Team D" ,label:'Team D'}
+    { value: "Team A", label: 'Team A' },
+    { value: "Team B", label: 'Team B' },
+    { value: "Team C", label: 'Team C' },
+    { value: "Team D", label: 'Team D' }
   ];
 
   let navigate = useNavigate();
@@ -135,7 +158,7 @@ const handleValueChange = (newValue) => {
     const isAllValid = Object.values(formState.inputs).every(
       (input) => input.isValid
     );
-  
+
     if (!isAllValid) {
       alert("Please fill all the fields.");
       return;
@@ -172,11 +195,7 @@ const handleValueChange = (newValue) => {
           isValid: false,
         },
         planDate: {
-          value: {},
-          isValid: false,
-        },
-        patientTeam: {
-          value: "",
+          value: value,
           isValid: false,
         },
       },
@@ -185,65 +204,66 @@ const handleValueChange = (newValue) => {
 
 
 
-    
+
     const height = formState.inputs.height.value
     const weight = formState.inputs.weight.value
     const caretakerName = formState.inputs.caretakerName.value
     const relation = formState.inputs.relation.value
     const caretakerNumber = formState.inputs.caretakerNumber.value
     const caretakerTime = formState.inputs.caretakerTime.value
-    const healthPlan = healthPlans
-    const planDate = formState.inputs.planDate.value 
-    const patientTeam = formState.inputs.patientTeam.value
-    console.log('----',formState,formState.inputs)
+    // const healthPlan = healthPlans
+    const healthPlan = formState.inputs.healthPlan.value
+    const planDate = formState.inputs.planDate.value
+    console.log('----', formState, formState.inputs)
     // console.log(formState)
     // if(height === '' || weight === '' || caretakerName === '' || relation === '' || caretakerNumber === '' || caretakerTime === '' || healthPlan === '' || planDate === '' || patientTeam === ''  ){
     //   alert('please fill all the fields')
     // }else{
-      navigate("/userrole/:roleid/dashboard/doctor/enrol/personalinfo/", {
-        state: {
-          phone,
-          name,
-          email,
-          dob,
-          gender,
-          height,
-          weight,
-          caretakerName,
-          relation,
-          caretakerNumber,
-          caretakerTime,
-          healthPlan,
-          planDate,
-          patientTeam,
-        },
-      });
+    navigate("/userrole/:roleid/dashboard/doctor/enrol/personalinfo/", {
+      state: {
+        phone,
+        name,
+        email,
+        dob,
+        gender,
+        height,
+        weight,
+        caretakerName,
+        relation,
+        caretakerNumber,
+        caretakerTime,
+        healthPlan,
+        planDate,
+        primaryTeam,
+        secondaryTeam
+      },
+    });
     // }  
   };
- 
-  
-const dispatch=useDispatch()
-  useEffect(()=>{
-    const user='doctor'
+
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const user = 'doctor'
     dispatch(getAllDoctors(user))
-  },[])
+  }, [])
   // const handleInputChange = value => {
   //   console.log(value,'vl');
   // };
- 
+
 
   const fetchUsers = () => {
-    return  axios.get(`${Url}/doctors/get-all`, {
-     headers: {
-       Authorization: `Bearer ${doctorInfo.token}`,
-     },
-   }).then(function (response) {
-     const res =  response.data.data;
-     return res;
-   
-   })    
-       
-   }
+    return axios.get(`${Url}/doctors/get-all`, {
+      headers: {
+        Authorization: `Bearer ${doctorInfo.token}`,
+      },
+    }).then(function (response) {
+      const res = response.data.data;
+      return res;
+
+    })
+
+  }
 
   //  useEffect(() => {
   //   const getData = async () => {
@@ -375,19 +395,20 @@ const dispatch=useDispatch()
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                        
+
                             <Select
                               element="select"
                               id="relation"
                               label="Select Relation"
                               options={relationOptions}
+
                               validators={[VALIDATOR_REQUIRE()]}
                               errorText="Please Select Your Relationship"
                               onInput={inputHandler}
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                          
+
                             <Input
                               element="input"
                               type="text"
@@ -400,9 +421,9 @@ const dispatch=useDispatch()
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                     
+
                             <Input
-                            
+
                               element="input"
                               type="time"
                               label="Caretakers Preferred Time"
@@ -414,90 +435,50 @@ const dispatch=useDispatch()
                             />
                           </div>
                           <div className="form__Cols--Span-6">
-                            {/*
-                            <label
-                              htmlFor="health-plan"
-                              className="form__Label-Heading"
-                            >
-                              Health Plan
-                            </label>
-                            <select
-                              required
-                              onChange={(e) => setHealthPlan(e.target.value)}
-                              id="health-plan"
-                              name="health-plan"
-                              autoComplete="health-plan-name"
-                              className="form__Select"
-                            >
-                              <option>Select Health Plan</option>
-                              <option value="plan A">Plan A</option>
-                              <option value="plan B">Plan B</option>
-                              <option>Plan C</option>
-                              <option>Plan D</option> 
-                            </select>
-                            */}
+                            <>
+                              <label>Select Primary Health Team</label>
+                              <AsyncSelect
+                                cacheOptions
+                                defaultOptions
+                                getOptionLabel={e => e.name}
+                                getOptionValue={e => e._id}
+                                loadOptions={fetchUsers}
+                                onChange={handlePrimaryTeamChange}
+                                isMulti
+                              />
+                            </>
+                          </div>
+                          <div className="form__Cols--Span-6">
+                            <>
+                              <label>Select Secondary Health Team</label>
+                              <AsyncSelect
+                                cacheOptions
+                                defaultOptions
+                                getOptionLabel={e => e.name}
+                                getOptionValue={e => e._id}
+                                loadOptions={fetchUsers}
+                                onChange={handleSecondaryTeamChange}
+                                isMulti
+                              />
+                            </>
+                          </div>
+                          <div className="form__Cols--Span-6">
+
                             <Select
                               element="select"
                               id="healthPlan"
                               label="Select Health Plan"
                               options={healthPlanOptions}
+                              healthPlanOptions={healthPlanOptions}
                               validators={[VALIDATOR_REQUIRE()]}
                               errorText="Please Select Health Plan"
                               onInput={inputHandler}
                             />
-                            {/* <label>Select Health Plan</label>
-                            <Selects onChange={handleChange} isMulti isClearable options={healthPlanOptions} /> */}
                           </div>
-                          <div className="form__Cols--Span-6">
-                            {/*
-                            <label
-                              htmlFor="plan-date"
-                              className="form__Label-Heading"
-                            >
-                              Health Plan Date (Start + End)
-                            </label>
-                            <input
-                              onChange={(e) => setPlanDate(e.target.value)}
-                              type="date"
-                              required
-                              name="plan-date"
-                              id="plan-date"
-                              autoComplete="given-name"
-                              className="form__Input"
-                            />
-                            */}
-                           {/* {!loading && !error && doctors &&( */}
-                            <>
-                            <label>Select Health Team</label>
-                            {/* <Creatable
-                              placeholder= "Select an individual"
-                              options={options}
-                              isMulti
-                              handleChange={handleChange}
-                              onInputChange={handleInputChange}
-                              noOptionsMessage={() => "name not found"}
-                            ></Creatable> */}
-                            {/* <Select onChange={handleChange} isMulti isClearable 
-                     
-                            options={options}
-                          
-                            /> */}
-                               <AsyncSelect
-                                cacheOptions
-                                defaultOptions
-                              // value={selectedValue}
-                              getOptionLabel={e => e.name}
-                              getOptionValue={e => e._id}
-                              loadOptions={fetchUsers}
-                              // onInputChange={handleInputChange}
-                              onChange={handleChange}
-                              isMulti
-                             // onInput={inputHandler}
-                            />
-                            </>
-                           {/* )} */}
-                          
-                          </div>
+
+
+
+
                           <div className="form__Cols--Span-6">
                             {/*
                             <label
@@ -530,7 +511,7 @@ const dispatch=useDispatch()
                               errorText="Please Select Health Team"
                               onInput={inputHandler}
                             /> */}
-                               {/* <Input
+                            {/* <Input
                               element="input"
                               type="date"
                               label="Health Plan Date (Start + End)"
@@ -541,28 +522,17 @@ const dispatch=useDispatch()
                               onInput={inputHandler}
                             /> */}
                             <Input
-                            element="input"
-                            type="time"
-                            label="Health Plan Date (Start + End)"
-                            id="planDate"
-                            placeholder="Health Plan Date (Start + End)"
-                            validators={[VALIDATOR_MINLENGTH(1)]}
-                            errorText="Please Select Valid Dates"
-                            onInput={inputHandler}
-                            value={value}
-                            >
-                            <Datepicker
-                                id=""
-                                primaryColor={"blue"}
-                                placeholder={"Health Plan Date (Start + End)"}
-                                value={value}
-                                onChange={
-                                    handleValueChange
-                                }
-                                showShortcuts={true}
-                                inputClassName="text-slate-500 font-semibold shadow-sm"
+                              element="datepicker"
+                              type="time"
+                              label="Health Plan Date (Start + End)"
+                              id="planDate"
+                              placeholder="Health Plan Date (Start + End)"
+                              validators={[VALIDATOR_REQUIRE()]}
+                              errorText="Please Select Valid Dates"
+                              onInput={inputHandler}
+                              value={value}
                             />
-                            </Input>                            
+
                           </div>
                         </div>
                       </div>
