@@ -18,6 +18,7 @@ import {
   CREATE_DOCTOR_RESET,
   DEACTIVATE_DOCTOR_RESET,
 } from "../../../constant.js/AdminConstant";
+import { json } from "react-router-dom";
 
 const AccessControl = () => {
   const [name, setName] = useState("");
@@ -75,7 +76,7 @@ const AccessControl = () => {
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       errors.email = 'Invalid email address';
     }
-    if (!number.trim()) {
+    if (!JSON.stringify(number).trim()) {
       errors.number = '*Number is required';
     } else {
       errors.number = ''
@@ -94,6 +95,7 @@ const AccessControl = () => {
       setFormErrors(errors);
     } else {
       dispatch(editDoctor(editDocId, name, role, email, number, regId))
+      setEditDocId('')
     }
   }
   const submitHandler = (e) => {
@@ -540,7 +542,7 @@ const AccessControl = () => {
                   Cancel
                 </button>
                 <button onClick={editDocHandler}
-                  // data-bs-dismiss="modal" 
+                  data-bs-dismiss="modal"
                   className="modal__Btn--Teal">
                   UPDATE
                 </button>
