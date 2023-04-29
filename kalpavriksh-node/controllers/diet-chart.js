@@ -1,6 +1,8 @@
 const DietChart = require('../models/DietChart')
 const Patient = require('../models/Patient');
 
+const { getCurrentDate } = require('../utils/currentDate');
+
 module.exports.addDietChart = async (req, res) => {
     try {
 
@@ -14,6 +16,7 @@ module.exports.addDietChart = async (req, res) => {
             fats: req.body.fats,
             food_type: req.body.food,
             cuisine_type: req.body.cuisine_type,
+            createdOn: getCurrentDate(),
             file: "sample link"
         })
 

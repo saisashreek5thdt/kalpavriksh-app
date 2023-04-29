@@ -1,6 +1,7 @@
 const Doctor = require('../models/Doctor')
 
-const { getFormatDate } = require('../utils/common');
+const { getCurrentDate } = require('../utils/currentDate');
+
 
 module.exports.addDoctor = async (req, res) => {
     try {
@@ -12,7 +13,7 @@ module.exports.addDoctor = async (req, res) => {
             })
         }
         const newDoctor = new Doctor({
-            createdOn: getFormatDate(new Date),
+            createdOn: getCurrentDate(),
             ...req.body
         });
 

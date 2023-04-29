@@ -1,7 +1,7 @@
 const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
 const Form = require('../models/Form');
-const DietChart = require('../models/DietChart')
+const DietChart = require('../models/DietChart');
 
 module.exports.patient = async (req, res) => {
     try {
@@ -29,14 +29,14 @@ module.exports.patient = async (req, res) => {
 module.exports.doctor = async (req, res) => {
     try {
         const doctor = await Doctor.findById(req.user.id);
-        const patients = await Patient.find({doctors: req.user.id}).select("doctors");
-        let primary_patients = 0;
-        patients.map((p) => {
-            if(p.doctors[0] == req.user.id) {
-                primary_patients ++;
-            }
-        })
-
+        const patients = await Patient.find({
+            $or: [
+                { primaryTeamIds: { $in: [req.user.id] } },
+                { secondaryTeamIds: { $in: [req.user.id] } }
+              ]
+        });
+        console.log(req.user.id);
+        console.log(patients);
         const forms = await Form.find({ doctorId: req.user.id }).count();
         const diet_charts = await DietChart.find({ doctorId: req.user.id }).count();
 
@@ -46,8 +46,8 @@ module.exports.doctor = async (req, res) => {
             data: {
                 doctor: doctor,
                 total_patients: patients.length,
-                primary_patients,
-                secondary_patients: patients.length - primary_patients,
+                primary_patients: await Patient.find({ primaryTeamIds: req.user.id}).count(),
+                secondary_patients: await Patient.find({ secondaryTeamIds: req.user.id}).count(),
                 forms,
                 diet_charts
             }

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const Patient = new mongoose.Schema({
-    doctors: [String],
+    primaryTeamIds: [String],
+    secondaryTeamIds: [String],
     patientId: {
         type: String,
     },
@@ -50,7 +51,8 @@ const Patient = new mongoose.Schema({
         type: String
     },
     health_plan: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "healthplan"
     },
     health_plan_date: {
         startDate: Date,
@@ -78,7 +80,8 @@ const Patient = new mongoose.Schema({
         createdOn: Date,
     }],
     otp: String,
-    otpExpiresIn: String
-}, {timestamps: true})
+    otpExpiresIn: String,
+    createdOn: Date,
+})
 
 module.exports = mongoose.model('patient', Patient)

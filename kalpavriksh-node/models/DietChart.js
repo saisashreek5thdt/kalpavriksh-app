@@ -9,15 +9,16 @@ const DietChart = new mongoose.Schema({
     calorie_upper: Number,
     ch_lower: Number,
     ch_upper: Number,
-    protiens: String,
-    fats: String,
+    protiens: Number,
+    fats: Number,
     food_type: String,
     cuisine_type: String,
     file: String,
+    createdOn: Date,
     status: {
         type: String,
         default: "Active" //De-Active
     },
-}, {timestamps: true})
+})
 
 module.exports = mongoose.model('diet-chart', DietChart)

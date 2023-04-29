@@ -91,6 +91,9 @@ module.exports.login = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "OTP had send to your mailid and phone number",
+            data: {
+                user_id: user.id
+            }
         })
     } catch (err) {
         console.log(err.message)
@@ -141,7 +144,7 @@ module.exports.submitOtp = async (req, res) => {
                 success: true,
                 message: "Login successfull",
                 status: user.status,
-                user: req.body.user,
+                user: user,
                 token
               });
             }

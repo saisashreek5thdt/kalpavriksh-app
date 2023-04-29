@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { addPatient, getAllPatients, getPatient, editPatient, addDoctor } = require('../controllers/patient/patient');
+const { addPatient, getAllPatients, getPatient, editPatient, addDoctor } = require('../controllers/patient');
 const doctor = require('../controllers/doctor');
 const dietChart = require('../controllers/diet-chart');
 const form = require('../controllers/form');

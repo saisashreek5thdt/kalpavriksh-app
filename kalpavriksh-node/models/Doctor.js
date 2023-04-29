@@ -11,9 +11,9 @@ const Doctor = new mongoose.Schema({
         type: String,
         default: "Active" //De-Active
     },
-    createdOn: Date,
     otp: String,
-    otpExpiresIn: String
+    otpExpiresIn: String,
+    createdOn: Date,
 })
 
 module.exports = mongoose.model('doctor', Doctor)

@@ -1,12 +1,15 @@
 const Form = require('../models/Form');
 
+const { getCurrentDate } = require('../utils/currentDate');
+
 module.exports.addForm = async (req, res) => {
     try {
 
         const newForm  = new Form({
             doctorId: req.user.id,
             form_title: req.body.form_title,
-            questions: req.body.questions
+            questions: req.body.questions,
+            createdOn: getCurrentDate()
         })
 
         await newForm.save()
@@ -72,6 +75,7 @@ module.exports.submitForm = async (req, res) => {
                         }
                     }
             }
+            if(!form.answered) form.answered = true
             await form.save();
     
             return res.status(200).json({

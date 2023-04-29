@@ -40,14 +40,17 @@ const FormSchema = new mongoose.Schema({
                     required: true,
                     unique: true
                 },
-                data: [String]
+                data: {
+                    type: mongoose.Schema.Types.Mixed
+                }
             }]
         },
     ],
+    createdOn: Date,
     status: {
         type: String,
         default: "Active" //De-Active
     },
-}, {timestamps: true})
+})
 
 module.exports = mongoose.model('form', FormSchema)

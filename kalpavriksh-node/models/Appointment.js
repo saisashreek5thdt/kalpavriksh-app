@@ -15,7 +15,8 @@ const Appointment = new mongoose.Schema({
     },
     invitation: {
         type: mongoose.Schema.Types.Mixed,
-    }
+    },
+    createdOn: Date,
 });
 
 module.exports = mongoose.model('appointment', Appointment)

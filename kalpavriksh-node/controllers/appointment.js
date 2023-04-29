@@ -5,6 +5,7 @@ const OAuth2 = google.auth.OAuth2;
 const Appointment = require('../models/Appointment');
 const Doctor = require('../models/Doctor')
 
+const { getCurrentDate } = require('../utils/currentDate');
 const { getFormatDate } = require('../utils/common');
 
 const clientId = process.env.CLIENT_ID;
@@ -68,7 +69,8 @@ module.exports.create = async (req, res) => {
             patientId: req.user.id,
             doctorId: req.body.doctorId,
             date: getFormatDate(req.body.date),
-            invitation: invitation.data
+            invitation: invitation.data,
+            createdOn: getCurrentDate()
         });
 
         await newData.save();
@@ -115,7 +117,7 @@ module.exports.getWithDate = async (req, res) => {
     try {
         
         const appoints = await Appointment.find({doctorId: req.user.id, date: getFormatDate(req.params.date)}).count()
-        console.log(appoints);
+        // console.log(appoints);
         return res.status(200).json({
             success: true,
             message: "Appointments fetched successfully",
