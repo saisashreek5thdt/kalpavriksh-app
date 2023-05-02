@@ -13,6 +13,11 @@ const FormSchema = new mongoose.Schema({
         type: Boolean,
         default: false 
     },
+    form_type: {
+        type: String, //
+        enum: ['daily', 'weekly', 'monthly', 'biweekly']
+    },
+    view_date: Date,
     questions: [
         {
             type: {

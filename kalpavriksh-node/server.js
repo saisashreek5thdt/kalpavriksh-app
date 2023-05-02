@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require('express');
+const cron = require('node-cron');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 });
 
 const connectDB = require('./db')
+const { formType } = require('./functions/formType')
 
 connectDB();
 
@@ -35,7 +37,11 @@ app.get('/', (req, res, ) => {
 //Auth routes
 app.use('/api/v1/auth', require('./routes/auth'));
 
-app.use('/api/v1', require('./routes/index'))
+app.use('/api/v1', require('./routes/index'));
+
+cron.schedule('*/3 * * * *', () => { //'0 0 * * *'
+    formType()
+});
 
 
 const PORT = process.env.PORT || 5000;

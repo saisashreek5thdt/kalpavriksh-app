@@ -33,13 +33,19 @@ module.exports.getAll = async (req, res) => {
 
         let forms = [];
 
+        const frequencyFilter = req.query.frequency? { form_type: req.query.frequency }: {}
+
         if(req.user.type == "doctor") {
-            forms = await Form.find({doctorId: req.user.id}).populate('doctorId', ['name', 'email']);
+            forms = await Form.find({doctorId: req.user.id}, ...frequencyFilter).populate('doctorId', ['name', 'email']);
         } else if(req.user.type == "admin") {
             forms = await Form.find().populate('doctorId', ['name', 'email']);
         } else if(req.user.type == "patient") {
             forms = await Form.find({
-                doctorId: {$in: req.user.doctors}
+                $or: [
+                    { doctorId: { $in: req.user.primaryTeamIds }},
+                    { doctorId: { $in: req.user.secondaryTeamIds }},
+                ],
+                ...frequencyFilter
             }).populate('doctorId', ['name', 'email']);
             for (let i = 0; i < forms.length; i++) {
                if(forms[i].questions[0].answers[0]?.patientId.toString() == req.user.id)
@@ -154,6 +160,34 @@ module.exports.activate = async (req, res) => {
         })
     }
 }
+
+module.exports.setType = async (req, res) => {
+    try {
+        const form = await Form.findOne({_id: req.body.formId, form_type: { $exists: false }});
+        if(!form) {
+            return res.status(400).json({
+                success: false,
+                message: "no form found",
+            })
+        }
+
+        form.form_type = req.body.formType;
+        form.view_date = getCurrentDate()
+        await form.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Form updated succesfully",
+            data: form
+        })
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
 
 // module.exports.getBypatient = async (req, res) => {
 //     try {

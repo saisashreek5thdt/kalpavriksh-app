@@ -56,7 +56,6 @@ module.exports.getAllPatients = async (req, res) => {
             ]
           }).populate('health_plan')
           
-        console.log('--->',patients.map(e=>e.health_plan))
         // .select(["patientId","name", "health_plan"]);
         return res.status(200).json({
             success: true,
@@ -93,6 +92,102 @@ module.exports.editPatient = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Successfully updated the patient",
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
+
+module.exports.deactivate = async (req, res) => {
+    try {
+
+        const patient = await Patient.findOne({_id: req.params.id, 
+            $or: [
+                { primaryTeamIds: { $in: [req.user.id] } },
+                { secondaryTeamIds: { $in: [req.user.id] } }
+          ]})
+        if(!patient) {
+            return res.status(400).json({
+                success: false,
+                message: "no patient found for this doctor",
+            })
+        }
+
+        patient.status = "De-Active";
+
+        await patient.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "Patient deactivated succesfully",
+            data: patient
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
+module.exports.activate = async (req, res) => {
+    try {
+
+        const patient = await Patient.findOne({_id: req.params.id, 
+            $or: [
+                { primaryTeamIds: { $in: [req.user.id] } },
+                { secondaryTeamIds: { $in: [req.user.id] } }
+          ]})
+        if(!patient) {
+            return res.status(400).json({
+                success: false,
+                message: "no patient found for this doctor",
+            })
+        }
+        
+        patient.status = "Active";
+
+        await patient.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "patient activated succesfully",
+            data: patient
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+};
+
+module.exports.markPayment = async (req, res) => {
+    try {
+
+        const patient = await Patient.findOne({_id: req.params.id, 
+            $or: [
+                { primaryTeamIds: { $in: [req.user.id] } },
+                { secondaryTeamIds: { $in: [req.user.id] } }
+          ]})
+        if(!patient) {
+            return res.status(400).json({
+                success: false,
+                message: "no patient found for this doctor",
+            })
+        }
+        
+        patient.paymentStatus = true;
+
+        await patient.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "patient paid succesfully",
+            data: patient
         })
     } catch (err) {
         return res.status(500).json({

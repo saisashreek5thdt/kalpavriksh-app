@@ -11,5 +11,6 @@ router.get('/get-all', authorize(), form.getAll);
 router.post('/submit-form', authorize("patient"), form.submitForm);
 router.put('/deactivate/:id', authorize("admin"), form.deactivate);
 router.put('/activate/:id', authorize("admin"), form.activate);
+router.put('/set-type', authorize("patient"), form.setType);
 
 module.exports = router;

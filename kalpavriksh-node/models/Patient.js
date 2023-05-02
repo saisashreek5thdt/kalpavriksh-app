@@ -82,6 +82,14 @@ const Patient = new mongoose.Schema({
     otp: String,
     otpExpiresIn: String,
     createdOn: Date,
+    status: {
+        type: String,
+        default: "Active" //De-Active
+    },
+    paymentStatus: {
+        type: Boolean,
+        default: false
+    },
 })
 
 module.exports = mongoose.model('patient', Patient)

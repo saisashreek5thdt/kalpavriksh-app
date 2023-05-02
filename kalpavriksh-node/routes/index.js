@@ -10,5 +10,6 @@ router.use('/observations', require('./observations'));
 router.use('/profile', require('./profile'));
 router.use('/data-collection', require('./data-collection'));
 router.use('/summary', require('./summary'));
+router.use('/patients', require('./patient'));
 
 module.exports = router;

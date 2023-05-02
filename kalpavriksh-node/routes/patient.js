@@ -1,14 +1,11 @@
 const router = require("express").Router();
 
-const form = require('../controllers/form');
-const appointment = require('../controllers/appointment')
-const obs = require('../controllers/observations')
+const { activate, deactivate, markPayment } = require('../controllers/patient');
 
 const { authorize } = require("../middleware/auth");
 
-router.get('/forms', authorize("patient"), form.getAll);
-router.post('/create-appointment', authorize("patient"), appointment.create);
-router.get('/get-appointments', authorize("patient"), appointment.getAll)
-router.post('/observaions', authorize("patient"), obs.add);
+router.put('/deactivate/:id', authorize("doctor"), deactivate);
+router.put('/activate/:id', authorize("doctor"), activate);
+router.put('/mark-payment/:id', authorize("doctor"), markPayment);
 
 module.exports = router;

@@ -98,7 +98,7 @@ module.exports.patientEnrolment = async (req, res) => {
 
 module.exports.pendingPayment = async (req, res) => {
     try {
-        const patients = await Patient.find({ 'next_payment_date': { $lt: getCurrentDate() } }).populate('health_plan', ['name']);
+        const patients = await Patient.find({ paymentStatus: false }).populate('health_plan', ['name']);
 
         return res.status(200).json({
             success: true,
