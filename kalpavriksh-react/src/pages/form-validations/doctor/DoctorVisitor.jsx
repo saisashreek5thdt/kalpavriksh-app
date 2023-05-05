@@ -33,16 +33,18 @@ const DoctorVisitor = () => {
     startDate: new Date(),
     endDate: new Date(initialEndingDate).toISOString(),
   });
+  const [healthPlanOptions, setHealthPlanOptions] = useState([]);
+  const [optionsError, setOptionsError] = useState(null);
   const [paidCount, setPaidCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
   // Update the state variables based on the patients array
-
   const patientList = useSelector((state) => state.patientList);
   const { loading, error, patients } = patientList;
   const updatedPatient = useSelector((state) => state.updatedPatient);
   const { success: patientsUpdated = "" } = updatedPatient;
   const [currentPatientId, setCurrentPatientId] = useState("");
+  const [docId, setDocId] = useState("");
   const [selectedIcons, setSelectedIcons] = useState({
     ...patients?.reduce(
       (icons, patient) => ({ ...icons, [patient._id]: "HiOutlineStar" }),
@@ -80,20 +82,20 @@ const DoctorVisitor = () => {
         return res;
       });
   };
-  // const getDocProfile = () => {
-  //   return axios.get(`${Url}/profile/doctor`, {
-  //     headers: {
-  //       Authorization: `Bearer ${doctorInfo.token}`,
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       const res = response.data;
-  //       console.log('res----docprofile', res)
-  //     });
-  // };
-  // useEffect(() => {
-  //   getDocProfile()
-  // }, [])
+  const getDocProfile = () => {
+    return axios.get(`${Url}/profile/doctor`, {
+      headers: {
+        Authorization: `Bearer ${doctorInfo.token}`,
+      },
+    })
+      .then(function (response) {
+        const res = response.data;
+        setDocId(res?.data?.doctor?._id)
+      });
+  };
+  useEffect(() => {
+    getDocProfile()
+  }, [])
   const handleChange = (selectedOptions) => {
     const value = selectedOptions.filter((e) => e.id);
     setHealthPlans({ selectedOptions });
@@ -164,14 +166,30 @@ const DoctorVisitor = () => {
     { value: "Daughter-In-Law" },
     { value: "Spouse" },
   ];
+  
+  async function fetchData() {
+    try {
+      const response = await fetch(`${Url}/health-plan`, {
+        headers: {
+          Authorization: `Bearer ${doctorInfo.token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const json = await response.json();
+      setHealthPlanOptions([
 
-  const healthPlanOptions = [
-    { value: "Please Select Health Plan" },
-    { value: "Plan A", label: "Plan A" },
-    { value: "Team Plan B", label: "Plan B" },
-    { value: "Team Plan C", label: "Plan C" },
-    { value: "Plan D", label: "Plan D" },
-  ];
+        ...(json?.data.flatMap((opt) => ({ value: opt.name, label: opt.name })))
+
+      ]);
+    } catch (err) {
+      setOptionsError(err.message);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const paymentModeOptions = [
     { value: "Please Select Payment Mode" },
@@ -282,13 +300,14 @@ const DoctorVisitor = () => {
       if (
         (patientName && !patient.name.includes(patientName)) ||
         (healthPlan && !patient.health_plan) ||
-        (healthPlan && patient.health_plan !== healthPlan) ||
+        (healthPlan && patient.health_plan.name !== healthPlan) ||
         (paymentStatus &&
-          ((paymentStatus === "Active" && !patient.next_payment_date) ||
+          ((paymentStatus === "Active" &&  new Date(patient.next_payment_date) >= new Date()) ||
             (paymentStatus === "De-Active" &&
               patient.next_payment_date &&
-              new Date(patient.next_payment_date) <= new Date()))) ||
-        (patientType && patientType !== patient.caretakers_relation)
+              new Date(patient.next_payment_date) < new Date()))) ||
+        (patientType && patientType =='Primary' && !patient.primaryTeamIds.some(id=>id==docId) )||
+        (patientType && patientType =='Secondary' && !patient.secondaryTeamIds.some(id=>id==docId) )
       ) {
         return false;
       }
@@ -297,6 +316,14 @@ const DoctorVisitor = () => {
 
     setFilteredPatients(filterPatients);
   };
+  useEffect(()=>{
+if(currentPatientId){
+  const currenPatient = filteredPatients.find((p)=>p._id===currentPatientId)
+ Object.keys(currenPatient).forEach((key)=>
+ inputHandler(key,currenPatient[key],false)
+ )
+}
+  },[currentPatientId,inputHandler])
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -374,7 +401,7 @@ const DoctorVisitor = () => {
                   {/* <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                     {itm.team}
                   </td> */}
-                  <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                  <td className="p-3 text-base capitalize text-gray-700 whitespace-nowrap">
                     {itm.name}
                   </td>
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
@@ -501,6 +528,7 @@ const DoctorVisitor = () => {
                                 label="Patient Full Name"
                                 id="name"
                                 placeholder="Enter Patient Full Name"
+                                initialValue={formState.inputs.name.value}
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Full Name"
                                 onInput={inputHandler}
@@ -512,6 +540,7 @@ const DoctorVisitor = () => {
                                 type="email"
                                 label="Patient Email"
                                 id="email"
+                                initialValue={formState.inputs.email.value}
                                 placeholder="Enter Patient Valid Email"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Valid Email"
@@ -524,6 +553,7 @@ const DoctorVisitor = () => {
                                 type="tel"
                                 label="Patient Phone Number"
                                 id="phone"
+                                initialValue={formState.inputs.phone.value}
                                 placeholder="Enter Patient Valid Phone Number"
                                 validators={[VALIDATOR_MINLENGTH(10)]}
                                 errorText="Please Enter Patient Valid Phone Number"
@@ -534,6 +564,7 @@ const DoctorVisitor = () => {
                               <Select
                                 element="select"
                                 id="gender"
+                                initialValue={formState.inputs.gender.value}
                                 label="Select Gender"
                                 options={genderOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -547,6 +578,7 @@ const DoctorVisitor = () => {
                                 type="date"
                                 label="Patient D.O.B"
                                 id="dob"
+                                initialValue={formState.inputs.dob.value.slice(0, 10)}
                                 placeholder="Enter Patient D.O.B"
                                 validators={[VALIDATOR_MINLENGTH(10)]}
                                 errorText="Please Enter Patient D.O.B"
@@ -597,6 +629,7 @@ const DoctorVisitor = () => {
                                   defaultOptions
                                   getOptionLabel={(e) => e.name}
                                   getOptionValue={(e) => e._id}
+                                  initialValue={formState.inputs.name.value}
                                   loadOptions={fetchUsers}
                                   onChange={handlePrimaryTeamChange}
                                   isMulti
@@ -613,6 +646,7 @@ const DoctorVisitor = () => {
                                   getOptionLabel={(e) => e.name}
                                   getOptionValue={(e) => e._id}
                                   loadOptions={fetchUsers}
+                                  initialValue={formState.inputs.name.value}
                                   onChange={handleSecondaryTeamChange}
                                   isMulti
                                 />
@@ -624,6 +658,7 @@ const DoctorVisitor = () => {
                                 type="number"
                                 label="Patient Height"
                                 id="height"
+                                initialValue={formState.inputs.height.value}
                                 placeholder="Enter Patient Height"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Height"
@@ -636,6 +671,7 @@ const DoctorVisitor = () => {
                                 type="number"
                                 label="Patient Weight"
                                 id="weight"
+                                initialValue={formState.inputs.weight.value}
                                 placeholder="Patient Weight"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Weight"
@@ -648,6 +684,7 @@ const DoctorVisitor = () => {
                                 type="text"
                                 label="Patient Caretaker Name"
                                 id="caretakerName"
+                                initialValue={formState.inputs.caretakerName.value}
                                 placeholder="Patient Caretaker Name"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Caretaker Name"
@@ -659,6 +696,7 @@ const DoctorVisitor = () => {
                                 element="select"
                                 id="relation"
                                 label="Select Relation"
+                                initialValue={formState.inputs.relation.value}
                                 options={relationOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Your Relationship"
@@ -671,6 +709,7 @@ const DoctorVisitor = () => {
                                 type="tel"
                                 label="Patient Caretaker Number"
                                 id="caretakerNumber"
+                                initialValue={formState.inputs.caretakerNumber.value}
                                 placeholder="Patient Caretaker Number"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Caretaker Number"
@@ -683,6 +722,7 @@ const DoctorVisitor = () => {
                                 type="time"
                                 label="Patient Caretaker Time"
                                 id="caretakerTime"
+                                initialValue={formState.inputs.caretakerTime.value}
                                 placeholder="Patient Caretaker Time"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Patient Caretaker Time"
@@ -695,33 +735,25 @@ const DoctorVisitor = () => {
                                 id="healthPlan"
                                 label="Select Health Plan"
                                 options={healthPlanOptions}
+                                initialValue={formState.inputs.healthPlan.value}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Health Plan"
                                 onInput={inputHandler}
                               />
                             </div>
                             <div className="form__Cols--Span-6">
-                              <Input
-                                element="input"
-                                type="time"
-                                label="Health Plan Date (Start + End)"
-                                id="planDate"
-                                placeholder="Health Plan Date (Start + End)"
-                                validators={[VALIDATOR_MINLENGTH(1)]}
-                                errorText="Please Select Valid Dates"
-                                onInput={inputHandler}
-                                value={value}
-                              >
-                                <Datepicker
-                                  id=""
-                                  primaryColor={"blue"}
-                                  placeholder={"Health Plan Date (Start + End)"}
-                                  value={value}
-                                  onChange={handleValueChange}
-                                  showShortcuts={true}
-                                  inputClassName="text-slate-500 font-semibold shadow-sm"
-                                />
-                              </Input>
+                            <Input
+                              element="datepicker"
+                              type="time"
+                              label="Health Plan Date (Start + End)"
+                              id="planDate"
+                              initialValue={formState.inputs.planDate.value}
+                              placeholder="Health Plan Date (Start + End)"
+                              validators={[VALIDATOR_REQUIRE()]}
+                              errorText="Please Select Valid Dates"
+                              onInput={inputHandler}
+                              value={value}
+                            />
                             </div>
                           </div>
                           {/* <div className="py-4 form__Grid--Cols-6">
@@ -764,6 +796,7 @@ const DoctorVisitor = () => {
                                 type="text"
                                 label="Amount To Be Paid"
                                 id="amount"
+                                initialValue={formState.inputs.amount.value}
                                 placeholder="Amount To Be Paid"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Valid Number"
@@ -775,6 +808,7 @@ const DoctorVisitor = () => {
                                 element="select"
                                 id="paymentMode"
                                 label="Select Payment Mode"
+                                initialValue={formState.inputs.paymentMode.value}
                                 options={paymentModeOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Payment Mode"
@@ -785,6 +819,7 @@ const DoctorVisitor = () => {
                               <Input
                                 element="input"
                                 type="date"
+                                initialValue={formState.inputs.paymentDate.value}
                                 label="Current Month Payment Date"
                                 id="paymentDate"
                                 placeholder="Payment Date"
@@ -798,6 +833,7 @@ const DoctorVisitor = () => {
                                 element="input"
                                 type="date"
                                 label="Next Month Payment Date"
+                                initialValue={formState.inputs.paymentNextDate.value}
                                 id="paymentNextDate"
                                 placeholder="Payment Date"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
@@ -811,6 +847,7 @@ const DoctorVisitor = () => {
                                 type="text"
                                 label="Ref. Id"
                                 id="refId"
+                                initialValue={formState.inputs.refId.value}
                                 placeholder="Ref. Id"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Valid Ref.Id"

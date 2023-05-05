@@ -185,7 +185,7 @@ const App = () => {
           element={<UserChat />}
         />
         <Route
-          path="/userrole/:roleid/dashboard/admin/"
+          path="/Admin/dashboard/"
           element={
             <AdminRoute>
               <Admin />
@@ -193,7 +193,7 @@ const App = () => {
           }
         />
         <Route
-          path="/userrole/:roleid/dashboard/admin/patient/enrolment/view/"
+          path="/Admin/dashboard/patient/enrolment/view/"
           element={
             <AdminRoute>
               <EnrolmentsView />
@@ -201,7 +201,7 @@ const App = () => {
           }
         />
         <Route
-          path="/userrole/:roleid/dashboard/admin/summary/employee/view/"
+          path="/Admin/dashboard/summary/employee/view/"
           element={
             <AdminRoute>
               <EmployeSummary />
@@ -209,7 +209,7 @@ const App = () => {
           }
         />
         <Route
-          path="/userrole/:roleid/dashboard/admin/forms/"
+          path="/Admin/dashboard/forms/"
           element={
             <AdminRoute>
               <CustomForms />
@@ -217,7 +217,7 @@ const App = () => {
           }
         />
         <Route
-          path="/userrole/:roleid/dashboard/admin/charts/"
+          path="/Admin/dashboard/charts/"
           element={
             <AdminRoute>
               <CustomCharts />

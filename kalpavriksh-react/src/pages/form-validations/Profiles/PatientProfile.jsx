@@ -20,7 +20,7 @@ const PatientProfile = () => {
   // }
   const navigate = useNavigate();
   const backFunc = () => {
-    navigate("/userrole/:roleid/dashboard/patient/");
+    navigate("/userrole/:roleid/dashboard/patient/mydata");
   };
   return (
     <>
@@ -61,7 +61,7 @@ const PatientProfile = () => {
                         <dt className="text-sm font-bold text-gray-500">
                           Patient Name
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                        <dd className="mt-1 text-sm capitalize text-gray-900 sm:col-span-2 sm:mt-0">
                           {profile.patient.name}
                         </dd>
                       </div>
@@ -89,6 +89,7 @@ const PatientProfile = () => {
                         {profile.patient.phone}
                         </dd>
                       </div>
+                      {/* 
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           Patient Age
@@ -97,7 +98,8 @@ const PatientProfile = () => {
                           24 Years
                         </dd>
                       </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                       */}
+                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           Patient Height
                         </dt>
@@ -115,7 +117,7 @@ const PatientProfile = () => {
                       </div>
                       <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Patient Caretake Name
+                          Patient Caretaker Name
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           Arjun Pandya
@@ -129,7 +131,7 @@ const PatientProfile = () => {
                           Father
                         </dd>
                       </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           Caretaker Phone Number
                         </dt>
@@ -145,23 +147,23 @@ const PatientProfile = () => {
                           arjun.pandya@gmail.com
                         </dd>
                       </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Health Plans Enrolled
+                          Health Plan Enrolled
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                          Plan A, Plan B
+                          Plan A
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Health Plans Enrolled Duration
+                          Health Plan Enrolled Duration
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           01-04-2022 to 06-08-2022
                         </dd>
                       </div>
-                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           Health Teams Added
                         </dt>
@@ -169,6 +171,7 @@ const PatientProfile = () => {
                           Dr. Rajiv Singhla, Dr. Suha
                         </dd>
                       </div>
+                      {/* 
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           No of Forms Attached
@@ -185,6 +188,8 @@ const PatientProfile = () => {
                           19
                         </dd>
                       </div>
+                       */}
+                      {/* 
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
                           Payment Status
@@ -257,6 +262,7 @@ const PatientProfile = () => {
                           </ul>
                         </dd>
                       </div>
+                       */}
                     </dl>
                   </div>
                   )}

@@ -18,7 +18,7 @@ const CustomCharts = () => {
         <main>
           <div className="dashboard__Main-Content">
             <div className="dashboard__Main-Inner-Content">
-              <Link to="/userrole/:roleid/dashboard/admin/">
+              <Link to="/Admin/dashboard/">
                 <h2 className="text-center py-6 text-xl font-medium leading-6 text-gray-900">
                   BACK
                 </h2>

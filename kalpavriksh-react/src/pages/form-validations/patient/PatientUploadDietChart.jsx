@@ -119,7 +119,7 @@ const PatientUploadDietChart = () => {
                   >
                     Prescribed Date
                   </label>
-                  <p className="form__Heading">{truncate(deitChartLatest.createdAt,11)}</p>
+                  <p className="form__Heading">{truncate(deitChartLatest.createdOn,11)}</p>
                 </div>
                 <div className="form__Cols--Span-6">
                   <label
@@ -260,7 +260,7 @@ const PatientUploadDietChart = () => {
                   />
                   <div className="bg-slate-50 shadow-lg h-12 w-full pl-5 rounded-md flex items-center">
                     <h1 className="text-lg font-semibold text-gray-600">
-                      {dt.doctorId ?dt.doctorId.name : '' } /{truncate(dt.createdAt,11)}
+                      {dt.doctorId ?dt.doctorId.name : '' } /{truncate(dt.createdOn,11)}
                     </h1>
                   </div>
                   {/* Down Arrow Icon */}
@@ -287,7 +287,7 @@ const PatientUploadDietChart = () => {
                           >
                             Prescribed Date
                           </label>
-                          <p className="form__Heading">{truncate(dt.createdAt,11)}</p>
+                          <p className="form__Heading">{truncate(dt.createdOn,11)}</p>
                         </div>
                         <div className="form__Cols--Span-6">
                           <label

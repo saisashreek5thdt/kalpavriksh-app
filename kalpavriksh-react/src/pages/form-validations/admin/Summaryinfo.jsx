@@ -133,7 +133,7 @@ const Summaryinfo = () => {
     }
   };
   // pending payment csv
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
   return (
     <>
@@ -177,18 +177,19 @@ const Summaryinfo = () => {
           >
             Download CSV
           </button>
-
+          {/* 
           <button
             type="button"
             className="card__Btn card__Btn--Gap-1 card__Bg--Teal card__Btn--Bg-Teal"
             onClick={() =>
               navigate(
-                "/userrole/:roleid/dashboard/admin/patient/enrolment/view/"
+                "/Admin/dashboard/patient/enrolment/view/"
               )
             }
           >
             View Enrolments
           </button>
+           */}
         </div>
         <div className="card__Block">
           <h5 className="card__Heading">
@@ -207,18 +208,19 @@ const Summaryinfo = () => {
           >
             Download CSV
           </button>
-
+          {/* 
           <button
             type="button"
             className="card__Btn card__Btn--Gap-2 card__Bg--Cyan card__Btn--Bg-Cyan"
             onClick={() =>
               navigate(
-                "/userrole/:roleid/dashboard/admin/summary/employee/view/"
+                "/Admin/dashboard/summary/employee/view/"
               )
             }
           >
             View Summary
           </button>
+           */}
         </div>
       </div>
     </>

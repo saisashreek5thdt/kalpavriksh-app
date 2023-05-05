@@ -4,7 +4,7 @@ const PatientFooter = () => {
   return (
     <>
       <footer className="footer__Box">
-        <div className="footer__Container">
+        <div style={{maxWidth: '100%'}} className="footer__Container">
           <div className="footer__Flex--Box">
             <a
               href="/userrole/:roleid/dashboard/patient/mydata/"

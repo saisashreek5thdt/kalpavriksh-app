@@ -224,13 +224,13 @@ const DocAppointmentTable = () => {
                                             <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                                                 {i + 1}
                                             </td>
-                                            <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                                            <td className="p-3 text-base capitalize text-gray-700 whitespace-nowrap">
                                                 {/* {ap.doctorId.name} */}
                                                 {ap.doctorId
                                                     ? ap.doctorId.name
                                                     : ""}
                                             </td>
-                                            <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                                            <td className="p-3 text-base capitalize text-gray-700 whitespace-nowrap">
                                                 {/* {ap.patientId.name} */}{" "}
                                                 {ap.patientId
                                                     ? ap.patientId.name
@@ -311,6 +311,7 @@ const DocAppointmentTable = () => {
                                                             {profile.name}
                                                         </p>
                                                     </div>
+                                                    {/* 
                                                     <div className="form__Cols--Span-6">
                                                         <label
                                                             htmlFor="prescribedBy"
@@ -322,6 +323,7 @@ const DocAppointmentTable = () => {
                                                             46 yrs
                                                         </p>
                                                     </div>
+                                                     */}
                                                     <div className="form__Cols--Span-6">
                                                         <label
                                                             htmlFor="prescribedBy"
@@ -473,7 +475,7 @@ const DocAppointmentTable = () => {
                                                             Prescribed Date
                                                         </label>
                                                         <p className="form__Heading">
-                                                            {truncate(deitChartLatest.createdAt, 11)}
+                                                            {truncate(deitChartLatest.createdOn, 11)}
                                                         </p>
                                                     </div>
                                                     <div className="form__Cols--Span-6">
@@ -1040,6 +1042,7 @@ const DocAppointmentTable = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/* 
                             <div className="p-2">
                                 <div className="relative w-full overflow-hidden">
                                     <input
@@ -1051,7 +1054,6 @@ const DocAppointmentTable = () => {
                                             Medical Information - Payment Status
                                         </h1>
                                     </div>
-                                    {/* Down Arrow Icon */}
                                     <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
                                         <FiChevronDown className="w-6 h-6" />
                                     </div>
@@ -1108,17 +1110,8 @@ const DocAppointmentTable = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-4">
-                                <button
-                                    type="button"
-                                    className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
-                                // data-bs-toggle="modal"
-                                // data-bs-target="#modalPrescription"
-
-                                >
-                                    Create Prescription
-                                </button>
-                                <div className="p-4">
+                             */}
+                            <div className="p-2">
                                     <div className="relative w-full overflow-hidden">
                                         <input
                                             type="checkbox"
@@ -1129,7 +1122,6 @@ const DocAppointmentTable = () => {
                                                 Medical Information - Prescription
                                             </h1>
                                         </div>
-                                        {/* Down Arrow Icon */}
                                         <div className="absolute top-3 right-3 text-gray-600 transition-transform duration-500 rotate-0 peer-checked:rotate-180">
                                             <FiChevronDown className="w-6 h-6" />
                                         </div>
@@ -1167,10 +1159,10 @@ const DocAppointmentTable = () => {
                                                                         Medicine Type
                                                                     </label>
                                                                     <select
+                                                                        className="form__Select"
                                                                         name=""
                                                                         value={prescriptions[i]?.medType || ''}
                                                                         id=""
-                                                                        //  onChange={(e) => {setMedType({...medType, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'medType'
                                                                             handlePrescriptions({ e, key, i })
@@ -1189,17 +1181,7 @@ const DocAppointmentTable = () => {
                                                                         <option value="Ointment/Cream">Ointment/Cream</option>
                                                                         <option value="Tablet/Sachet">Tablet/Sachet</option>
                                                                         <option value="NEBULIZATION">NEBULIZATION</option>
-                                                                    </select>
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineType"
-               label="Medicine Type"
-               placeholder="Enter Medicine Type"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Type"
-               onInput={inputHandler}
-             /> */}
+                                                                    </select> 
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1210,7 +1192,6 @@ const DocAppointmentTable = () => {
                                                                     </label>
                                                                     <input
                                                                         value={prescriptions[i]?.medName || ''}
-                                                                        // onChange={(e) => {setMedName({...medName, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'medName'
                                                                             handlePrescriptions({ e, key, i })
@@ -1224,16 +1205,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Input"
                                                                         placeholder="Enter Medicine Name"
                                                                     />
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineName"
-               label="Medicine Name"
-               placeholder="Enter Medicine Name"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Name"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1244,7 +1215,6 @@ const DocAppointmentTable = () => {
                                                                     </label>
                                                                     <input
                                                                         value={prescriptions[i]?.mornDose || ''}
-                                                                        //  onChange={(e) => {setMornDose({...mornDose, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'mornDose'
                                                                             handlePrescriptions({ e, key, i })
@@ -1258,16 +1228,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Input"
                                                                         placeholder="Enter Medicine Morning Dose"
                                                                     />
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineDoseMorning"
-               label="Medicine Morning Dose"
-               placeholder="Enter Medicine Morning Dose"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Morning Dose"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1278,7 +1238,6 @@ const DocAppointmentTable = () => {
                                                                     </label>
                                                                     <input
                                                                         value={prescriptions[i]?.aftDose || ''}
-                                                                        //  onChange={(e) => {setAftDose({...aftDose, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'aftDose'
                                                                             handlePrescriptions({ e, key, i })
@@ -1292,16 +1251,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Input"
                                                                         placeholder="Enter Medicine Afternoon Dose"
                                                                     />
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineDoseAfternoon"
-               label="Medicine Afternoon Dose"
-               placeholder="Enter Medicine Afternoon Dose"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Afternoon Dose"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1312,7 +1261,6 @@ const DocAppointmentTable = () => {
                                                                     </label>
                                                                     <input
                                                                         value={prescriptions[i]?.eveDose || ''}
-                                                                        // onChange={(e) => {setEveDose({...eveDose, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'eveDose'
                                                                             handlePrescriptions({ e, key, i })
@@ -1326,16 +1274,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Input"
                                                                         placeholder="Enter Medicine Evening Dose"
                                                                     />
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineDoseEvening"
-               label="Medicine Evening Dose"
-               placeholder="Enter Medicine Evening Dose"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Evening Dose"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1345,10 +1283,10 @@ const DocAppointmentTable = () => {
                                                                         Medicine Frequency
                                                                     </label>
                                                                     <select
+                                                                        className="form__Select"
                                                                         name=""
                                                                         id=""
                                                                         value={prescriptions[i]?.frequency || ''}
-                                                                        // onChange={(e) => {setFrquency({...frquency, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'frequency'
                                                                             handlePrescriptions({ e, key, i })
@@ -1367,16 +1305,6 @@ const DocAppointmentTable = () => {
                                                                         </option>
                                                                         <option value="Dail">Dail</option>
                                                                     </select>
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineFrequency"
-               label="Medicine Frequency"
-               placeholder="Enter Medicine Frequency"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Frequency"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1386,10 +1314,10 @@ const DocAppointmentTable = () => {
                                                                         Medicine Duration (Number)
                                                                     </label>
                                                                     <select
+                                                                        className="form__Select"
                                                                         name=""
                                                                         id=""
                                                                         value={prescriptions[i]?.duration || ''}
-                                                                        //  onChange={(e) => {setDuration({...duration, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'duration'
                                                                             handlePrescriptions({ e, key, i })
@@ -1401,16 +1329,6 @@ const DocAppointmentTable = () => {
                                                                         <option value="Weeks">Weeks</option>
                                                                         <option value="Months">Months</option>
                                                                     </select>
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineDurationNumber"
-               label="Medicine Duration Number"
-               placeholder="Enter Medicine Duration Number"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Duration Number"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                                 <div className="form__Cols--Span-6">
                                                                     <label
@@ -1420,7 +1338,6 @@ const DocAppointmentTable = () => {
                                                                         Medicine Duration (Days / Weeks)
                                                                     </label>
                                                                     <input
-                                                                        //  onChange={(e) => {setDurDays({...durDays, [medicine]: e.target.value})}}
                                                                         value={prescriptions[i]?.durDays || ''}
                                                                         onChange={(e) => {
                                                                             const key = 'durDays'
@@ -1435,16 +1352,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Input"
                                                                         placeholder="Enter Medicine Duration Days"
                                                                     />
-                                                                    {/* <Input
-               element="input"
-               type="text"
-               id="medicineDurationDays"
-               label="Medicine Duration Days"
-               placeholder="Enter Medicine Duration Days"
-               validators={VALIDATOR_MINLENGTH(1)}
-               errorText="Please Enter Valid Medicine Duration Days"
-               onInput={inputHandler}
-             /> */}
                                                                 </div>
                                                             </div>
 
@@ -1459,7 +1366,6 @@ const DocAppointmentTable = () => {
                                                                     <textarea
 
                                                                         value={prescriptions[i]?.specinst || ''}
-                                                                        //   onChange={(e) => {setSpecinst({...specinst, [medicine]: e.target.value})}}
                                                                         onChange={(e) => {
                                                                             const key = 'specinst'
                                                                             handlePrescriptions({ e, key, i })
@@ -1473,14 +1379,6 @@ const DocAppointmentTable = () => {
                                                                         className="form__Textarea"
                                                                         placeholder="Enter Medicine Spl Instructions"
                                                                     ></textarea>
-                                                                    {/* <Input
-             id="medicineSplInstructions"
-             label="Medicine Spl Instructions"
-             placeholder="Enter Medicine Spl Instructions"
-             validators={VALIDATOR_MINLENGTH(1)}
-             errorText="Please Enter Special Instructions for usage of Medicines"
-             onInput={inputHandler}
-           /> */}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1518,11 +1416,6 @@ const DocAppointmentTable = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="p-4">
-                                <p className="form__Heading">Add Multi Prescription Form Here When Create Button is Clicked </p>
-                            </div>
                         </div>
                         <div className="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
                             <button

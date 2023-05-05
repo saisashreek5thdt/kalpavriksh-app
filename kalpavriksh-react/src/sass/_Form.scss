@@ -43,6 +43,10 @@
     @apply block text-sm font-medium text-gray-700;
   }
 
+  &__Heading {
+    @apply block text-lg capitalize font-medium text-gray-700;
+  }
+
   &__Flex {
     &-ImgBox {
       @apply mt-1 flex items-center;

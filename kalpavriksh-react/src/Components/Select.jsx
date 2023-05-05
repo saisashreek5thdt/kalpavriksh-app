@@ -53,12 +53,13 @@ const Select = (props) => {
     const element =
         props.element === 'select' ? (
             <select
+            value={props?.initialValue}
                 id={props.id}
                 className="form__Select"
                 onChange={changeHandler}
                 onBlur={touchHandler}
                 options={props.options}>
-                {props.options.map(option => <option key={option.value}>{option.value}</option>)}
+                {props.options.map(option => <option selected={props?.initialValue ==option.value} key={option.value}>{option.value}</option>)}
             </select>
         ) : (
             <textarea
@@ -66,7 +67,7 @@ const Select = (props) => {
                 rows={props.rows || 3}
                 onChange={changeHandler}
                 onBlur={touchHandler}
-                value={inputState.value}
+                value={props?.initialValue}
             />
         );
 

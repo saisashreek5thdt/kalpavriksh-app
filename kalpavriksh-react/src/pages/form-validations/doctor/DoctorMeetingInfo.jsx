@@ -217,6 +217,23 @@ console.log(prescriptions)
                   {patient.data && (
                     <div className="border-t border-gray-200">
                       <dl>
+                      <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                          <dt className="text-sm font-bold text-gray-500">
+                            Patient Full Name
+                          </dt>
+                          <dd className="mt-1 text-sm capitalize text-gray-900 sm:col-span-2 sm:mt-0">
+                            {patient.data.name}
+                          </dd>
+                        </div>                        
+                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                          <dt className="text-sm font-bold text-gray-500">
+                            Patient Phone Number
+                          </dt>
+                          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            {patient.data.phone}
+                          </dd>
+                        </div>                        
+                        {/* 
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                           <dt className="text-sm font-bold text-gray-500">
                             Appointment For
@@ -243,26 +260,10 @@ console.log(prescriptions)
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                           <dt className="text-sm font-bold text-gray-500">
-                            Patient Full Name
-                          </dt>
-                          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                            {patient.data.name}
-                          </dd>
-                        </div>
-                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                          <dt className="text-sm font-bold text-gray-500">
                             Patient Age
                           </dt>
                           <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                             55 Years
-                          </dd>
-                        </div>
-                        <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                          <dt className="text-sm font-bold text-gray-500">
-                            Patient Phone Number
-                          </dt>
-                          <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                            {patient.data.phone}
                           </dd>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -295,6 +296,8 @@ console.log(prescriptions)
                             reprehenderit deserunt qui eu.
                           </dd>
                         </div>
+                         */}                       
+                        
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                           <dt className="text-sm font-bold text-gray-500">
                             Attachments
@@ -304,6 +307,7 @@ console.log(prescriptions)
                               role="list"
                               className="divide-y divide-gray-200 rounded-md border border-gray-200"
                             >
+                              {/* 
                               <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                                 <div className="flex w-0 flex-1 items-center">
                                   <FiPaperclip
@@ -344,6 +348,7 @@ console.log(prescriptions)
                                   </a>
                                 </div>
                               </li>
+                               */}
                               <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                                 <div className="flex w-0 flex-1 items-center">
                                   <FiPaperclip

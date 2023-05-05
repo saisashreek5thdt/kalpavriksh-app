@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { FiBell, FiX, FiMenu } from "react-icons/fi";
+import { FiX, FiMenu } from "react-icons/fi";
 
 import Logo from "../../Assets/img/logo-login.svg";
 import User from "../../Assets/user/user.jpg";
@@ -37,8 +37,7 @@ const Navbar = () => {
    
   const userNavigation = [
     { name: "Your Profile", href: "/userrole/:roleid/dashboard/doctor/profile/" },
-    // { name: "Settings", href: "#" },
-    { name: "Sign outs", fun:hello },
+    { name: "Sign Out", fun:hello },
   ];
 
 
@@ -79,13 +78,6 @@ const Navbar = () => {
                 </div>
                 <div className="navbar__Hidden-MD">
                   <div className="navbar__RightBox">
-                    <button
-                      type="button"
-                      className="navbar__RightBox--Btn"
-                    >
-                      <span className="navbar__RightBox--Btn-Span">View notifications</span>
-                      <FiBell className="navbar__RightBox--Btn-Icon" aria-hidden="true" />
-                    </button>
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="navbar__ProfileBox">
@@ -180,13 +172,6 @@ const Navbar = () => {
                       {user.email}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    className="navbar__Btn-Box-Mobile"
-                  >
-                    <span className="navbar__Btn-Box-Mobile--Span">View notifications</span>
-                    <FiBell className="navbar__Btn-Box-Mobile--Icon" aria-hidden="true" />
-                  </button>
                 </div>
                 <div className="navbar__List-Items-Mobile">
                   {userNavigation.map((item) => (

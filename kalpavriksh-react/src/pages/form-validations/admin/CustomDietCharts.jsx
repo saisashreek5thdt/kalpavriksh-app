@@ -14,6 +14,7 @@ import {
   ACTIVATE_DTCHART_RESET,
   DEACTIVATE_DTCHART_RESET,
 } from "../../../constant.js/AdminConstant";
+import Papa from 'papaparse';
 
 const CustomDietCharts = () => {
 
@@ -109,12 +110,29 @@ const CustomDietCharts = () => {
   const filterData = (id) => {
     console.log(id)
     const filterdData = dietchart.filter((e) => e._id === id)
-    console.log(typeof (filterdData))
     // console.log(filterdData[0])
     setFilterDatas(filterdData)
     setShow(true)
   }
 
+  const downloadDietChartCsv = () =>{
+  const flattenedData = {
+    ...filterDatas[0],
+    doctorName: filterDatas[0].doctorId.name,
+    doctorEmail: filterDatas[0].doctorId.email,
+    doctorId: filterDatas[0].doctorId._id,
+  }
+  delete flattenedData.__v
+  const csvData = Papa.unparse([flattenedData]);
+  const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+  // Create a temporary anchor element to download the CSV file
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${filterDatas[0]?.doctorId
+    .name}-diectchart.csv`;
+  link.click();
+}
   return (
     <>
       <div className="my-10">
@@ -196,7 +214,7 @@ const CustomDietCharts = () => {
                 className="text-xl font-medium leading-normal text-gray-800"
                 id="modalDietChartLabel"
               >
-                DietChartsss
+                DietChart
               </h5>
               <button
                 type="button"
@@ -293,6 +311,7 @@ const CustomDietCharts = () => {
                         </label> */}
                         <p className="form__Heading">
                           <button
+                          onClick={downloadDietChartCsv}
                       type="button"
                       className="px-6 py-2.5 bg-emerald-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-emerald-700 hover:shadow-lg focus:bg-emerald-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                     >

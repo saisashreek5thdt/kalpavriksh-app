@@ -19,7 +19,7 @@ const FormDietUI = () => {
           <button
             type="button"
             className="card__Btn card__Bg--Teal card__Btn--Bg-Teal"
-            onClick={() => navigate('/userrole/:roleid/dashboard/admin/forms/')}
+            onClick={() => navigate('/Admin/dashboard/forms/')}
           >
             View Forms
           </button>
@@ -36,7 +36,7 @@ const FormDietUI = () => {
           <button
             type="button"
             className="card__Btn card__Bg--Cyan card__Btn--Bg-Cyan"
-            onClick={() => navigate('/userrole/:roleid/dashboard/admin/charts/')}
+            onClick={() => navigate('/Admin/dashboard/charts/')}
           >
             View Diet Charts
           </button>

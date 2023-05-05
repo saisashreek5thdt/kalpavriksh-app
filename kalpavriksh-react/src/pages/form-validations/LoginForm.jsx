@@ -62,7 +62,7 @@ const LoginForm = () => {
   }, [success]);
   const roleOptions = [
     { value: "Please Select a Role" },
-    { value: "admin" },
+    { value: "Admin" },
     { value: "doctor" },
     { value: "patient" },
   ];
@@ -147,10 +147,10 @@ const LoginForm = () => {
 
   useEffect(()=>{
     // if(formState.inputs.role.value === 'admin' && adminDocInfo){
-    //   navigate('/userrole/:roleid/dashboard/admin/')
+    //   navigate('/Admin/dashboard/')
     // }
-    if(formState.inputs.role.value === 'admin' && adminDocInfo){
-      navigate('/userrole/:roleid/dashboard/admin/')
+    if(formState.inputs.role.value === 'Admin' && adminDocInfo){
+      navigate('/Admin/dashboard/')
 
     }
     // console.log(adminDocInfo,'inooo');
@@ -187,8 +187,6 @@ const LoginForm = () => {
       <form
         className="login__Form-Box"
         onSubmit={loginAdmin}
-        // method="POST"
-        // onClick={loggedHandler}
       >
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="login__Form-Input">
@@ -214,46 +212,19 @@ const LoginForm = () => {
               errorText="Please Enter Valid Email Address"
               onInput={inputHandler}
             />
-            {/*
-            <label htmlFor="email-address" className="login__Form-Input--Label">
-              Email address
-            </label>
-            <input
-              id="email-address"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="login__Form-Input--Email"
-              placeholder="Email address"
-            />
-            */}
           </div>
 
-            {/* {success ? ( */}
             <div className="patient-otp">
               <InputLog
-              
                 element="input"
                 id="element"
                 // type="password"
                 label="otp"
                 placeholder="Enter OTP"
                 validators={[VALIDATOR_MINLENGTH(6)]}
-                // errorText="Please Enter Valid Password"
                 onInput={inputHandler}
               />
-              {/* <OtpInput
-              id='element'
-              element='input'
-            value={otp}
-            onChange={handleChange}
-            numInputs={6}
-            separator={<span>-</span>}
-            /> */}
             </div>
-          {/* ):''} */}
-
 
           {formState.inputs.role.value === "doctor" ? (
             <div className="generate-otp">
@@ -282,14 +253,10 @@ const LoginForm = () => {
           )}
 
           {loading && <LoadingBox></LoadingBox>}
-          {error && <MessageBox>{error}</MessageBox>}
-        
-      
-
-       
+          {error && <MessageBox>{error}</MessageBox>}       
 
           {/* {success ? ( */}
-          {formState.inputs.role.value === "admin" ? (
+          {formState.inputs.role.value === "Admin" ? (
               <div>
               <InputLog
                 element="input"
@@ -308,24 +275,7 @@ const LoginForm = () => {
      
           {/* ):''} */}
         </div>
-
-        {/* <div className="login__Checkbox-Container">
-          <div className="login__Checkbox-Container--Box">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              className="login__Checkbox-Container--InputBox"
-            />
-            <label
-              htmlFor="remember-me"
-              className="login__Checkbox-Container--Label"
-            >
-              Remember me
-            </label>
-          </div>
-        </div> */}
-        {formState.inputs.role.value === "admin" ? (
+        {formState.inputs.role.value === "Admin" ? (
             <div>
             <button type="submit" className="group login__Button--Container-Btn">
               <span className="login__Button--Container-BtnSpan"></span>
@@ -333,15 +283,7 @@ const LoginForm = () => {
             </button>
           </div>
         ):''}
-      {/* {formState.inputs.role.value === "admin" ? (
-   <div>
-   <button type="submit" className="group login__Button--Container-Btn">
-     <span className="login__Button--Container-BtnSpan"></span>
-     Sign ins
-   </button>
- </div>
-      ): */}
-      {formState.inputs.role.value !== 'admin' ? (
+      {formState.inputs.role.value !== 'Admin' ? (
    <div id="elements">
    <button
      onClick={submitOtp}

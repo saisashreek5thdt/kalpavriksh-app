@@ -166,10 +166,10 @@
   
     useEffect(()=>{
       // if(formState.inputs.role.value === 'admin' && adminDocInfo){
-      //   navigate('/userrole/:roleid/dashboard/admin/')
+      //   navigate('/Admin/dashboard/')
       // }
       if(formState.inputs.role.value === 'admin' && adminDocInfo){
-        navigate('/userrole/:roleid/dashboard/admin/')
+        navigate('/Admin/dashboard/')
   
       }
       // console.log(adminDocInfo,'inooo');

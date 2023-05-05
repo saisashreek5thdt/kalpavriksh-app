@@ -575,7 +575,7 @@ const AccessControl = () => {
                   <td className="table__Body--Row_Data">{index + 1}</td>
                   <td className="table__Body--Row_Data">{doc.name}</td>
                   <td className="table__Body--Row_Data">{doc.role}</td>
-                  <td className="table__Body--Row_Data"> {new Date(doc?.createdAt || doc?.updatedAt).toLocaleString().substring(0, 9)}</td>
+                  <td className="table__Body--Row_Data"> {new Date(doc?.createdAt || doc?.createdOn).toLocaleString().substring(0, 9)}</td>
                   <td className="table__Body--Row_Data">
                     <select
                       id="status"

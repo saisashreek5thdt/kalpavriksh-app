@@ -24,11 +24,11 @@ const inputReducer = (state, action) => {
 
 
 const Input = (props) => {
-    
+   
     const [inputState, dispatch] = useReducer(inputReducer, {
-        value: props.initialValue || '',
+        value: props?.initialValue ,
         isTouched: false,
-        isValid: props.initialValue || false
+        isValid: props?.initialValue || false
     });
 
     const {id, onInput} = props;
@@ -36,9 +36,9 @@ const Input = (props) => {
 
     useEffect(() => {
         onInput(id,
-            !props.children? value:props.value, 
+             value, 
              isValid);
-    }, [id, value, isValid, onInput,props.value]);
+    }, [id, value, isValid, onInput]);
 
     const changeHandler = event => {
         dispatch({
@@ -65,7 +65,7 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={inputState.value}
+                     value={props?.initialValue || ''}
                     required
                 />
             );
@@ -77,7 +77,7 @@ const Input = (props) => {
                     rows={props.rows || 3}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={inputState.value}
+                    value={props?.initialValue || ''}
                     className="form__Textarea"                
                 />
             );
@@ -96,7 +96,7 @@ const Input = (props) => {
                     }
                     onBlur={touchHandler}
                     className="form__Input"
-                    value={value}
+                    value={props?.initialValue || ''}
                     dateFormat={props.dateFormat || 'dd/MM/yyyy'}
                     showYearDropdown
                     scrollableMonthYearDropdown
@@ -113,7 +113,7 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={inputState.value}
+                    value={props?.initialValue || ''}
                     required
                 />
             );
