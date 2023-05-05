@@ -3,7 +3,7 @@ const {google} = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 const Appointment = require('../models/Appointment');
-const Doctor = require('../models/Doctor')
+const Patient  = require('../models/Patient');
 
 const { getCurrentDate } = require('../utils/currentDate');
 const { getFormatDate } = require('../utils/common');
@@ -35,7 +35,7 @@ module.exports.create = async (req, res) => {
         })
 
         //console.log(oauth2Client);
-        const doctor = await Doctor.findById(req.body.doctorId);
+        const patient = await Patient.findById(req.body.patientId)
 
         const calendar = google.calendar({version: 'v3', auth: oauth2Client});
         
@@ -53,8 +53,8 @@ module.exports.create = async (req, res) => {
                     date: req.body.date,
                 },
                 attendees: [
-                {email: doctor.email },
-                {email: req.user.email },
+                    {email: req.user.email },
+                    {email: patient.email }
                 ],
                 reminders: {
                     useDefault: true,
@@ -66,8 +66,8 @@ module.exports.create = async (req, res) => {
         //console.log(invitation);
 
         const newData = new Appointment({
-            patientId: req.user.id,
-            doctorId: req.body.doctorId,
+            patientId: req.body.patientId,
+            doctorId: req.user.id,
             date: getFormatDate(req.body.date),
             invitation: invitation.data,
             createdOn: getCurrentDate()

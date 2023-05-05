@@ -1,4 +1,5 @@
 const Form = require('../models/Form');
+const Patient = require('../models/Patient');
 
 const { getCurrentDate } = require('../utils/currentDate');
 
@@ -30,7 +31,6 @@ module.exports.addForm = async (req, res) => {
 
 module.exports.getAll = async (req, res) => {
     try {
-
         let forms = [];
 
         const frequencyFilter = req.query.frequency? { form_type: req.query.frequency }: {}
@@ -41,11 +41,18 @@ module.exports.getAll = async (req, res) => {
             forms = await Form.find().populate('doctorId', ['name', 'email']);
         } else if(req.user.type == "patient") {
             forms = await Form.find({
+                // $or: [
+                //     { doctorId: { $in: req.user.primaryTeamIds }},
+                //     { doctorId: { $in: req.user.secondaryTeamIds }},
+                // ],
                 $or: [
-                    { doctorId: { $in: req.user.primaryTeamIds }},
-                    { doctorId: { $in: req.user.secondaryTeamIds }},
+                    { view_date: { $exists: false } },
+                    { view_date: getCurrentDate() },
                 ],
-                ...frequencyFilter
+                $or: [
+                    { view_date: { $exists: false } },
+                    {...frequencyFilter},
+                ],
             }).populate('doctorId', ['name', 'email']);
             for (let i = 0; i < forms.length; i++) {
                if(forms[i].questions[0].answers[0]?.patientId.toString() == req.user.id)
@@ -163,6 +170,19 @@ module.exports.activate = async (req, res) => {
 
 module.exports.setType = async (req, res) => {
     try {
+
+        const patient = await Patient.findOne({ _id: req.body.patientId, 
+            $or: [
+                { primaryTeamIds: { $in: [req.user.id] } },
+                { secondaryTeamIds: { $in: [req.user.id] } }
+          ]})
+        if(!patient) {
+            return res.status(400).json({
+                success: false,
+                message: "no patient found for this doctor",
+            })
+        }
+
         const form = await Form.findOne({_id: req.body.formId, form_type: { $exists: false }});
         if(!form) {
             return res.status(400).json({

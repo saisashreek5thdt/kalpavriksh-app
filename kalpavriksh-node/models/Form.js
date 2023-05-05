@@ -7,7 +7,8 @@ const FormSchema = new mongoose.Schema({
     },
     form_title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     answered: {
         type: Boolean,
@@ -42,8 +43,6 @@ const FormSchema = new mongoose.Schema({
                 patientId: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "patient",
-                    required: true,
-                    unique: true
                 },
                 data: {
                     type: mongoose.Schema.Types.Mixed

@@ -4,7 +4,7 @@ const obs = require('../controllers/observations');
 
 const { authorize } = require("../middleware/auth");
 
-router.post('/', authorize("patient"),  obs.add);
-router.get('/', authorize(), obs.getAll);
+router.post('/', authorize("doctor"),  obs.add);
+router.get('/:patientId', authorize("doctor"), obs.getAll);
 
 module.exports = router;

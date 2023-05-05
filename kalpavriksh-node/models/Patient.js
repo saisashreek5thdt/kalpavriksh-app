@@ -86,6 +86,7 @@ const Patient = new mongoose.Schema({
         type: String,
         default: "Active" //De-Active
     },
+    statusMessage: String,
     paymentStatus: {
         type: Boolean,
         default: false

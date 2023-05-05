@@ -7,10 +7,10 @@ const { checkPatient } = require('../middleware/auth');
 const { authorize } = require("../middleware/auth");
 
 router.get('/get-all', authorize(), form.getAll);
-// router.get('/get/:id', authorize("doctor"), form.getBypatient)
+// router.get('/get/:id', , form.getBypatient)
 router.post('/submit-form', authorize("patient"), form.submitForm);
 router.put('/deactivate/:id', authorize("admin"), form.deactivate);
 router.put('/activate/:id', authorize("admin"), form.activate);
-router.put('/set-type', authorize("patient"), form.setType);
+router.put('/set-type', authorize("doctor"), form.setType);
 
 module.exports = router;

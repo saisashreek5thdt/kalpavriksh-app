@@ -4,7 +4,7 @@ const { getFormatDate } = require('../utils/common');
 
 module.exports.add = async (req, res) => {
     try {
-        const patient = await Patient.findById(req.user.id);
+        const patient = await Patient.findById(req.body.patientId);
         if(!patient) {
             return res.status(400).json({
                 success: false,
@@ -33,7 +33,7 @@ module.exports.add = async (req, res) => {
 
 module.exports.getAll = async (req, res) => {
     try {
-        const patient = await Patient.findById(req.user.id);
+        const patient = await Patient.findById(req.params.patientId);
         if(!patient) {
             return res.status(400).json({
                 success: false,
@@ -43,7 +43,7 @@ module.exports.getAll = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Observations added successfully",
+            message: "Observations fetched successfully",
             data: patient.observations
         })
     } catch (err) {

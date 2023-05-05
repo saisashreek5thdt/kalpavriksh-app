@@ -117,6 +117,7 @@ module.exports.deactivate = async (req, res) => {
         }
 
         patient.status = "De-Active";
+        patient.statusMessage = req.body.message;
 
         await patient.save()
 
@@ -149,6 +150,7 @@ module.exports.activate = async (req, res) => {
         }
         
         patient.status = "Active";
+        patient.statusMessage = req.body.message;
 
         await patient.save()
 
