@@ -2,6 +2,7 @@ const DietChart = require('../models/DietChart')
 const Patient = require('../models/Patient');
 
 const { getCurrentDate } = require('../utils/currentDate');
+const uploadFiles = require('../functions/uploadFile');
 
 module.exports.addDietChart = async (req, res) => {
     try {
@@ -15,6 +16,7 @@ module.exports.addDietChart = async (req, res) => {
             protiens: req.body.protiens,
             fats: req.body.fats,
             food_type: req.body.food,
+            file: req.files.length > 0 ? await uploadFiles(req.files) : undefined,
             cuisine_type: req.body.cuisine_type,
             createdOn: getCurrentDate(),
             file: "sample link"

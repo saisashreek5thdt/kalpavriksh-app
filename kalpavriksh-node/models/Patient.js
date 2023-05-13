@@ -6,7 +6,7 @@ const Patient = new mongoose.Schema({
     patientId: {
         type: String,
     },
-    logo: {
+    photo: {
         type: String,
     },
     phone: {
@@ -27,51 +27,64 @@ const Patient = new mongoose.Schema({
     },
     age: {
         type: Number,
+        required: true
     },
     gender: {
         type: String,
         required: true
     },
     height: {
-        type: Number
+        type: Number,
+        required: true
     },
     weight: {
-        type: Number
+        type: Number,
+        required: true
     },
     caretakers_name: {
-        type: String
+        type: String,
+        required: true
     },
     caretakers_relation: {
-        type: String
+        type: String,
+        required: true
     },
     caretakers_phone: {
-        type: Number
+        type: Number,
+        required: true
     },
     caretakers_time: {
-        type: String
+        type: String,
+        required: true
     },
     health_plan: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "healthplan"
+        ref: "healthplan",
+        required: true
     },
     health_plan_date: {
         startDate: Date,
-        endDate: Date
+        endDate: Date,
     },
     amount: {
-        type: Number
+        type: Number,
+        required: true
     },
     payment_mode: {
-        type: String
+        type: String,
+        required: true
     },
     payment_date: {
-        type: Date
+        type: Date,
+        required: true
     },
     ref_id: {
-        type: String
+        type: String,
+        required: true
     },
     next_payment_date: {
-        type: Date
+        type: Date,
+        required: true
     },
     observations: [{
         desc: {

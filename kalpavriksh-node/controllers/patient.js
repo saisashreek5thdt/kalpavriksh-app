@@ -4,9 +4,10 @@ const Healthplan = require('../models/Healthplan');
 
 const { getPatientId } = require('../utils/getPatientId');
 const { getCurrentDate } = require('../utils/currentDate');
+const uploadFiles = require('../functions/uploadFile');
 
 module.exports.addPatient = async (req, res) => {
-   
+   //console.log(req.body);
     try {
         const patient = await Patient.findOne({email: req.body.email});
         if(patient) {
@@ -27,6 +28,7 @@ module.exports.addPatient = async (req, res) => {
         const newPatient = new Patient({
             patientId: "DAP-"+ await getPatientId(),
             createdOn: getCurrentDate(),
+            photo: req.files.length > 0 ? await uploadFiles(req.files) : undefined,
             ...req.body
         });
 
@@ -88,6 +90,45 @@ module.exports.getPatient = async (req, res) => {
 
 module.exports.editPatient = async (req, res) => {
     try {
+        const patient = await Patient.findById(req.params.id)
+        if(!patient) {
+            return res.status(400).json({
+                success: false,
+                message: "no patient found",
+            })
+        }
+
+        const patient1 = await Patient.findOne({email: req.body.email, _id: { $ne: req.params.id }});
+        if(patient1) {
+            return res.status(400).json({
+                success: false,
+                message: "A patient is already exist with given email Id",
+            })
+        }
+
+        patient.health_plan_date = req.body.health_plan_date,
+        patient.primaryTeamIds =  req.body.primaryTeamIds,
+        patient.secondaryTeamIds =  req.body.secondaryTeamIds,
+        patient.phone = req.body.phone,
+        patient.name =  req.body.name,
+        patient.email = req.body.email,
+        patient.dob = req.body.dob,
+        patient.gender = req.body.gender,
+        patient.height = req.body.height,
+        patient.weight = req.body.weight,
+        patient.caretakers_name = req.body.caretakers_name,
+        patient.caretakers_relation = req.body.caretakers_relation,
+        patient.caretakers_phone = req.body.caretakers_phone,
+        patient.caretakers_time = req.body.caretakers_time,
+        patient.health_plan = req.body.health_plan,
+        patient.amount = req.body.amount,
+        patient.payment_mode = req.body.payment_mode,
+        patient.payment_date = req.body.payment_date,
+        patient.ref_id = req.body.ref_id,
+        patient.next_payment_date =  req.body.next_payment_date,
+        patient.observations = req.body.observations,
+        //patient.photo = req.files.length > 0 ? await uploadFiles(req.files) : patient.photo;
+        
         await Patient.findByIdAndUpdate( req.params.id, req.body);
         return res.status(200).json({
             success: true,

@@ -1,7 +1,7 @@
 const Doctor = require('../models/Doctor')
 
 const { getCurrentDate } = require('../utils/currentDate');
-
+const uploadFiles = require('../functions/uploadFile');
 
 module.exports.addDoctor = async (req, res) => {
     try {
@@ -14,6 +14,7 @@ module.exports.addDoctor = async (req, res) => {
         }
         const newDoctor = new Doctor({
             createdOn: getCurrentDate(),
+            photo: req.files.length > 0 ? await uploadFiles(req.files) : undefined,
             ...req.body
         });
 
@@ -62,7 +63,8 @@ module.exports.edit = async (req, res) => {
         doctor.role = req.body.role,
         doctor.email = req.body.email,
         doctor.phone = req.body.phone,
-        doctor.registration_no = req.body.registration_no
+        doctor.registration_no = req.body.registration_no,
+        doctor.photo = req.files.length > 0 ? await uploadFiles(req.files) : undefined,
 
         await doctor.save()
 

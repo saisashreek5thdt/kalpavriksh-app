@@ -7,6 +7,7 @@ const Healthplan = new mongoose.Schema({
     doctorFollowup: String,
     seniorDietecianFollowup: String,
     dietecianFollowup: String,
+    file: String,
 });
 
 module.exports = mongoose.model('healthplan', Healthplan);

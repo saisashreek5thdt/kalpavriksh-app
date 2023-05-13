@@ -5,6 +5,7 @@ const Doctor = new mongoose.Schema({
     role: String,
     email: String,
     phone: Number,
+    photo: String,
     registration_no: String,
     avatar: String,
     status: {
