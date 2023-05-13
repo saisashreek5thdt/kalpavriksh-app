@@ -49,7 +49,7 @@ const PatientAppointmentInfo = () => {
       <div className="flex justify-start my-5">
         <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
           <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">
-            Create Appointment's
+            Create Appointments
           </h5>
           <p className="text-gray-700 text-base mb-4">
             {/* Some quick example text to build on the card title and make up the

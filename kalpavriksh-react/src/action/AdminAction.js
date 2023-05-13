@@ -119,7 +119,7 @@ export const adminLogin = (email, password, user) => async (dispatch) => {
 
 export const adminSignout = () => (dispatch) => {
   localStorage.removeItem("adminDocInfo");
-
+  localStorage.removeItem("activeUser");
   dispatch({ type: ADMIN_SIGNOUT });
   window.location.href = "/";
 };

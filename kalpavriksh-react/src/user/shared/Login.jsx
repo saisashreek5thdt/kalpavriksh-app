@@ -1,12 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "../../pages/form-validations/LoginForm";
 
 import Logo from "../../Assets/img/logo-login.svg";
+import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import LoadingBox from "../../Components/LoadingBox";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [loading,setLoading] = useState(true)
+  const patientSignin = useSelector((state) => state.patientSignin);
+  const doctorSignin = useSelector((state) => state.doctorSignin);
+  const adminSignin = useSelector((state) => state.adminSignin);
+    const {adminDocInfo } = adminSignin;
+  const { patientInfo } = patientSignin;
+  const { doctorInfo } = doctorSignin;
+  console.log(localStorage.getItem('activeUser'))
+  useEffect(()=>{
+
+    switch (localStorage.getItem('activeUser')) {
+      case (null || undefined):
+        setLoading(false)
+      case 'doctor':
+     doctorInfo ?  navigate('/userrole/:roleid/dashboard/doctor/') : setLoading(false)
+        break;
+      case 'patient':
+     patientInfo ?   navigate('/userrole/:roleid/dashboard/patient/mydata/') : setLoading(false)
+        break;
+      case 'admin':
+      adminDocInfo ? navigate('/Admin/dashboard/') : setLoading(false)
+        break;
+    
+      default:
+        setLoading(false)
+        break;
+    }
+  },[])
   return (
     <>
-      <section className="login__Container">
+      {!loading? <section className="login__Container">
         <div className="login__Container--Box">
           <div>
             <img
@@ -20,7 +52,7 @@ const Login = () => {
           </div>
           <LoginForm />
         </div>
-      </section>
+      </section>: <LoadingBox></LoadingBox>}
     </>
   );
 };

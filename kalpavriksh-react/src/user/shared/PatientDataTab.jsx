@@ -21,21 +21,21 @@ export default class PatientDataTab extends React.Component {
   content0() {
     return (
       <div className="py-5">
-        <Form1 />
+        <Form1 type='daily' />
       </div>
     );
   }
   content1() {
     return (
       <div className="py-3">
-        <Form1 />
+        <Form1 type='weekly' />
       </div>
     );
   }
   content2() {
     return (
       <div className="py-3">
-        <Form1 />
+        <Form1 type='bi-weekly' />
       </div>
     );
   }

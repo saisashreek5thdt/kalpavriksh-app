@@ -68,7 +68,7 @@ const DocProfile = () => {
                     <dl>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Doctor Accout Status
+                          Accout Status
                         </dt>
                         <dd className="mt-1 text-sm text-green-900 font-semibold sm:col-span-2 sm:mt-0">
                          {profile.doctor.status}
@@ -76,15 +76,15 @@ const DocProfile = () => {
                       </div>
                       <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Doctor Name
+                          Name
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                        <dd className="mt-1 text-sm capitalize text-gray-900 sm:col-span-2 sm:mt-0">
                           {profile.doctor.name}
                         </dd>
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Doctor Role
+                          Role
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                         {profile.doctor.role}
@@ -92,7 +92,7 @@ const DocProfile = () => {
                       </div>
                       <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Doctor Email
+                          Email
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           {profile.doctor.email}
@@ -100,7 +100,7 @@ const DocProfile = () => {
                       </div>
                       <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-bold text-gray-500">
-                          Doctor Phone Number
+                          Phone Number
                         </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                           {profile.doctor.phone}

@@ -6,6 +6,7 @@ import { getPerformanceData } from "../../../action/AdminAction";
 import Papa from 'papaparse';
 import { Url } from "../../../constant.js/PatientConstant";
 import Swal from "sweetalert2";
+import LoadingBox from "../../../Components/LoadingBox";
 
 const DataCollection = () => {
     const [patientInfo, setPatientInfo] = useState({ patientId: "" });
@@ -15,12 +16,16 @@ const DataCollection = () => {
     const [forms, setForms] = useState([]);
     const [patient, setPatient] = useState({});
     const [patientError, setPatientError] = useState(false);
+    const [patientDataLoading, setPatientDataLoading] = useState(false);
     const dispatch = useDispatch();
     const performanceState = useSelector(state => state.employeePerformance);
 
     const adminDocInfo = useSelector(state => state.adminSignin.adminDocInfo);
 
     const formatDateString = (dateString) => {
+        if (typeof dateString !== "string" ) {
+            return "";
+          }
         const strippedDate = dateString.slice(0, 10);
         return strippedDate
     };
@@ -36,6 +41,8 @@ const DataCollection = () => {
     }, [])
     const downloadPatientCsv = () => {
         if (patientInfo.patientId) {
+            setPatientError(false)
+            setPatientDataLoading(true)
             fetch(`${Url}/data-collection/patient/${patientInfo.patientId}`, {
                 headers: {
                     Authorization: `Bearer ${adminDocInfo.token}`,
@@ -49,13 +56,16 @@ const DataCollection = () => {
                 })
                 .then(data => {
                     setPatient(data.data);
+                    setPatientDataLoading(false)
                 })
                 .catch(error => {
+                    setPatientDataLoading(false)
                     Swal.fire({
                         icon: "error",
                         text: error.message,
                     });
                 });
+                
         }
         else {
             setPatientError(true)
@@ -187,8 +197,8 @@ const DataCollection = () => {
                 doctorId_name: selectedForm.doctorId?.name,
                 doctorId_email: selectedForm.doctorId?.email,
                 questions: JSON.stringify(selectedForm?.questions),
-                createdAt: formatDateString(selectedForm.createdAt),
-                updatedAt: formatDateString(selectedForm.updatedAt),
+                createdAt: formatDateString(selectedForm.createdOn),
+                view_date: formatDateString(selectedForm.view_date),
             };
             delete modifiedForm.doctorId
             delete modifiedForm.__v
@@ -243,6 +253,7 @@ const DataCollection = () => {
                             >
                                 Download CSV
                             </button>
+                            {patientDataLoading && <LoadingBox></LoadingBox>}
                             {patientError && <p className="text-red-500 mt-3 font-thin tracking-tight leading-3"> please enter the patient id</p>
                             }
                         </div>
@@ -358,8 +369,10 @@ const DataCollection = () => {
                             >
                                 Download CSV
                             </button>
+                            {performanceState.loading && <LoadingBox></LoadingBox>}
                             {employeeCsvError && <p className="text-red-500 mt-3 font-thin tracking-tight leading-3"> please fill all fields</p>
                             }
+                            {performanceState.error && <p className="text-red-500 mt-3 font-thin tracking-tight leading-3">{performanceState.error}</p>}
                         </div>
                     </div>
                 </div>

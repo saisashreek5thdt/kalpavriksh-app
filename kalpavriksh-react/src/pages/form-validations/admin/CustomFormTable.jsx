@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { FiEdit } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import {
@@ -136,7 +136,7 @@ const CustomFormTable = () => {
                     {frm.doctorId ? frm.doctorId.name : ""}
                   </td>
                   <td className="table__Body--Row_Data">
-                    {truncate(frm.createdAt, 11)}
+                    {truncate(frm.createdOn, 11)}
                   </td>
                   <td className="table__Body--Row_Data">
                     <select
@@ -157,7 +157,7 @@ const CustomFormTable = () => {
                     </select>
                   </td>
                   <td className="table__Body--Row_Data">
-                    <FiEdit
+                    <FiEye
                       onClick={() => filterData(frm._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"

@@ -33,10 +33,11 @@ const LoginForm = () => {
   const adminSignin = useSelector((state) => state.adminSignin);
   const { loading:loadingAdmin, error:errorAdmin , adminDocInfo } = adminSignin;
  const [otp, setOtp] = useState('')
+ const [isLogged, setIsLogged] = useState(false);
   const dispatch = useDispatch();
 
   // console.log(doctorInfo,'addd');
-
+ 
   const otpHandler = (e) => {
     e.preventDefault();
     // console.log("hey");
@@ -64,6 +65,8 @@ const LoginForm = () => {
     { value: "Please Select a Role" },
     { value: "Admin" },
     { value: "doctor" },
+    { value: "Junior Doctor" },
+    { value: "Dietitian" },
     { value: "patient" },
   ];
 
@@ -76,7 +79,6 @@ const LoginForm = () => {
   const [user] = useAuthState(auth);
   // console.log(user, "user");
 
-  const [isLogged, setIsLogged] = useState(false);
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -100,6 +102,7 @@ const LoginForm = () => {
     false
   );
 
+  const isDoctorOrDietitian = ['doctor', 'Dietitian', 'Junior Doctor'].includes(formState?.inputs?.role?.value);
 
   const loggedHandler = () => {
     if (!isLogged) {
@@ -150,6 +153,7 @@ const LoginForm = () => {
     //   navigate('/Admin/dashboard/')
     // }
     if(formState.inputs.role.value === 'Admin' && adminDocInfo){
+      localStorage.setItem("activeUser", "admin");
       navigate('/Admin/dashboard/')
 
     }
@@ -159,10 +163,12 @@ const LoginForm = () => {
   useEffect(()=>{
     // console.log(formState.inputs.role,'patinetinfo');
 
-    if(formState.inputs.role.value === 'doctor' && doctorInfo){
+    if (isDoctorOrDietitian && doctorInfo){
       // console.log(doctorInfo,'yess');
+      localStorage.setItem("activeUser", "doctor");
       navigate('/userrole/:roleid/dashboard/doctor/')
     }else if(formState.inputs.role.value === 'patient' && patientInfo){
+      localStorage.setItem("activeUser", "patient");
       navigate('/userrole/:roleid/dashboard/patient/mydata/')
     }
   },[patientInfo,doctorInfo,formState])
@@ -226,7 +232,7 @@ const LoginForm = () => {
               />
             </div>
 
-          {formState.inputs.role.value === "doctor" ? (
+          {isDoctorOrDietitian ? (
             <div className="generate-otp">
               <button
                 // type="submit"
@@ -296,9 +302,9 @@ const LoginForm = () => {
       ): ''}
    
       {/* } */}
-        <div className="login__Divider--Box">
+        {/* <div className="login__Divider--Box">
           <p className="login__Divider--Text">Or</p>
-        </div>
+        </div> */}
       </form>
 
       {user ? (
@@ -309,7 +315,7 @@ const LoginForm = () => {
         </div>
       ) : (
         <div>
-          <button
+          {/* <button
             type="submit"
             className="group login__Social--Btn"
             onClick={googleSignIn}
@@ -321,7 +327,7 @@ const LoginForm = () => {
               />
             </span>
             Sign in with Google
-          </button>
+          </button> */}
         </div>
       )}
     </>

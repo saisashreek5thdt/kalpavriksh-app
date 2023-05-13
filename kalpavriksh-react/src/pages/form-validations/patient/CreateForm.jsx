@@ -7,24 +7,42 @@ import LoadingBox from "../../../Components/LoadingBox";
 import MessageBox from "../../../Components/MessageBox";
 import { CREATE_FORM_RESET } from "../../../constant.js/DoctorConstant";
 import Navbar from "../../../user/shared/Navbar";
+import { VALIDATOR_REQUIRE } from "../../../utils/validators";
+import Select from "../../../Components/Select";
+import { useForm } from "../../../hooks/form-hooks";
 
 const CreateForm = () => {
   // const [id, setId] = useState('')
   const [title, setTitle] = useState('')
+  const [type, setType] = useState('')
   const formCreate = useSelector((state) => state.formCreate);
   const { loading, error, success } = formCreate;
 
 
   const [addMore, setAddMore] = useState([
-    {type:'',question_title:'',choise1:'',choise2:'',choise3:'',choise4:''},
+    {type:'',question_title:'',choice1:'',choice2:'',choice3:'',choice4:''},
   ])
 
   const [form, setFrom] = useState(false)
-
+  const formOptions = [
+    { value: "Please Select form type" },
+    { value: "daily" },
+    { value: "weekly" },
+    { value: "bi-weekly" },
+  ];
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      form_type: {
+        value: "",
+        isValid: false,
+      }
+    },
+    false
+  );
   let navigate = useNavigate();
   const dispatch=useDispatch()
   const nextStep = () => {
-    dispatch(createForm(title,addMore))
+    dispatch(createForm(title,addMore,formState.inputs.form_type.value))
     // console.log(addMore,'admmore')
   };
 
@@ -34,14 +52,15 @@ const CreateForm = () => {
     setAddMore(data);
     // console.log(addMore,'vii')
   }
+ 
 
   const addMoreFields=()=>{
     let obj={type:'',
             question_title:'',
-            choise1:'',
-            choise2:'',
-            choise3:'',
-            choise4:''
+            choice1:'',
+            choice2:'',
+            choice3:'',
+            choice4:''
           }
           setAddMore([...addMore,obj])
   }
@@ -99,6 +118,18 @@ const CreateForm = () => {
                                 autoComplete="given-name"
                                 className="form__Input"
                               />
+                            </div>
+                            <div className="form__Cols--Span-6">
+                              
+                              <Select
+                                element="select"
+                                id="form_type"
+                                label="Select form type"
+                                options={formOptions}
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Select Type"
+                                onInput={inputHandler}
+                               />
                             </div>
                             {/* <div className="form__Cols--Span-6 form__Gap-1">
                               <button
@@ -177,7 +208,7 @@ const CreateForm = () => {
                                 type="text"
                                 name="choise1"
                                 id="choise1"
-                                value={form.choise1}
+                                value={form.choice1}
                                 autoComplete="given-name"
                                 className="form__Input"
                                 onChange={(event)=>handleFormChange(event,index)}
@@ -193,7 +224,7 @@ const CreateForm = () => {
                               <input
                                 type="text"
                                 name="choise2"
-                                value={form.choise2}
+                                value={form.choice2}
                                 id="choise2"
                                 autoComplete="given-name"
                                 className="form__Input"
@@ -211,7 +242,7 @@ const CreateForm = () => {
                                 type="text"
                                 name="choise3"
                                 id="choise3"
-                                value={form.choise3}
+                                value={form.choice3}
                                 autoComplete="given-name"
                                 className="form__Input"
                                 onChange={(event)=>handleFormChange(event,index)}
@@ -228,7 +259,7 @@ const CreateForm = () => {
                                 type="text"
                                 name="choise4"
                                 id="choise4"
-                                value={form.choise4}
+                                value={form.choice4}
                                 autoComplete="given-name"
                                 className="form__Input"
                                 onChange={(event)=>handleFormChange(event,index)}

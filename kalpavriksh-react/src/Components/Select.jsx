@@ -4,6 +4,12 @@ import { validate } from "../utils/validators";
 
 const selectReducer = (state, action) => {
     switch (action.type) {
+        case 'INITIALIZE' :
+            return {
+                ...state,
+                value:action.val,
+                isValid: true
+            };
         case 'CHANGE':
             return {
                 ...state,
@@ -31,7 +37,14 @@ const Select = (props) => {
 
     const { id, onInput } = props;
     const { value, isValid } = inputState;
-
+    useEffect(()=>{
+        if(props.initialValue){
+        dispatch({
+            type: 'INITIALIZE',
+            val:props.initialValue || '',
+        });
+    }
+    },[props.initialValue])
     useEffect(() => {
         onInput(id, value, isValid);
     }, [id, value, isValid, onInput]);
@@ -51,15 +64,26 @@ const Select = (props) => {
     };
 
     const element =
-        props.element === 'select' ? (
+        props.element === 'healthPlanSelect' ? (
             <select
-            value={props?.initialValue}
+            // value={inputState?.value}
                 id={props.id}
                 className="form__Select"
                 onChange={changeHandler}
                 onBlur={touchHandler}
                 options={props.options}>
-                {props.options.map(option => <option selected={props?.initialValue ==option.value} key={option.value}>{option.value}</option>)}
+                {props.options.map(option => <option selected={inputState.value ==option.value} value={option.value} key={option.value}>{option.label}</option>)}
+            </select>
+        ) : 
+        props.element === 'select' ? (
+            <select
+            // value={inputState?.value}
+                id={props.id}
+                className="form__Select capitalize"
+                onChange={changeHandler}
+                onBlur={touchHandler}
+                options={props.options}>
+                {props.options.map(option => <option selected={inputState.value ==option.value} key={option.value}>{option.value}</option>)}
             </select>
         ) : (
             <textarea
@@ -67,7 +91,7 @@ const Select = (props) => {
                 rows={props.rows || 3}
                 onChange={changeHandler}
                 onBlur={touchHandler}
-                value={props?.initialValue}
+                value={inputState?.value}
             />
         );
 

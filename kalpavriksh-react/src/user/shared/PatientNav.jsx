@@ -29,7 +29,7 @@ const PatientNav = () => {
     navigation = [
       {
         name: "Dashboard",
-        href: "/userrole/:roleid/dashboard/patient/mydata",
+        href: "/userrole/:roleid/dashboard/doctor/",
         current: true,
       },
       {

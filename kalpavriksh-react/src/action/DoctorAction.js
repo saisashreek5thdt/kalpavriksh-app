@@ -81,7 +81,7 @@ export const uploadDietCharts =
   };
 
 export const createForm =
-  (form_title, questions) => async (dispatch, getState) => {
+  (form_title, questions,form_type) => async (dispatch, getState) => {
     dispatch({ type: CREATE_FORM_REQUEST });
     const {
       doctorSignin: { doctorInfo },
@@ -89,7 +89,7 @@ export const createForm =
     try {
       const { data } = await axios.post(
         `${Url}/doctors/add-form`,
-        { form_title, questions },
+        { form_title, questions,form_type },
         {
           headers: { Authorization: `Bearer ${doctorInfo.token}` },
         }

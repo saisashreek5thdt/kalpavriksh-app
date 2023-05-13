@@ -17,7 +17,7 @@ class PatientPrescription extends React.Component {
   constructor() {
     super(...arguments);
     this.headerText = [
-      { text: "Latest Presciptions" },
+      { text: "Latest Prescriptions" },
       { text: "Appointments" },
       { text: "Personal Observations" },
     ];
@@ -64,10 +64,10 @@ class PatientPrescription extends React.Component {
                     header={this.headerText[1]}
                     content={this.content1}
                   />
-                  {!patientInfo ? <TabItemDirective
+                  <TabItemDirective
                     header={this.headerText[2]}
                     content={this.content2}
-                  />: <></>}
+                  />
                 </TabItemsDirective>
               </TabComponent>
             </div>

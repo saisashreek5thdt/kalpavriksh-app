@@ -54,7 +54,6 @@ const DoctorVisitor = () => {
   });
   const [filter, setFilter] = useState(0);
   const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue);
     setValue({
       startDate: new Date(newValue.startDate).toISOString(),
       endDate: new Date(newValue.endDate).toISOString(),
@@ -69,6 +68,8 @@ const DoctorVisitor = () => {
   };
   console.log("patients---", patients);
   const dispatch = useDispatch();
+
+
 
   const fetchUsers = () => {
     return axios
@@ -99,7 +100,6 @@ const DoctorVisitor = () => {
   const handleChange = (selectedOptions) => {
     const value = selectedOptions.filter((e) => e.id);
     setHealthPlans({ selectedOptions });
-    // console.log(selectedOptions,'hea');
   };
 
   function handlePriority(patientId) {
@@ -146,7 +146,7 @@ const DoctorVisitor = () => {
   }, [patientList, patients]);
 
   useEffect(() => {
-    if (patientsUpdated) {
+    if (patientsUpdated && currentPatientId) {
       Swal.fire({
         icon: "success",
         text: "Patient updated successfully",
@@ -166,7 +166,7 @@ const DoctorVisitor = () => {
     { value: "Daughter-In-Law" },
     { value: "Spouse" },
   ];
-  
+
   async function fetchData() {
     try {
       const response = await fetch(`${Url}/health-plan`, {
@@ -180,7 +180,7 @@ const DoctorVisitor = () => {
       const json = await response.json();
       setHealthPlanOptions([
 
-        ...(json?.data.flatMap((opt) => ({ value: opt.name, label: opt.name })))
+        ...(json?.data.flatMap((opt) => ({ value: opt._id, label: opt.name })))
 
       ]);
     } catch (err) {
@@ -288,7 +288,6 @@ const DoctorVisitor = () => {
   const nextStep = (e) => {
     e.preventDefault();
 
-    console.log("----", formState, formState.inputs);
   };
   const handleFilter = ({
     patientName,
@@ -302,12 +301,12 @@ const DoctorVisitor = () => {
         (healthPlan && !patient.health_plan) ||
         (healthPlan && patient.health_plan.name !== healthPlan) ||
         (paymentStatus &&
-          ((paymentStatus === "Active" &&  new Date(patient.next_payment_date) >= new Date()) ||
+          ((paymentStatus === "Active" && new Date(patient.next_payment_date) >= new Date()) ||
             (paymentStatus === "De-Active" &&
               patient.next_payment_date &&
               new Date(patient.next_payment_date) < new Date()))) ||
-        (patientType && patientType =='Primary' && !patient.primaryTeamIds.some(id=>id==docId) )||
-        (patientType && patientType =='Secondary' && !patient.secondaryTeamIds.some(id=>id==docId) )
+        (patientType && patientType == 'Primary' && !patient.primaryTeamIds.some(id => id == docId)) ||
+        (patientType && patientType == 'Secondary' && !patient.secondaryTeamIds.some(id => id == docId))
       ) {
         return false;
       }
@@ -316,15 +315,15 @@ const DoctorVisitor = () => {
 
     setFilteredPatients(filterPatients);
   };
-  useEffect(()=>{
-if(currentPatientId){
-  const currenPatient = filteredPatients.find((p)=>p._id===currentPatientId)
- Object.keys(currenPatient).forEach((key)=>
- inputHandler(key,currenPatient[key],false)
- )
-}
-  },[currentPatientId,inputHandler])
 
+  useEffect(() => {
+    if (currentPatientId) {
+      const currenPatient = filteredPatients.find((p) => p._id === currentPatientId)
+      Object.keys(currenPatient).forEach((key) =>
+        inputHandler(key, currenPatient[key], true)
+      )
+    }
+  }, [currentPatientId, inputHandler])
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -407,7 +406,7 @@ if(currentPatientId){
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                     {new Date(itm?.createdOn)
                       .toLocaleString()
-                      .substring(0, 9)}
+                      .substring(0, 8)}
                   </td>
                   <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                     {/* <div className="flex flex-row justify-center">
@@ -623,17 +622,17 @@ if(currentPatientId){
                             <div className="form__Cols--Span-6">
                               <>
                                 <label>Select Primary Health Team</label>
-
                                 <AsyncSelect
                                   cacheOptions
                                   defaultOptions
                                   getOptionLabel={(e) => e.name}
                                   getOptionValue={(e) => e._id}
-                                  initialValue={formState.inputs.name.value}
                                   loadOptions={fetchUsers}
                                   onChange={handlePrimaryTeamChange}
                                   isMulti
                                 />
+
+
                               </>
                             </div>
 
@@ -646,7 +645,6 @@ if(currentPatientId){
                                   getOptionLabel={(e) => e.name}
                                   getOptionValue={(e) => e._id}
                                   loadOptions={fetchUsers}
-                                  initialValue={formState.inputs.name.value}
                                   onChange={handleSecondaryTeamChange}
                                   isMulti
                                 />
@@ -731,7 +729,7 @@ if(currentPatientId){
                             </div>
                             <div className="form__Cols--Span-6">
                               <Select
-                                element="select"
+                                element="healthPlanSelect"
                                 id="healthPlan"
                                 label="Select Health Plan"
                                 options={healthPlanOptions}
@@ -742,18 +740,18 @@ if(currentPatientId){
                               />
                             </div>
                             <div className="form__Cols--Span-6">
-                            <Input
-                              element="datepicker"
-                              type="time"
-                              label="Health Plan Date (Start + End)"
-                              id="planDate"
-                              initialValue={formState.inputs.planDate.value}
-                              placeholder="Health Plan Date (Start + End)"
-                              validators={[VALIDATOR_REQUIRE()]}
-                              errorText="Please Select Valid Dates"
-                              onInput={inputHandler}
-                              value={value}
-                            />
+                              <Input
+                                element="datepicker"
+                                type="time"
+                                label="Health Plan Date (Start + End)"
+                                id="planDate"
+                                initialValue={formState.inputs?.health_plan_date?.value || ''}
+                                placeholder="Health Plan Date (Start + End)"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Select Valid Dates"
+                                onInput={inputHandler}
+                                value={value}
+                              />
                             </div>
                           </div>
                           {/* <div className="py-4 form__Grid--Cols-6">
@@ -796,7 +794,7 @@ if(currentPatientId){
                                 type="text"
                                 label="Amount To Be Paid"
                                 id="amount"
-                                initialValue={formState.inputs.amount.value}
+                                initialValue={formState.inputs.amount.value || ''}
                                 placeholder="Amount To Be Paid"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Valid Number"
@@ -808,7 +806,7 @@ if(currentPatientId){
                                 element="select"
                                 id="paymentMode"
                                 label="Select Payment Mode"
-                                initialValue={formState.inputs.paymentMode.value}
+                                initialValue={formState.inputs.payment_mode?formState.inputs.payment_mode.value : ''}
                                 options={paymentModeOptions}
                                 validators={[VALIDATOR_REQUIRE()]}
                                 errorText="Please Select Payment Mode"
@@ -819,7 +817,7 @@ if(currentPatientId){
                               <Input
                                 element="input"
                                 type="date"
-                                initialValue={formState.inputs.paymentDate.value}
+                                initialValue={formState.inputs.payment_date?formState.inputs.payment_date.value.slice(0,10) : ''}
                                 label="Current Month Payment Date"
                                 id="paymentDate"
                                 placeholder="Payment Date"
@@ -833,7 +831,7 @@ if(currentPatientId){
                                 element="input"
                                 type="date"
                                 label="Next Month Payment Date"
-                                initialValue={formState.inputs.paymentNextDate.value}
+                                initialValue={ formState.inputs?.next_payment_date?formState.inputs.next_payment_date.value.slice(0,10) : ''}
                                 id="paymentNextDate"
                                 placeholder="Payment Date"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
@@ -847,7 +845,7 @@ if(currentPatientId){
                                 type="text"
                                 label="Ref. Id"
                                 id="refId"
-                                initialValue={formState.inputs.refId.value}
+                                initialValue={formState.inputs.ref_id?formState.inputs.ref_id.value : ''}
                                 placeholder="Ref. Id"
                                 validators={[VALIDATOR_MINLENGTH(1)]}
                                 errorText="Please Enter Valid Ref.Id"

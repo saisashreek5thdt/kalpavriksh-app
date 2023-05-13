@@ -399,7 +399,8 @@ export const patientLogin = (email, user, otp) => async (dispatch) => {
       user,
       otp,
     });
-    if (user == "doctor") {
+    const isDoctorOrDietitian = ['doctor', 'Dietitian', 'Junior Doctor'].includes(user);
+    if (isDoctorOrDietitian) {
       dispatch({ type: DOCTOR_LOGIN_SUCCESS, payload: data });
       // console.log(data.token,'dctrt');
       localStorage.setItem("doctorInfo", JSON.stringify(data));
@@ -421,12 +422,14 @@ export const patientLogin = (email, user, otp) => async (dispatch) => {
 
 export const doctorSignout = () => (dispatch) => {
   localStorage.removeItem("doctorInfo");
+  localStorage.removeItem("activeUser");
   dispatch({ type: DOCTOR_SIGNOUT });
   window.location.href = "/";
 };
 
 export const patientSignout = () => (dispatch) => {
   localStorage.removeItem("patientInfo");
+  localStorage.removeItem("activeUser");
   dispatch({ type: PATIENT_SIGNOUT });
   window.location.href = "/";
 };

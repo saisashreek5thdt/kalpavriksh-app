@@ -8,7 +8,7 @@ import LoadingBox from "../../Components/LoadingBox";
 import MessageBox from "../../Components/MessageBox";
 import { fromJSON } from "postcss";
 
-export const Form1 = () => {
+export const Form1 = ({type}) => {
   let navigate = useNavigate();
   const dispatch=useDispatch()
   const [value, setValue] = useState('')
@@ -182,7 +182,7 @@ const createObj=(fromId, e)=>{
 
     {loading ? <LoadingBox></LoadingBox>:
     error? <MessageBox>{error}</MessageBox>:
-    forms.length>0 ? forms.filter((e)=> !e.answer).map((frm)=>(
+    forms.length>0 ?forms.filter((e)=> !e.answer && e?.form_type===type)?.length>0 ? forms.filter((e)=> !e.answer && e?.form_type===type).map((frm)=>(
       <div className="p-2" key={frm._id}>
         <div className="relative w-full overflow-hidden">
           <input
@@ -354,8 +354,12 @@ const createObj=(fromId, e)=>{
         </div>
       </div>
     )):(
-      <MessageBox>no data</MessageBox>
-    )}
+      <MessageBox>no {type} forms</MessageBox>
+    )
+    :(
+      <MessageBox>no forms</MessageBox>
+    )
+  }
       
     </>
   );

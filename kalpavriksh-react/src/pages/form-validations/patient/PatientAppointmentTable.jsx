@@ -93,10 +93,10 @@ const PatientAppointmentTable = () => {
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
                 {i+1}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
+              <td className="px-6 py-4 whitespace-nowrap text-base capitalize font-medium text-gray-900 text-center">
                 {ap.doctorId.name}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">
+              <td className="px-6 py-4 whitespace-nowrap text-base capitalize font-medium text-gray-900 text-center">
                 {ap.patientId.name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900 text-center">

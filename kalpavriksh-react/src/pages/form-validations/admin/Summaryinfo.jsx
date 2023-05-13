@@ -4,18 +4,50 @@ import { CSVLink } from "react-csv";
 import { Url } from "../../../constant.js/PatientConstant";
 import Papa from 'papaparse';
 import { useSelector } from "react-redux";
+import LoadingBox from "../../../Components/LoadingBox";
 
 const Summaryinfo = () => {
   const adminDocInfo = useSelector(state => state.adminSignin.adminDocInfo);
   const [patientData, setPatientData] = useState();
   const [patientsPendingPaymentData, setPatientsPendingPaymentData] = useState();
+  const [patientsPendingPaymentDataLoading, setPatientsPendingPaymentDataLoading] = useState(false);
   const [employeeData, setEmployeeData] = useState();
+  const [employeeDataLoading, setEmployeeDataLoading] = useState(false);
   const formatDateString = (dateString) => {
+    if (typeof dateString !== "string" ) {
+      return "";
+    }
     const strippedDate = dateString.slice(0, 10);
     return strippedDate
   };
 
   //employee-data csv
+  const fetchEmployeeData = async () => {
+    setEmployeeDataLoading(true);
+  
+    try {
+      const response = await fetch(`${Url}/summary/employee-data`, {
+        headers: {
+          Authorization: `Bearer ${adminDocInfo.token}`,
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setEmployeeData(data?.data);
+      } else {
+        throw new Error("Failed to fetch employee data");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setEmployeeDataLoading(false);
+    }
+  };
+  
+
+console.log('employeedata',employeeData)
+
   useEffect(() => {
     if (employeeData) {
       let employeeCsvData = employeeData;
@@ -35,23 +67,12 @@ const Summaryinfo = () => {
       // Create a temporary anchor element to download the CSV file
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "patient.csv";
+      link.download = "employee-data.csv";
       link.click();
     }
   }, [employeeData])
-  const fetchEmployeeData = async () => {
-
-    fetch(`${Url}/summary/employee-data`, {
-      headers: {
-        Authorization: `Bearer ${adminDocInfo.token}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => setEmployeeData(data?.data))
-      .catch(error => console.error(error))
-
-  }
-  //employye-data csv
+  
+  //employee-data csv
 
 
 
@@ -89,6 +110,27 @@ const Summaryinfo = () => {
   // patient-data csv
 
   // pending-payment csv
+
+  const downloadPatientsPendingPaymentData = async () => {
+    setPatientsPendingPaymentDataLoading(true)
+    try {
+      const response = await fetch(`${Url}/summary/payment-pendings`, {
+        headers: {
+          Authorization: `Bearer ${adminDocInfo.token}`,
+        },
+      });
+      const data = await response.json();
+      setPatientsPendingPaymentData(data?.data);
+      setPatientsPendingPaymentDataLoading(false)
+    } catch (error) {
+      console.error(error);
+      setPatientsPendingPaymentDataLoading(false)
+
+    }
+  };
+
+
+
   useEffect(() => {
     if (patientsPendingPaymentData) {
       const modifiedPatientsPendingPaymentData = patientsPendingPaymentData?.map((patient) => ({
@@ -119,19 +161,7 @@ const Summaryinfo = () => {
     }
   }, [patientsPendingPaymentData]);
 
-  const downloadPatientsPendingPaymentData = async () => {
-    try {
-      const response = await fetch(`${Url}/summary/payment-pendings`, {
-        headers: {
-          Authorization: `Bearer ${adminDocInfo.token}`,
-        },
-      });
-      const data = await response.json();
-      setPatientsPendingPaymentData(data?.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   // pending payment csv
   // let navigate = useNavigate();
 
@@ -156,6 +186,7 @@ const Summaryinfo = () => {
           >
             Download CSV
           </button>
+          {patientsPendingPaymentDataLoading && <LoadingBox></LoadingBox>}
         </div>
         <div className="card__Block">
           <h5 className="card__Heading">
@@ -208,6 +239,7 @@ const Summaryinfo = () => {
           >
             Download CSV
           </button>
+          {employeeDataLoading && <LoadingBox></LoadingBox>}
           {/* 
           <button
             type="button"

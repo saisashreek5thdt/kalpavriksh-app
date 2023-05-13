@@ -378,7 +378,7 @@ console.log(prescriptions)
                                     aria-hidden="true"
                                   />
                                   <span className="ml-2 w-0 flex-1 truncate">
-                                    View Old Prescriptions
+                                    View Prescriptions
                                   </span>
                                 </div>
                                 <div className="ml-4 flex-shrink-0">
@@ -389,7 +389,7 @@ console.log(prescriptions)
                                     data-bs-target="#modalOldPrescription"
                                     // onClick={()=>setOpen(!open)}
                                   >
-                                    View Old Prescriptions Here
+                                    View Prescriptions Here
                                   </button>
                                 </div>
                               </li>
@@ -400,7 +400,7 @@ console.log(prescriptions)
                                     aria-hidden="true"
                                   />
                                   <span className="ml-2 w-0 flex-1 truncate">
-                                    View Old Diet Charts
+                                    View Diet Charts
                                   </span>
                                 </div>
                                 <div className="ml-4 flex-shrink-0">
@@ -411,7 +411,7 @@ console.log(prescriptions)
                                     data-bs-target="#modalOldDietchart"
                                     // onClick={()=>setOpen(!open)}
                                   >
-                                    View Old Diet Charts Here
+                                    View Diet Charts Here
                                   </button>
                                 </div>
                               </li>

@@ -327,7 +327,8 @@ const PatientHealthInfo = () => {
                             */}
                             <Input
                               element="input"
-                              type="text"
+                              type="number"
+                              min="0"
                               label="Patient Height"
                               id="height"
                               placeholder="Patient Height"
@@ -356,7 +357,8 @@ const PatientHealthInfo = () => {
                             */}
                             <Input
                               element="input"
-                              type="text"
+                              type="number"
+                              min="0"
                               label="Patient Weight"
                               id="weight"
                               placeholder="Patient Weight"
@@ -411,7 +413,7 @@ const PatientHealthInfo = () => {
 
                             <Input
                               element="input"
-                              type="text"
+                              type="number"
                               label="Caretakers Number"
                               id="caretakerNumber"
                               placeholder="Caretakers Number"

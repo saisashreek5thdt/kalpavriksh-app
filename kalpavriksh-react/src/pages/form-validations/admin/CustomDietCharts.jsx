@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiEdit } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import {
@@ -187,7 +187,7 @@ const CustomDietCharts = () => {
                     </select>
                   </td>
                   <td className="table__Body--Row_Data">
-                    <FiEdit
+                    <FiEye
                       onClick={() => filterData(dt._id)}
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"

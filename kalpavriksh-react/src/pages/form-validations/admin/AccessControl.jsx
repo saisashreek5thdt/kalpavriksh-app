@@ -24,7 +24,7 @@ const AccessControl = () => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState(null);
   const [regId, setRegId] = useState("");
   const [docName, setDocName] = useState('');
   const [docRole, setDocRole] = useState('');
@@ -32,6 +32,7 @@ const AccessControl = () => {
   const [docNumber, setDocNumber] = useState('');
   const [docRegId, setDocRegId] = useState('');
   const [editDocId, setEditDocId] = useState("")
+  const [toggle, setToggle] = useState(true)
   const dispatch = useDispatch();
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
@@ -74,9 +75,9 @@ const AccessControl = () => {
     if (!email) {
       errors.email = '*Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = 'Invalid email address';
+      errors.email = '*Invalid email address';
     }
-    if (!JSON.stringify(number).trim()) {
+    if (!number || JSON.stringify(number).trim()=='') {
       errors.number = '*Number is required';
     } else {
       errors.number = ''
@@ -98,9 +99,44 @@ const AccessControl = () => {
       setEditDocId('')
     }
   }
+
+  const validateCreateEmployeeForm = () => {
+    let errors = {};
+  
+    if (!docName.trim()) {
+      errors.docName = '*Name is required';
+    } else {
+      errors.docName = ''
+    }
+  
+    if (!docRole.trim()) {
+      errors.docRole = '*Role is required';
+    } else {
+      errors.docRole = ''
+    }
+    if (!docEmail) {
+      errors.docEmail = '*Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(docEmail)) {
+      errors.docEmail = '*Invalid email address';
+    }
+    if (!docNumber || JSON.stringify(docNumber).trim()=='') {
+      errors.docNumber = '*Number is required';
+    } else {
+      errors.docNumber = ''
+    }
+  
+    return errors;
+  };
+  
+
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(addDoctore(docName, docRole, docEmail, docNumber, docRegId));
+    const errors = validateCreateEmployeeForm();
+    if (Object.values(errors).some((e) => e.length > 0)) {
+      setFormErrors(errors);
+    } else {
+      dispatch(addDoctore(docName, docRole, docEmail, docNumber, docRegId));
+    }
   };
 
   useEffect(() => {
@@ -172,14 +208,31 @@ const AccessControl = () => {
     }
 
   }, [dispatch, successActivate, successDeActivate, success, errorCreate]);
-
+  const createDoctorState = () =>{
+    setDocName("");
+    setDocRole("");
+    setDocEmail("");
+    setDocNumber("");
+    setDocRegId("");
+  }
+  useEffect(()=>{
+    createDoctorState()
+  },[toggle])
+  const updateDoctorState = (doctor) => {
+    setName(doctor.name || '');
+    setRole(doctor.role || '');
+    setEmail(doctor.email || '');
+    setNumber(doctor.phone || '');
+    setRegId(doctor.registration_no || '');
+  };
   useEffect(() => {
-    setName(doctors.find((doc) => doc._id === editDocId)?.name || '')
-    setRole(doctors.find((doc) => doc._id === editDocId)?.role || '')
-    setEmail(doctors.find((doc) => doc._id === editDocId)?.email || '')
-    setNumber(doctors.find((doc) => doc._id === editDocId)?.phone || '')
-    setRegId(doctors.find((doc) => doc._id === editDocId)?.registration_no || '')
-  }, [editDocId])
+    if(doctors){
+    const editDoc = doctors?.find((doc) => doc._id === editDocId);
+  if (editDoc) {
+    updateDoctorState(editDoc);
+  }
+}
+  }, [editDocId,toggle])
   const deActivate = (id, e) => {
     console.log(e, 'jey');
 
@@ -238,6 +291,9 @@ const AccessControl = () => {
           </p>
           <button
             type="button"
+            onClick={()=>{
+              setToggle(!toggle)
+              setFormErrors({})}}
             className="card__Btn card__Bg--Green card__Btn--Bg-Green"
             data-bs-toggle="modal"
             data-bs-target="#createEmployee"
@@ -286,6 +342,7 @@ const AccessControl = () => {
                       autoComplete="given-name"
                       className="form__Input"
                     />
+                    {formErrors.docName && <div className="text-red-600 text-xs">{formErrors.docName}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label htmlFor="role" className="form__Label-Heading">
@@ -305,6 +362,7 @@ const AccessControl = () => {
                       <option value="Junior Doctor">Junior Doctor</option>
                       <option value="Dietitian">Dietitian</option>
                     </select>
+                    {formErrors.docRole && <div className="text-red-600 text-xs">{formErrors.docRole}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -323,6 +381,7 @@ const AccessControl = () => {
                       className="form__Input"
                       value={docEmail}
                     />
+                     {formErrors.docEmail && <div className="text-red-600 text-xs">{formErrors.docEmail}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -334,13 +393,14 @@ const AccessControl = () => {
                     <input
                       required
                       onChange={(e) => setDocNumber(e.target.value)}
-                      type="tel"
+                      type="number"
                       name="employee-phone"
                       id="employee-phone"
                       autoComplete="given-name"
                       className="form__Input"
                       value={docNumber}
                     />
+                       {formErrors.docNumber && <div className="text-red-600 text-xs">{formErrors.docNumber}</div>}
                   </div>
                   <div className="form__Cols--Span-6">
                     <label
@@ -387,7 +447,7 @@ const AccessControl = () => {
                   Cancel
                 </button>
                 <button onClick={submitHandler}
-                  data-bs-dismiss="modal"
+                  data-bs-dismiss={!Object.values(validateCreateEmployeeForm()).some((e) => e.length > 0) && 'modal'}
                   className="modal__Btn--Teal">
                   Create &amp; Save Employee
                 </button>
@@ -488,7 +548,7 @@ const AccessControl = () => {
                     <input
                       required
                       onChange={(e) => setNumber(e.target.value)}
-                      type="tel"
+                      type="number"
                       name="employee-phone"
                       id="employee-phone"
                       autoComplete="given-name"
@@ -542,7 +602,7 @@ const AccessControl = () => {
                   Cancel
                 </button>
                 <button onClick={editDocHandler}
-                  data-bs-dismiss="modal"
+                  data-bs-dismiss={!Object.values(validateForm()).some((e) => e.length > 0) && 'modal'}
                   className="modal__Btn--Teal">
                   UPDATE
                 </button>
@@ -575,7 +635,7 @@ const AccessControl = () => {
                   <td className="table__Body--Row_Data">{index + 1}</td>
                   <td className="table__Body--Row_Data">{doc.name}</td>
                   <td className="table__Body--Row_Data">{doc.role}</td>
-                  <td className="table__Body--Row_Data"> {new Date(doc?.createdAt || doc?.createdOn).toLocaleString().substring(0, 9)}</td>
+                  <td className="table__Body--Row_Data"> {new Date(doc?.createdAt || doc?.createdOn).toLocaleString().substring(0, 10)}</td>
                   <td className="table__Body--Row_Data">
                     <select
                       id="status"
@@ -604,7 +664,11 @@ const AccessControl = () => {
                   </td>
                   <td className="table__Body--Row_Data">
                     <FiEdit
-                      onClick={() => setEditDocId(doc._id)}
+                      onClick={() =>{
+                        setFormErrors({});
+                        setEditDocId(doc._id)
+                        setToggle(!toggle)
+                        }}
 
                       className="table__Body--Status_Icons"
                       data-bs-toggle="modal"

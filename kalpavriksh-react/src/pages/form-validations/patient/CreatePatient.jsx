@@ -168,7 +168,8 @@ const CreatePatient = () => {
                               <Input
                                
                                 element="input"
-                                type="tel"
+                                type="number"
+                                min='0'
                                 label="Patient Phone Number"
                                 id="phone"
                                 placeholder="Enter Phone Number"

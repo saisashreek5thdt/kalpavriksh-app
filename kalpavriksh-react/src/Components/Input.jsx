@@ -4,11 +4,18 @@ import { validate } from "../utils/validators";
 import Datepicker from "react-tailwindcss-datepicker";
 const inputReducer = (state, action) => {
     switch (action.type) {
+        case 'INITIALIZE' :
+            return {
+                ...state,
+                value:action.val,
+                isValid: true
+            };
         case 'CHANGE' :
             return {
                 ...state,
                 value:action.val,
-                isValid: validate(action.val, action.validators)
+                // isValid: true
+                 isValid: validate(action.val, action.validators)
             };
         case 'TOUCH': {
             return {
@@ -26,9 +33,9 @@ const inputReducer = (state, action) => {
 const Input = (props) => {
    
     const [inputState, dispatch] = useReducer(inputReducer, {
-        value: props?.initialValue ,
+        value: props?.initialValue|| '' ,
         isTouched: false,
-        isValid: props?.initialValue || false
+        isValid: false
     });
 
     const {id, onInput} = props;
@@ -39,7 +46,14 @@ const Input = (props) => {
              value, 
              isValid);
     }, [id, value, isValid, onInput]);
-
+useEffect(()=>{
+    if(props.initialValue){
+    dispatch({
+        type: 'INITIALIZE',
+        val:props.initialValue || '',
+    });
+}
+},[props.initialValue])
     const changeHandler = event => {
         dispatch({
             type: 'CHANGE',
@@ -61,11 +75,12 @@ const Input = (props) => {
                 <input 
                     id={props.id}
                     type={props.type}
-                    className="form__Input"
+                    min={props.min}
+                    className="form__Input phone-no"
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                     value={props?.initialValue || ''}
+                     value={inputState?.value}
                     required
                 />
             );
@@ -77,7 +92,7 @@ const Input = (props) => {
                     rows={props.rows || 3}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={props?.initialValue || ''}
+                    value={inputState?.value}
                     className="form__Textarea"                
                 />
             );
@@ -86,7 +101,7 @@ const Input = (props) => {
             element = (
                 <Datepicker
                     id={props.id}
-                    selected={inputState.value}
+                    selected={new Date(inputState?.value)}
                     onChange={(date) =>
                         dispatch({
                             type: 'CHANGE',
@@ -96,7 +111,7 @@ const Input = (props) => {
                     }
                     onBlur={touchHandler}
                     className="form__Input"
-                    value={props?.initialValue || ''}
+                    value={value}
                     dateFormat={props.dateFormat || 'dd/MM/yyyy'}
                     showYearDropdown
                     scrollableMonthYearDropdown
@@ -113,7 +128,7 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={props?.initialValue || ''}
+                    value={inputState?.value}
                     required
                 />
             );
