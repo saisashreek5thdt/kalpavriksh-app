@@ -1,11 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FiX, FiMenu } from "react-icons/fi";
-
+import { Url } from "../../constant.js/PatientConstant";
 import Logo from "../../Assets/img/logo-login.svg";
 import User from "../../Assets/user/user.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doctorSignout } from "../../action/PatientAction";
+import axios from "axios";
 
 const user = {
     name: "Tom Cook",
@@ -28,19 +29,34 @@ const user = {
   }
 
 const Navbar = () => {
+  const [docImage, setDocImage] = useState("");
   const dispatch=useDispatch()
   const hello=()=>{
     // console.log('helloo');
     dispatch(doctorSignout())
   }
-
+  const doctorSignin = useSelector((state) => state.doctorSignin);
+  const { doctorInfo } = doctorSignin;
    
   const userNavigation = [
     { name: "Your Profile", href: "/userrole/:roleid/dashboard/doctor/profile/" },
     { name: "Sign Out", fun:hello },
   ];
 
-
+  const getDocProfile = () => {
+    return axios.get(`${Url}/profile/doctor`, {
+      headers: {
+        Authorization: `Bearer ${doctorInfo.token}`,
+      },
+    })
+      .then(function (response) {
+        const res = response.data;
+        setDocImage(res?.data?.doctor?.photo)
+      });
+  };
+  useEffect(() => {
+    getDocProfile()
+  }, [])
   return (
     <>
       <Disclosure as="nav" className="navbar__BG">
@@ -86,8 +102,8 @@ const Navbar = () => {
                           <span className="navbar__RightBox--Btn-Span">Open user menu</span>
                           <img
                             className="navbar__ProfileBox--Btn-Img"
-                            src={user.imageUrl}
-                            alt=""
+                            src={docImage}
+                            alt="img"
                           />
                         </Menu.Button>
                       </div>
@@ -160,7 +176,7 @@ const Navbar = () => {
                   <div className="navbar__Flex-ImgBox-Mobile">
                     <img
                       className="navbar__Flex-Img-Mobile"
-                      src={user.imageUrl}
+                      src={docImage}
                       alt=""
                     />
                   </div>

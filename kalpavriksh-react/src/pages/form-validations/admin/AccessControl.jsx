@@ -31,6 +31,8 @@ const AccessControl = () => {
   const [docEmail, setDocEmail] = useState('');
   const [docNumber, setDocNumber] = useState('');
   const [docRegId, setDocRegId] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
+  const [image, setImage] = useState(null);
   const [editDocId, setEditDocId] = useState("")
   const [toggle, setToggle] = useState(true)
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const AccessControl = () => {
   const createDoctor = useSelector((state) => state.doctorCreate)
   const updatedDoctor = useSelector((state) => state.updatedDoctor)
   const { error: updatedDoctorError } = updatedDoctor
-  const { success, error: errorCreate } = createDoctor
+  const { success, error: errorCreate,loading:createDocLoading } = createDoctor
 
   const activateDoctorVariables = useSelector((state) => state.activateDoctor);
   const {
@@ -57,7 +59,22 @@ const AccessControl = () => {
     error: errorDeActivate,
     success: successDeActivate,
   } = deactivateDoctorVariables;
-
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+    setImage(file);
+  
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const blob = new Blob([reader.result], {
+        type: file.type,
+      });
+      const finalFile = new File([blob], file.name);
+      setProfileImage(finalFile);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  
+  console.log('image',profileImage)
   const validateForm = () => {
     let errors = {};
 
@@ -95,7 +112,7 @@ const AccessControl = () => {
     if (Object.values(errors).some((e) => e.length > 0)) {
       setFormErrors(errors);
     } else {
-      dispatch(editDoctor(editDocId, name, role, email, number, regId))
+      dispatch(editDoctor(editDocId, name, role, email, number, regId,profileImage,image))
       setEditDocId('')
     }
   }
@@ -135,7 +152,7 @@ const AccessControl = () => {
     if (Object.values(errors).some((e) => e.length > 0)) {
       setFormErrors(errors);
     } else {
-      dispatch(addDoctore(docName, docRole, docEmail, docNumber, docRegId));
+      dispatch(addDoctore(docName, docRole, docEmail, docNumber, docRegId,profileImage,image));
     }
   };
 
@@ -433,6 +450,7 @@ const AccessControl = () => {
                       id="appointment-date"
                       autoComplete="given-name"
                       className="form__Input"
+                      onChange={handleFileChange}
                     />
                   </div>
                 </div>
@@ -447,7 +465,7 @@ const AccessControl = () => {
                   Cancel
                 </button>
                 <button onClick={submitHandler}
-                  data-bs-dismiss={!Object.values(validateCreateEmployeeForm()).some((e) => e.length > 0) && 'modal'}
+                   data-bs-dismiss={!Object.values(validateCreateEmployeeForm()).some((e) => e.length > 0)  && 'modal'}
                   className="modal__Btn--Teal">
                   Create &amp; Save Employee
                 </button>
@@ -588,6 +606,7 @@ const AccessControl = () => {
                       id="appointment-date"
                       autoComplete="given-name"
                       className="form__Input"
+                      onChange={handleFileChange}
                     />
                   </div>
                 </div>

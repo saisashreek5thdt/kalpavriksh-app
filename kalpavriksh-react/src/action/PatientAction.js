@@ -60,78 +60,77 @@ import {
 } from "../constant.js/PatientConstant";
 import axios from "axios";
 
-export const patientEnrollment =
-  (
-    phone,
-    name,
-    email,
-    dob,
-    gender,
-    height,
-    weight,
-    caretakerName,
-    relation,
-    caretakerNumber,
-    caretakerTime,
-    healthPlan,
-    updatedPlanDate,
-    primaryTeamIds,
-    secondaryTeamIds,
-    amount,
-    payment_mode,
-    payment_date,
-    ref_id,
-    next_payment_date,
-    createdDate
-  ) =>
-  async (dispatch, getState) => {
-    dispatch({ type: ENROLMENT_PATIENT_REQUEST });
-    const {
-      doctorSignin: { doctorInfo },
-    } = getState();
+export const patientEnrollment = (
+  phone,
+  name,
+  email,
+  dob,
+  profileImage,
+  gender,
+  age,
+  height,
+  weight,
+  caretakerName,
+  relation,
+  caretakerNumber,
+  caretakerTime,
+  healthPlan,
+  updatedPlanDate,
+  primaryTeamIds,
+  secondaryTeamIds,
+  amount,
+  payment_mode,
+  payment_date,
+  ref_id,
+  next_payment_date,
+  createdDate
+) => async (dispatch, getState) => {
+  dispatch({ type: ENROLMENT_PATIENT_REQUEST });
+  const {
+    doctorSignin: { doctorInfo },
+  } = getState();
 
-    try {
-      const { data } = await axios.post(
-        `${Url}/doctors/add-patient`,
-        {
-          phone,
-          name,
-          email,
-          dob,
-          gender,
-          height,
-          weight,
-          caretakerName,
-          relation,
-          caretakerNumber,
-          caretakerTime,
-          health_plan: healthPlan,
-          health_plan_date: updatedPlanDate,
-          primaryTeamIds,
-          secondaryTeamIds,
-          amount,
-          payment_mode,
-          payment_date,
-          ref_id,
-          next_payment_date,
-          createdDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${doctorInfo.token}`,
-          },
-        }
-      );
-      dispatch({ type: ENROLMENT_PATIENT_SUCCESS, payload: data });
-    } catch (error) {
-      // console.log(error.response.data.message,'error')
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.response;
-      dispatch({ type: ENROLMENT_PATIENT_FAIL, payload: message });
-    }
-  };
+  try {
+    const formdata = new FormData();
+    formdata.append('phone', phone);
+    formdata.append('name', name);
+    formdata.append('email', email);
+    formdata.append('dob', dob);
+    formdata.append('file', profileImage);
+    formdata.append('gender', gender);
+    formdata.append('age', age);
+    formdata.append('height', height);
+    formdata.append('weight', weight);
+    formdata.append('caretakers_name', caretakerName);
+    formdata.append('caretakers_relation', relation);
+    formdata.append('caretakers_phone', caretakerNumber);
+    formdata.append('caretakers_time', caretakerTime);
+    formdata.append('health_plan', healthPlan);
+    formdata.append('health_plan_date', updatedPlanDate);
+    formdata.append('primaryTeamIds', primaryTeamIds);
+    formdata.append('secondaryTeamIds', secondaryTeamIds);
+    formdata.append('amount', amount);
+    formdata.append('payment_mode', payment_mode);
+    formdata.append('payment_date', payment_date);
+    formdata.append('ref_id', ref_id);
+    formdata.append('next_payment_date', next_payment_date);
+
+    const { data } = await axios.post(`${Url}/doctors/add-patient`, formdata, {
+      headers: {
+        Authorization: `Bearer ${doctorInfo.token}`,
+      },
+    });
+
+    dispatch({ type: ENROLMENT_PATIENT_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.response;
+    dispatch({ type: ENROLMENT_PATIENT_FAIL, payload: message });
+  }
+};
+
 
 export const updatePatient =
   (

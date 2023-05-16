@@ -14,7 +14,7 @@ const CreatePatient = () => {
   // const [email, setEmail] = useState("");
   // const [dob, setDob] = useState("");
   // const [gender, setGender] = useState("");
-
+  const [profileImage, setProfileImage] = useState(null);
   const genderOptions = [
     { value: "Please Select a Gender" },
     { value: "Male" },
@@ -27,6 +27,10 @@ const CreatePatient = () => {
     {
       phone: {
         value: "",
+        isValid: false,
+      },
+      age:{
+        value:'',
         isValid: false,
       },
       name: {
@@ -69,6 +73,10 @@ const CreatePatient = () => {
           value: "",
           isValid: false
         },
+        age: {
+          value: "",
+          isValid: false
+        },
         name: {
           value: "",
           isValid: false
@@ -90,16 +98,28 @@ const CreatePatient = () => {
     );
     
     const name = formState.inputs.name.value;
+    const age = formState.inputs.age.value;
     const phone = formState.inputs.phone.value;
     const email = formState.inputs.email.value;
     const dob = formState.inputs.dob.value;
     const gender = formState.inputs.gender.value;
   
     navigate("/userrole/:roleid/dashboard/doctor/enrol/healthinfo/", {
-      state: { name, phone, email, dob, gender },
+      state: { name, phone, email, dob, gender,profileImage,age },
     });
   };
-
+  function handleFileChange(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const blob = new Blob([reader.result], {
+        type: file.type,
+      });
+      const finalFile = new File([blob], file.name);
+      setProfileImage(finalFile);
+    };
+    reader.readAsArrayBuffer(file);
+  }
   return (
     <>
       <div className="dashboard__Container">
@@ -137,12 +157,20 @@ const CreatePatient = () => {
                                     <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                   </svg>
                                 </span>
-                                <button
+                                <input
+                      type="file"
+                      name="appointment-date"
+                      id="appointment-date"
+                      autoComplete="given-name"
+                      className="form__Input"
+                      onChange={handleFileChange}
+                      required
+                    />                                {/* <button
                                   type="button"
                                   className="form__Flex-Btn"
                                 >
                                   Change
-                                </button>
+                                </button> */}
                               </div>
                             </div>
                           </div>
@@ -297,6 +325,19 @@ const CreatePatient = () => {
                                 errorText="Please Select Gender"
                                 onInput={inputHandler}
                                />
+                            </div>
+                            <div className="form__Cols--Span-6">
+                              <Input
+                                element="input"
+                                type="number"
+                                label="Patient Age"
+                                id="age"
+                                placeholder="Enter Age"
+                                validators={[VALIDATOR_REQUIRE()]}
+                                errorText="Please Enter Valid Age"
+                                onInput={inputHandler}
+                               />
+
                             </div>
                           </div>
                         </div>

@@ -41,7 +41,7 @@ const PatientHealthInfo = () => {
   // const [planDate, setPlanDate] = useState("");
   const [options, setOptions] = useState([""]);
   const location = useLocation();
-  const { phone, name, email, dob, gender } = location.state;
+  const { phone, name, email, dob, gender,profileImage,age } = location.state;
   const doctorList = useSelector((state) => state.doctorList);
   const { loading, error, doctors } = doctorList;
   const [healthPlanOptions, setHealthPlanOptions] = useState([]);
@@ -225,6 +225,8 @@ const PatientHealthInfo = () => {
         name,
         email,
         dob,
+        profileImage,
+        age,
         gender,
         height,
         weight,

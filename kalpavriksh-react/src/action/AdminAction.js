@@ -42,20 +42,28 @@ import {
 import { Url } from "../constant.js/PatientConstant";
 
 export const addDoctore =
-  (name, role, email, phone, registration_no) => async (dispatch, getState) => {
+  (name, role, email, phone, registration_no,profileImage,image) => async (dispatch, getState) => {
     dispatch({ type: CREATE_DOCTOR_REQUEST });
     const {
       adminSignin: { adminDocInfo },
     } = getState();
 
     try {
+      const formdata = new FormData();
+      formdata.append('name', name);
+      formdata.append('role', role);
+      formdata.append('email', email);
+      formdata.append('phone', phone);
+      formdata.append('registration_no', registration_no);
+      formdata.append('file', profileImage, image.name);
       const { data } = await axios.post(
         `${Url}/doctors/add-doctor`,
-        { name, role, email, phone, registration_no },
+       formdata,
         {
           headers: {
             Authorization: `Bearer ${adminDocInfo.token}`,
           },
+          redirect: 'follow',
         }
       );
       dispatch({ type: CREATE_DOCTOR_SUCCESS, payload: data });
@@ -69,33 +77,47 @@ export const addDoctore =
     }
   };
 
-export const editDoctor =
-  (id, name, role, email, phone, registration_no) =>
-  async (dispatch, getState) => {
+  export const editDoctor = (id, name, role, email, phone, registration_no, profileImage,image) => async (dispatch, getState) => {
     dispatch({ type: EDIT_DOCTOR_REQUEST });
     const {
       adminSignin: { adminDocInfo },
     } = getState();
-
+  
     try {
-      const { data } = await axios.put(
-        `${Url}/doctors/edit/${id}`,
-        { name, role, email, phone, registration_no },
-        {
-          headers: {
-            Authorization: `Bearer ${adminDocInfo.token}`,
-          },
-        }
-      );
+      const formdata = new FormData();
+      formdata.append('name', name);
+      formdata.append('role', role);
+      formdata.append('email', email);
+      formdata.append('phone', phone);
+      formdata.append('photo', profileImage,image.name);
+      console.log('data',profileImage,image.name)
+      formdata.append('registration_no', registration_no);
+      // await new Promise((resolve) => {
+      //   const fileReader = new FileReader();
+      //   fileReader.onload = function () {
+      //     const fileData = new Blob([fileReader.result], { type: profileImage.type,name: profileImage.name });
+      //     let finalFile  = new File([fileData],profileImage.name)
+          
+      //     resolve();
+      //   };
+      //   fileReader.readAsArrayBuffer(profileImage);
+      // });
+  
+      const { data } = await axios.put(`${Url}/doctors/edit/${id}`, formdata, {
+        headers: {
+          Authorization: `Bearer ${adminDocInfo.token}`,
+        },
+      redirect: 'follow',
+      });
+  
       dispatch({ type: EDIT_DOCTOR_SUCCESS, payload: data });
     } catch (error) {
       const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
+        error.response && error.response.data.message ? error.response.data.message : error.message;
       dispatch({ type: EDIT_DOCTOR_FAIL, payload: message });
     }
   };
+  
 
 export const adminLogin = (email, password, user) => async (dispatch) => {
   dispatch({ type: ADMIN_LOGIN_REQUEST, payload: { email } });
