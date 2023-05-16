@@ -15,7 +15,6 @@ module.exports.patientData = async (req, res) => {
         const planDetails = [];
 
         patients.forEach(patient => {
-            console.log(patient.health_plan);
             //console.log(healthPlanIds);
             if(healthPlanIds.includes(patient.health_plan.id)) {
                 for (let i = 0; i < planDetails.length; i++) {

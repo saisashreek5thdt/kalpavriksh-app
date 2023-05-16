@@ -21,7 +21,7 @@ router.post('/add-diet-chart', authorize("doctor"), upload.array('file'), dietCh
 router.post('/add-form', authorize("doctor"), form.addForm);
 
 router.get('/get-all', authorize(), doctor.getAll);
-router.put('/edit/:id', authorize("admin"), doctor.edit);
+router.put('/edit/:id', authorize("admin"), upload.array('file'), doctor.edit);
 router.put('/deactivate/:id', authorize("admin"), doctor.deactivate);
 router.put('/activate/:id', authorize("admin"), doctor.activate);
 

@@ -50,7 +50,6 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.edit = async (req, res) => {
     try {
-
         const doctor = await Doctor.findById(req.params.id)
         if(!doctor) {
             return res.status(400).json({
@@ -64,7 +63,7 @@ module.exports.edit = async (req, res) => {
         doctor.email = req.body.email,
         doctor.phone = req.body.phone,
         doctor.registration_no = req.body.registration_no,
-        doctor.photo = req.files.length > 0 ? await uploadFiles(req.files) : undefined,
+        doctor.photo = req.files.length > 0 ? await uploadFiles(req.files) : doctor.photo,
 
         await doctor.save()
 

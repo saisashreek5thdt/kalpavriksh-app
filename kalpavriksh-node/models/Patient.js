@@ -63,8 +63,14 @@ const Patient = new mongoose.Schema({
         required: true
     },
     health_plan_date: {
-        startDate: Date,
-        endDate: Date,
+        startDate: {
+            type: Date,
+            required: true
+        },
+        endDate: {
+            type: Date,
+            required: true
+        }
     },
     amount: {
         type: Number,

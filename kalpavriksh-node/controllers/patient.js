@@ -24,12 +24,33 @@ module.exports.addPatient = async (req, res) => {
                 message: "A valid health program was not found",
             })
         }
-
+        
         const newPatient = new Patient({
             patientId: "DAP-"+ await getPatientId(),
             createdOn: getCurrentDate(),
             photo: req.files.length > 0 ? await uploadFiles(req.files) : undefined,
-            ...req.body
+            health_plan_date: JSON.parse(req.body.health_plan_date),
+            primaryTeamIds: req.body.primaryTeamIds,
+            secondaryTeamIds: req.body.secondaryTeamIds,
+            phone: req.body.phone,
+            name:  req.body.name,
+            email: req.body.email,
+            dob: req.body.dob,
+            gender: req.body.gender,
+            height: req.body.height,
+            weight: req.body.weight,
+            caretakers_name: req.body.caretakers_name,
+            caretakers_relation: req.body.caretakers_relation,
+            caretakers_phone: req.body.caretakers_phone,
+            caretakers_time: req.body.caretakers_time,
+            health_plan: req.body.health_plan,
+            amount: req.body.amount,
+            payment_mode: req.body.payment_mode,
+            payment_date: req.body.payment_date,
+            ref_id: req.body.ref_id,
+            next_payment_date:  req.body.next_payment_date,
+            observations: req.body.observations,
+            age: req.body.age,
         });
 
         await newPatient.save();
@@ -106,6 +127,14 @@ module.exports.editPatient = async (req, res) => {
             })
         }
 
+        const health_program = await Healthplan.findOne({ _id: req.body.health_plan});
+        if(!health_program) {
+            return res.status(400).json({
+                success: false,
+                message: "A valid health program was not found",
+            })
+        }
+
         patient.health_plan_date = req.body.health_plan_date,
         patient.primaryTeamIds =  req.body.primaryTeamIds,
         patient.secondaryTeamIds =  req.body.secondaryTeamIds,
@@ -127,9 +156,10 @@ module.exports.editPatient = async (req, res) => {
         patient.ref_id = req.body.ref_id,
         patient.next_payment_date =  req.body.next_payment_date,
         patient.observations = req.body.observations,
+        patient.age = req.body.age,
         //patient.photo = req.files.length > 0 ? await uploadFiles(req.files) : patient.photo;
         
-        await Patient.findByIdAndUpdate( req.params.id, req.body);
+        await Patient.save();
         return res.status(200).json({
             success: true,
             message: "Successfully updated the patient",

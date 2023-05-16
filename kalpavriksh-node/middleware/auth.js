@@ -30,6 +30,14 @@ module.exports.authorize = (role = "") => {
               const userDetail = await Patient.findById(decoded.user.id).select(
                 ["-password", "-observations" ]
               );
+
+              if(userDetail.status === 'De-Active') {
+                return res.status(401).json({
+                    success: false,
+                    message: "Please contact doctor for more information.",
+                })
+              }
+
               req.user = userDetail;
               req.user.type = decoded.user.type
               next();
@@ -42,12 +50,12 @@ module.exports.authorize = (role = "") => {
                   data: null,
                 });
               }
-              if(decoded.user.status == "De-Active") {
+
+              if(isValid.status === 'De-Active') {
                 return res.status(401).json({
-                  success: false,
-                  message: "You are not allowed to perform the task. Please contact the admin.",
-                  data: "de-active",
-                });
+                    success: false,
+                    message: "Please contact admin for more information.",
+                })
               }
         
               const userDetail = await Doctor.findById(decoded.user.id).select(

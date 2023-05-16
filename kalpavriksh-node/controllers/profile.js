@@ -11,7 +11,7 @@ module.exports.patient = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "data fetched susseccfully",
+            message: "data fetched successfully",
             data: {
                 patient,
                 forms,
@@ -35,14 +35,13 @@ module.exports.doctor = async (req, res) => {
                 { secondaryTeamIds: { $in: [req.user.id] } }
               ]
         });
-        console.log(req.user.id);
-        console.log(patients);
+        
         const forms = await Form.find({ doctorId: req.user.id }).count();
         const diet_charts = await DietChart.find({ doctorId: req.user.id }).count();
 
         return res.status(200).json({
             success: true,
-            message: "data fetched susseccfully",
+            message: "data fetched successfully",
             data: {
                 doctor: doctor,
                 total_patients: patients.length,

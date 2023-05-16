@@ -19,7 +19,6 @@ module.exports.addDietChart = async (req, res) => {
             file: req.files.length > 0 ? await uploadFiles(req.files) : undefined,
             cuisine_type: req.body.cuisine_type,
             createdOn: getCurrentDate(),
-            file: "sample link"
         })
 
         await newDiet.save()

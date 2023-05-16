@@ -11,9 +11,12 @@ const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH
 module.exports.login = async (req, res) => {
     try {
         let user = "";
-        if(req.body.user == "doctor") {
-            user = await Doctor.findOne({email: req.body.email})
-        } else if(req.body.user == "patient") {
+
+        //todo multiple role logi
+
+        if(req.body.user == "Doctor") {
+            user = await Doctor.findOne({email: req.body.email, role: req.body.user})
+        } else if(req.body.user == "Patient") {
             user = await Patient.findOne({email: req.body.email})
         } else if(req.body.user == "admin") {
             if((req.body.email == "admin@doctorapp.in") && (req.body.password == "admin123")) {
@@ -52,10 +55,10 @@ module.exports.login = async (req, res) => {
         if(!user) {
             return res.status(401).json({
                 success: false,
-                message: "Patient not found",
+                message: "User not found",
             })
         }
-
+        
         const otp = Math.floor(100000 + Math.random() * 900000); //6 digit integer otp
 
         user.otp = otp;
@@ -107,9 +110,9 @@ module.exports.login = async (req, res) => {
 module.exports.submitOtp = async (req, res) => {
     try {
         let user = "";
-        if(req.body.user == "doctor") {
+        if(req.body.user == "Doctor") {
             user = await Doctor.findOne({email: req.body.email, otp: req.body.otp, otpExpiresIn: { $gt: Date.now() }});
-        } else if(req.body.user == "patient") {
+        } else if(req.body.user == "Patient") {
             user = await Patient.findOne({email: req.body.email, otp: req.body.otp, otpExpiresIn: { $gt: Date.now() }});
         } else {
             return res.status(500).json({
@@ -123,7 +126,14 @@ module.exports.submitOtp = async (req, res) => {
                 message: "User doesn't exist / Invalid OTP",
             })
         }   
-        console.log(user);
+        
+        if(user.status === 'De-Active') {
+            return res.status(401).json({
+                success: false,
+                message: "Please contact admin for more information.",
+            })
+        }
+
         const payload = {
             user: {
               id: user.id,
